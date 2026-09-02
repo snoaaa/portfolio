@@ -54,41 +54,43 @@
 </header>
 
 <script>
-  const hamburger = document.querySelector('.header__hamburger');
-  const nav = document.querySelector('.header__nav');
-  const body = document.querySelector('body');
+  document.addEventListener('astro:page-load', () => {
+    const hamburger = document.querySelector('.header__hamburger');
+    const nav = document.querySelector('.header__nav');
+    const body = document.querySelector('body');
 
-  if (hamburger && nav) {
-    hamburger.addEventListener('click', () => {
-      const isActive = nav.classList.toggle('is-active');
-      hamburger.classList.toggle('is-active');
-      hamburger.setAttribute('aria-expanded', isActive ? 'true' : 'false');
-      if (isActive) {
-        body.style.overflow = 'hidden';
-      } else {
-        body.style.overflow = '';
-      }
-    });
-
-    // Close menu when a link is clicked
-    const links = nav.querySelectorAll('.header__list-link');
-    links.forEach(link => {
-      link.addEventListener('click', () => {
-        nav.classList.remove('is-active');
-        hamburger.classList.remove('is-active');
-        hamburger.setAttribute('aria-expanded', 'false');
-        body.style.overflow = '';
+    if (hamburger && nav) {
+      hamburger.addEventListener('click', () => {
+        const isActive = nav.classList.toggle('is-active');
+        hamburger.classList.toggle('is-active');
+        hamburger.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+        if (isActive) {
+          body.style.overflow = 'hidden';
+        } else {
+          body.style.overflow = '';
+        }
       });
-    });
 
-    // Prevent body overflow lock if screen is resized to desktop while open
-    window.addEventListener('resize', () => {
-      if (window.innerWidth >= 1024 && nav.classList.contains('is-active')) {
-        nav.classList.remove('is-active');
-        hamburger.classList.remove('is-active');
-        hamburger.setAttribute('aria-expanded', 'false');
-        body.style.overflow = '';
-      }
-    });
-  }
+      // Close menu when a link is clicked
+      const links = nav.querySelectorAll('.header__list-link');
+      links.forEach(link => {
+        link.addEventListener('click', () => {
+          nav.classList.remove('is-active');
+          hamburger.classList.remove('is-active');
+          hamburger.setAttribute('aria-expanded', 'false');
+          body.style.overflow = '';
+        });
+      });
+
+      // Prevent body overflow lock if screen is resized to desktop while open
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1024 && nav.classList.contains('is-active')) {
+          nav.classList.remove('is-active');
+          hamburger.classList.remove('is-active');
+          hamburger.setAttribute('aria-expanded', 'false');
+          body.style.overflow = '';
+        }
+      });
+    }
+  });
 </script>

@@ -230,31 +230,7 @@ const {
 
     <link rel="stylesheet" href="/css/main.css" />
     <canvas id="canvas"></canvas>
-    <svg
-      style="position:absolute;width:0;height:0;overflow:hidden;"
-      aria-hidden="true"
-    >
-      <defs>
-        <filter id="inkFilter" x="-25%" y="-50%" width="150%" height="200%">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.035"
-            numOctaves="4"
-            seed="5"
-            result="n"></feTurbulence>
-          <feDisplacementMap
-            id="inkDisp"
-            in="SourceGraphic"
-            in2="n"
-            scale="70"
-            xChannelSelector="R"
-            yChannelSelector="G"
-            result="d"></feDisplacementMap>
-          <feGaussianBlur id="inkBlur" in="d" stdDeviation="10"
-          ></feGaussianBlur>
-        </filter>
-      </defs>
-    </svg>
+    <div id="curtain-overlay" style="position: fixed; inset: 0; background-color: #fffdf1; z-index: 9999; pointer-events: none; transform: translateY(0%);"></div>
 
     {showHeaderFooter && <Header />}
 

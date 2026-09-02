@@ -525,9 +525,15 @@ a[target="_blank"]::after {
     grid-row: 1/2;
   }
 }
+.footer__menu-list, .footer__social-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 .footer__list-link {
   display: flex;
   width: fit-content;
+  padding: 4px 0;
 }
 .footer__social {
   grid-column: 3/5;
@@ -542,6 +548,7 @@ a[target="_blank"]::after {
 .footer__social-link {
   display: flex;
   width: fit-content;
+  padding: 4px 0;
 }
 .footer__mail {
   grid-column: 1/5;

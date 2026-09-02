@@ -8361,7 +8361,7 @@ document.addEventListener("astro:page-load", () => {
         ((d.textContent = ""),
           g.forEach((w) => {
             const b = document.createElement("span");
-            ((b.textContent = w), d.appendChild(b));
+            ((b.textContent = w === " " ? "\u00A0" : w), d.appendChild(b));
           }),
           tt.set(d.querySelectorAll("span"), {
             y: "100%",
@@ -8371,8 +8371,8 @@ document.addEventListener("astro:page-load", () => {
           tt.to(d.querySelectorAll("span"), {
             y: 0,
             opacity: 1,
-            duration: 1,
-            stagger: 0.1,
+            duration: 0.3,
+            stagger: 0.04,
             ease: "power1.out",
             scrollTrigger: {
               trigger: d,
@@ -8615,4 +8615,29 @@ document.addEventListener("astro:page-load", () => {
           });
         }));
     }));
+});
+
+document.addEventListener("astro:page-load", () => {
+  const curtain = document.getElementById("curtain-overlay");
+  if (!curtain) return;
+  curtain.style.display = "block";
+  if (typeof tt !== "undefined") {
+    tt.to(curtain, {
+      y: "-100%",
+      duration: 0.6,
+      ease: "power3.inOut",
+      onComplete() {
+        curtain.style.display = "none";
+        curtain.style.transform = "translateY(0%)";
+      }
+    });
+  } else {
+    curtain.style.transition = "transform 0.6s cubic-bezier(0.65, 0, 0.35, 1)";
+    curtain.style.transform = "translateY(-100%)";
+    setTimeout(() => {
+      curtain.style.display = "none";
+      curtain.style.transform = "translateY(0%)";
+      curtain.style.transition = "none";
+    }, 600);
+  }
 });
