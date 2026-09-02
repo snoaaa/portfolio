@@ -1,0 +1,152 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="ABOUT | KAISEI SADATOKI | Portfolio-V4"
+  description="Kaisei Sadatoki — Freelance developer and designer based in Japan, focused on clean, modern, and minimal design with attention to typography, layout, and animation."
+  pathname="/about/"
+  showHeaderFooter={true}
+>
+  <style
+    slot="head"
+    set:html={`.p-about-info{width:100%;margin-bottom:96px}@media(min-width:1024px){.p-about-info{margin-bottom:160px}}.p-about-info__wrapper{display:grid;grid-template-columns:repeat(4,1fr);row-gap:64px;grid-template-rows:repeat(2,auto)}@media(min-width:1024px){.p-about-info__wrapper{row-gap:0px;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(2,1fr)}}.p-about-info__img{grid-column:1/3;grid-row:1/2;overflow:hidden}@media(min-width:1024px){.p-about-info__img{grid-column:1/5;grid-row:1/3;position:relative;height:100%}}.p-about-info__img img{width:100%;height:auto;object-fit:cover;display:block;position:relative}@media(min-width:1024px){.p-about-info__img img{height:120%;position:absolute;top:0;left:0}}.p-about-info__age{padding-left:16px;grid-column:3/5;grid-row:1/2;display:flex;flex-direction:column;justify-content:space-between}@media(min-width:1024px){.p-about-info__age{padding-left:0;grid-column:7/13}}.p-about-info__age-num{text-align:right;font-size:clamp(6rem,2.7391rem + 13.913vw,25rem);line-height:1;letter-spacing:-.07em;display:flex;justify-content:flex-end}.p-about-info__profile{grid-column:1/5;grid-row:2/3}@media(min-width:1024px){.p-about-info__profile{padding-left:32px;grid-column:5/13;grid-row:2/3;align-self:end}}.p-about-info__profile-wrapper{margin-top:auto;display:grid;grid-template-columns:repeat(1,1fr);grid-template-rows:repeat(4,auto);row-gap:48px}@media(min-width:1024px){.p-about-info__profile-wrapper{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,auto);row-gap:48px;column-gap:64px}}.p-about-info__profile-title{font-family:The Night Watch;margin-bottom:40px}@media(min-width:1024px){.p-about-info__profile-title{margin-bottom:72px}}.p-about-info__profile-item{display:flex;flex-direction:column;gap:16px}@media(min-width:1024px){.p-about-info__profile-item{gap:16px}}.p-about-approach{width:100%;padding:64px 0;color:#fffdf1;margin-bottom:96px;background-image:url(images/about-bg.DK3abAYJ.jpg);background-size:cover;background-repeat:no-repeat;background-position-x:40%;position:relative;overflow:hidden}@media(min-width:1024px){.p-about-approach{background-image:none;padding:96px 0}}.p-about-approach__bg{display:none;overflow:hidden}.p-about-approach__bg img{width:100%;height:120%;position:absolute;top:0;left:0;object-fit:cover}@media(min-width:1024px){.p-about-approach__bg{display:block}}.p-about-approach__wrapper{position:relative}@media(min-width:1024px){.p-about-approach__wrapper{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(2,auto);row-gap:120px}}.p-about-approach__head{margin-bottom:96px}@media(min-width:1024px){.p-about-approach__head{margin-bottom:0}}@media(min-width:1024px){.p-about-approach__list{grid-column:6/13;grid-row:2/3;max-width:800px}}.p-about-approach__list-item{margin-bottom:48px}@media(min-width:1024px){.p-about-approach__list-item{margin-bottom:80px}}.p-about-approach__list-item:last-child{margin-bottom:0}.p-about-approach__list-title{margin-bottom:16px}.p-about-award__title{font-family:The Night Watch;text-align:center;font-size:clamp(3rem,-.4539rem + 14.7368vw,23.125rem);line-height:1}
+`}
+  ></style>
+  <main class="main">
+    <div class="page-header">
+      <div class="page-header__wrapper l-wrapper">
+        <p class="text-7xl page-header__titleja ink-anim ink-anim--07">
+          自己紹介
+        </p>
+        <h1 class="text-6xl page-header__title ink-anim">
+          I'm<br /> front-end<br /> developer &amp; designer<br />
+        </h1>
+        <p class="page-header__label text-lg ink-anim">About me</p>
+        <div class="page-header__scroll">
+          <span class="text-sm page-header__scroll-text ink-anim js-scroll-text"
+            >Scroll</span
+          >
+          <span
+            class="text-sm page-header__scroll-text ink-anim page-header__scroll-text--clone js-scroll-text-clone"
+            >Scroll</span
+          >
+        </div>
+        <div class="page-header__border">
+          <!-- {
+        showCircle && (
+          <div class="page-header__border-circle">
+            <svg viewBox="0 0 200 200">
+              <defs>
+                <path
+                  id="circlePath"
+                  d="M 100,100 m -75,0 a 75,75 0 1,1 150,0 a 75,75 0 1,1 -150,0"
+                />
+              </defs>
+
+              <text>
+                <textPath href="#circlePath">Hello World Hello World</textPath>
+              </text>
+            </svg>
+          </div>
+        )
+      } -->
+        </div>
+      </div>
+    </div>
+    <section class="p-about-info">
+      <div class="p-about-info__wrapper l-wrapper">
+        <div class="p-about-info__img">
+          <img src="images/about-info.DdXBfFtL.jpg" alt="" />
+        </div>
+        <div class="p-about-info__age">
+          <span class="text-sm">[Age]</span>
+          <span class="p-about-info__age-num js-age">
+            <span class="scramble-char">2</span>
+            <span class="scramble-char">3</span>
+          </span>
+        </div>
+        <div class="p-about-info__profile">
+          <h2 class="text-3xl p-about-info__profile-title">info</h2>
+          <div class="p-about-info__profile-wrapper">
+            <div class="p-about-info__profile-item">
+              <span class="text-sm p-about-info__profile-label">[Profile]</span>
+              <p class="text-base">
+                I just started learning out of curiosity and developed a passion
+                for this field through continued study and project work. I'm
+                currently working independently and also interested in
+                international opportunities and working with overseas clients.
+              </p>
+            </div>
+            <div class="p-about-info__profile-item">
+              <span class="text-sm p-about-info__profile-label">[Stack]</span>
+              <p class="text-base">
+                HTML, (S)CSS, JavaScript, WordPress, Astro, Figma
+              </p>
+            </div>
+            <div class="p-about-info__profile-item">
+              <span class="text-sm p-about-info__profile-label">[Award]</span>
+              <p class="text-base">
+                WD AWARDS FAVORITE × 1<br />
+                CSS WINNER STAR × 2<br />
+                CSS Design Award SPECIAL KUDOS × 1<br />
+                MUUUUU.ORG SITE OF THE DAY × 1<br />
+                <!-- Awwwards Honorable Mention × 1<br /> -->
+              </p>
+            </div>
+            <div class="p-about-info__profile-item">
+              <span class="text-sm p-about-info__profile-label">[Language]</span
+              >
+              <p class="text-base">Japanese, English</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="p-about-approach">
+      <div class="p-about-approach__bg">
+        <img src="images/about-bg-pc.wpM8tw5S.jpg" alt="" />
+      </div>
+      <div class="p-about-approach__wrapper l-wrapper">
+        <div class="p-about-approach__head">
+          <h2 class="text-6xl p-about-approach__head-title">approach</h2>
+          <p class="text-lg">Things that I value while working on projects</p>
+        </div>
+        <div class="p-about-approach__list">
+          <div class="p-about-approach__list-item">
+            <h3 class="text-3xl p-about-approach__list-title">Communication</h3>
+            <p class="text-base">
+              I believe good work starts with open conversation. I make it a
+              point to share any concerns, questions, or uncertainties rather
+              than letting them go unspoken, and I value relationships where
+              both sides can express themselves freely. My goal is for the
+              people I work with to feel glad they did and to want to work
+              together again. I believe that's what leads to better work.
+            </p>
+          </div>
+          <div class="p-about-approach__list-item">
+            <h3 class="text-3xl p-about-approach__list-title">Precision</h3>
+            <p class="text-base">
+              I pay close attention to every detail. This means reproducing
+              designs faithfully down to the finest details, as well as
+              researching anything I'm unsure about and suggesting better
+              approaches when I see them. I believe that being able to dedicate
+              time and care to each project is one of the strengths of working
+              independently.
+            </p>
+          </div>
+          <div class="p-about-approach__list-item">
+            <h3 class="text-3xl p-about-approach__list-title">Exploration</h3>
+            <p class="text-base">
+              I enjoy facing different designs and requirements with every
+              project. I find myself drawn to the process of encountering things
+              I don't know yet, and I think that's what makes this work
+              exciting. Rather than going through the motions, I value
+              approaching each project with fresh eyes and genuine curiosity.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
