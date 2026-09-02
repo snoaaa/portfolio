@@ -1,0 +1,374 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+// Books Data Structure
+const currentlyReading = {
+  title: "The Body Keeps the Score: Brain, Mind, and Body in the Healing of Trauma",
+  author: "Bessel van der Kolk",
+  publisher: "Viking",
+  year: 2014,
+  edition: "1st Edition",
+  genre: "Psychology / Health",
+  description: "An inspiring and comprehensive look at the effects of trauma, and the new treatments that can help individuals reclaim their lives. It fundamentally changes how we understand the human response to stress."
+};
+
+const pastReads = [
+  {
+    title: "Things Fall Apart",
+    author: "Chinua Achebe",
+    publisher: "William Heinemann Ltd",
+    year: 1958,
+    edition: "1st Edition",
+    genre: "African Fiction",
+    quote: "When suffering knocks at your door and you say there is no seat for him, he tells you not to worry because he has brought his own stool."
+  },
+  {
+    title: "The Psychology of Money",
+    author: "Morgan Housel",
+    publisher: "Harriman House",
+    year: 2020,
+    edition: "1st Edition",
+    genre: "Finance",
+    quote: "Doing well with money has a little to do with how smart you are and a lot to do with how you behave."
+  },
+  {
+    title: "Nervous Conditions",
+    author: "Tsitsi Dangarembga",
+    publisher: "Women's Press",
+    year: 1988,
+    edition: "1st Edition",
+    genre: "African Literature",
+    quote: "You have to be a person first before you can be a woman."
+  },
+  {
+    title: "Thinking, Fast and Slow",
+    author: "Daniel Kahneman",
+    publisher: "Farrar, Straus and Giroux",
+    year: 2011,
+    edition: "1st Edition",
+    genre: "Psychology",
+    quote: "Nothing in life is as important as you think it is, while you are thinking about it."
+  },
+  {
+    title: "The Black Swan",
+    author: "Nassim Nicholas Taleb",
+    publisher: "Random House",
+    year: 2007,
+    edition: "2nd Edition",
+    genre: "Finance / Philosophy",
+    quote: "Missing a train is only painful if you run after it!"
+  },
+  {
+    title: "Half of a Yellow Sun",
+    author: "Chimamanda Ngozi Adichie",
+    publisher: "Fourth Estate",
+    year: 2006,
+    edition: "1st Edition",
+    genre: "Historical Fiction",
+    quote: "Some people dictate your history and then decide what to leave out."
+  },
+  {
+    title: "Influence: The Psychology of Persuasion",
+    author: "Robert B. Cialdini",
+    publisher: "Harper Business",
+    year: 1984,
+    edition: "Revised Edition",
+    genre: "Psychology",
+    quote: "A well-known principle of human behavior says that when we ask someone to do us a favor we will be more successful if we provide a reason."
+  },
+  {
+    title: "Shoe Dog",
+    author: "Phil Knight",
+    publisher: "Simon & Schuster",
+    year: 2016,
+    edition: "1st Edition",
+    genre: "Biography / Business",
+    quote: "Don't tell people how to do things, tell them what to do and let them surprise you with their results."
+  },
+  {
+    title: "Petals of Blood",
+    author: "Ngũgĩ wa Thiong'o",
+    publisher: "Heinemann",
+    year: 1977,
+    edition: "1st Edition",
+    genre: "African Fiction",
+    quote: "You cannot change the past, but you can learn from it and shape the future."
+  },
+  {
+    title: "Sapiens: A Brief History of Humankind",
+    author: "Yuval Noah Harari",
+    publisher: "Harvill Secker",
+    year: 2011,
+    edition: "1st Edition",
+    genre: "History / Anthropology",
+    quote: "History is something that very few people have been doing while everyone else was ploughing fields and carrying water buckets."
+  },
+  {
+    title: "A Random Walk Down Wall Street",
+    author: "Burton G. Malkiel",
+    publisher: "W. W. Norton & Company",
+    year: 1973,
+    edition: "12th Edition",
+    genre: "Finance",
+    quote: "A blindfolded monkey throwing darts at a newspaper's financial pages could select a portfolio that would do just as well as one carefully selected by experts."
+  },
+  {
+    title: "Man's Search for Meaning",
+    author: "Viktor E. Frankl",
+    publisher: "Beacon Press",
+    year: 1946,
+    edition: "1st Edition",
+    genre: "Psychology / Memoir",
+    quote: "When we are no longer able to change a situation, we are challenged to change ourselves."
+  },
+  {
+    title: "The Intelligent Investor",
+    author: "Benjamin Graham",
+    publisher: "Harper & Brothers",
+    year: 1949,
+    edition: "Revised Edition",
+    genre: "Finance",
+    quote: "The investor's chief problem—and even his worst enemy—is likely to be himself."
+  },
+  {
+    title: "Americanah",
+    author: "Chimamanda Ngozi Adichie",
+    publisher: "Knopf",
+    year: 2013,
+    edition: "1st Edition",
+    genre: "Contemporary Fiction",
+    quote: "If you don't understand, ask questions. If you're uncomfortable about asking questions, say you are uncomfortable about asking questions and then ask anyway."
+  },
+  {
+    title: "Quiet: The Power of Introverts in a World That Can't Stop Talking",
+    author: "Susan Cain",
+    publisher: "Crown Publishing Group",
+    year: 2012,
+    edition: "1st Edition",
+    genre: "Psychology",
+    quote: "There's zero correlation between being the best talker and having the best ideas."
+  }
+];
+---
+
+<BaseLayout
+  title="BOOKS | ABRAHAM NOUMSI | Portfolio-V2"
+  description="A collection of books I am currently reading and past favorites, along with interesting extracts."
+  pathname="/books/"
+  showHeaderFooter={true}
+>
+  <style>
+    .p-books {
+      padding-top: 120px;
+      padding-bottom: 64px;
+      width: 100%;
+    }
+    @media (min-width: 1024px) {
+      .p-books {
+        padding-top: 160px;
+        padding-bottom: 96px;
+      }
+    }
+    .p-books__section {
+      margin-bottom: 80px;
+    }
+    .p-books__section-title {
+      font-family: 'The Night Watch', serif;
+      margin-bottom: 40px;
+      font-size: clamp(3rem, 1rem + 6vw, 6rem);
+      line-height: 1;
+    }
+    
+    /* Metadata Grid */
+    .p-books__metadata {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      font-size: 0.875rem;
+      opacity: 0.8;
+      margin-top: 12px;
+      margin-bottom: 16px;
+    }
+    @media (min-width: 768px) {
+      .p-books__metadata {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    .p-books__metadata-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .p-books__metadata-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.6;
+    }
+
+    /* Currently Reading */
+    .p-books__current {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      border-top: 1px solid rgba(229, 106, 68, 0.2);
+      padding-top: 32px;
+    }
+    @media (min-width: 1024px) {
+      .p-books__current {
+        grid-template-columns: 1fr 2fr;
+        gap: 48px;
+      }
+    }
+    .p-books__current-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .p-books__current-title {
+      font-size: clamp(1.75rem, 1rem + 3vw, 3rem);
+      line-height: 1.1;
+      font-weight: 500;
+      margin-bottom: 8px;
+      font-family: 'Zen Old Mincho', serif;
+    }
+    .p-books__current-author {
+      font-size: 1.125rem;
+      font-weight: 500;
+    }
+    .p-books__current-desc {
+      font-size: clamp(1rem, 0.9rem + 0.3vw, 1.125rem);
+      line-height: 1.6;
+      max-width: 800px;
+    }
+    
+    /* Past Reads */
+    .p-books__past-list {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .p-books__past-item {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      border-top: 1px solid rgba(229, 106, 68, 0.2);
+      padding-top: 32px;
+      transition: all 0.3s ease;
+    }
+    .p-books__past-item:hover {
+      background: rgba(229, 106, 68, 0.02);
+    }
+    @media (min-width: 1024px) {
+      .p-books__past-item {
+        grid-template-columns: 1fr 2fr;
+        gap: 48px;
+      }
+    }
+    .p-books__past-quote {
+      font-family: 'Zen Old Mincho', serif;
+      font-size: clamp(1.125rem, 1rem + 1.5vw, 1.75rem);
+      line-height: 1.5;
+      font-style: italic;
+      color: rgba(229, 106, 68, 0.85);
+    }
+    .p-books__past-quote::before {
+      content: '"';
+    }
+    .p-books__past-quote::after {
+      content: '"';
+    }
+    .p-books__past-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .p-books__past-title {
+      font-size: clamp(1.125rem, 1rem + 1vw, 1.5rem);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+  </style>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="page-header__wrapper l-wrapper">
+        <h1 class="text-6xl page-header__title ink-anim" style="margin-bottom: 24px;">
+          Reading List
+        </h1>
+        <p class="text-lg ink-anim" style="max-width: 600px; line-height: 1.6; opacity: 0.8; margin-bottom: 48px;">
+          A curated collection of books I have read—and am currently reading—that have shaped my thinking. Here you'll find interesting reads across psychology, finance, and literature, along with some of my favorite takeaways.
+        </p>
+        <div class="page-header__border"></div>
+      </div>
+    </div>
+
+    <div class="p-books l-wrapper" style="padding-top: 64px;">
+      <section class="p-books__section">
+        <h2 class="p-books__section-title ink-anim">Currently Reading</h2>
+        <div class="p-books__current">
+          <div class="p-books__current-meta ink-anim">
+            <h2 class="p-books__current-title">{currentlyReading.title}</h2>
+            <p class="p-books__current-author">{currentlyReading.author}</p>
+            <div class="p-books__metadata">
+              <div class="p-books__metadata-item">
+                <span class="p-books__metadata-label">Genre</span>
+                <span>{currentlyReading.genre}</span>
+              </div>
+              <div class="p-books__metadata-item">
+                <span class="p-books__metadata-label">Publisher</span>
+                <span>{currentlyReading.publisher}</span>
+              </div>
+              <div class="p-books__metadata-item">
+                <span class="p-books__metadata-label">Year</span>
+                <span>{currentlyReading.year}</span>
+              </div>
+              <div class="p-books__metadata-item">
+                <span class="p-books__metadata-label">Edition</span>
+                <span>{currentlyReading.edition}</span>
+              </div>
+            </div>
+          </div>
+          <div class="p-books__current-desc ink-anim">
+            <p>{currentlyReading.description}</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="p-books__section">
+        <h2 class="p-books__section-title ink-anim">Past Reads</h2>
+        <div class="p-books__past-list">
+          {pastReads.map((book) => (
+            <div class="p-books__past-item">
+              <div class="p-books__past-meta ink-anim">
+                <h3 class="p-books__past-title">{book.title}</h3>
+                <p class="text-base" style="font-weight: 500;">{book.author}</p>
+                <div class="p-books__metadata" style="margin-top: 8px; margin-bottom: 0;">
+                  <div class="p-books__metadata-item">
+                    <span class="p-books__metadata-label">Genre</span>
+                    <span>{book.genre}</span>
+                  </div>
+                  <div class="p-books__metadata-item">
+                    <span class="p-books__metadata-label">Publisher</span>
+                    <span>{book.publisher}</span>
+                  </div>
+                  <div class="p-books__metadata-item">
+                    <span class="p-books__metadata-label">Year</span>
+                    <span>{book.year}</span>
+                  </div>
+                  <div class="p-books__metadata-item">
+                    <span class="p-books__metadata-label">Edition</span>
+                    <span>{book.edition}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="ink-anim" style="display: flex; align-items: center;">
+                <p class="p-books__past-quote">{book.quote}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
