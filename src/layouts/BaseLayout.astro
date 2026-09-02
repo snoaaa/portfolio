@@ -1,0 +1,271 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  pathname?: string;
+  showHeaderFooter?: boolean;
+}
+
+const {
+  title,
+  description = "Kaisei Sadatoki — Freelance developer and designer based in Japan, focused on clean, modern, and minimal design with attention to typography, layout, and animation.",
+  pathname = "/",
+  showHeaderFooter = true,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" type="image/x-icon" href="/icon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch.png" sizes="180x180" />
+    <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon-16.png" sizes="16x16" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Zen+Old+Mincho&display=swap"
+      rel="stylesheet"
+    />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/images/ogp.jpg" />
+    <title>{title}</title>
+
+    <meta name="astro-view-transitions-enabled" content="true" />
+    <meta name="astro-view-transitions-fallback" content="animate" />
+
+    <script
+      type="module"
+      src="/js/router.js"
+    ></script>
+    <script
+      src="/js/analytics.js"
+      data-sdkn="@vercel/analytics/astro"
+      data-sdkv="2.0.1"
+      data-disable-auto-track="1"
+      data-view-endpoint="/4f2fc2b0f6c6cf73/view"
+      data-event-endpoint="/4f2fc2b0f6c6cf73/event"
+      data-session-endpoint="/4f2fc2b0f6c6cf73/session"
+      defer=""></script>
+    <slot name="head" />
+  </head>
+  <body class="body">
+    <vercel-analytics data-props="{}" data-params="{}" data-pathname={pathname}
+    ></vercel-analytics>
+
+    <script type="module">
+      var v = () => {
+          window.va ||
+            (window.va = function (...i) {
+              (window.vaq || (window.vaq = []), window.vaq.push(i));
+            });
+        },
+        w = "@vercel/analytics",
+        b = "2.0.1";
+      function u() {
+        return typeof window < "u";
+      }
+      function p() {
+        try {
+          const e = "production";
+        } catch {}
+        return "production";
+      }
+      function h(e = "auto") {
+        if (e === "auto") {
+          window.vam = p();
+          return;
+        }
+        window.vam = e;
+      }
+      function y() {
+        return (u() ? window.vam : p()) || "production";
+      }
+      function d() {
+        return y() === "development";
+      }
+      function m(e, i) {
+        if (!e || !i) return e;
+        let n = e;
+        try {
+          const t = Object.entries(i);
+          for (const [r, s] of t)
+            if (!Array.isArray(s)) {
+              const o = f(s);
+              o.test(n) && (n = n.replace(o, `/[${r}]`));
+            }
+          for (const [r, s] of t)
+            if (Array.isArray(s)) {
+              const o = f(s.join("/"));
+              o.test(n) && (n = n.replace(o, `/[...${r}]`));
+            }
+          return n;
+        } catch {
+          return e;
+        }
+      }
+      function f(e) {
+        return new RegExp(`/${g(e)}(?=[/?#]|$)`);
+      }
+      function g(e) {
+        return e.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      }
+      function E(e) {
+        return e.scriptSrc
+          ? a(e.scriptSrc)
+          : d()
+            ? "https://va.vercel-scripts.com/v1/script.debug.js"
+            : e.basePath
+              ? a(`${e.basePath}/insights/script.js`)
+              : "/_vercel/insights/script.js";
+      }
+      function S(e, i) {
+        var n;
+        let t = e;
+        if (i)
+          try {
+            t = {
+              ...((n = JSON.parse(i)) == null ? void 0 : n.analytics),
+              ...e,
+            };
+          } catch {}
+        h(t.mode);
+        const r = { sdkn: w + (t.framework ? `/${t.framework}` : ""), sdkv: b };
+        return (
+          t.disableAutoTrack && (r.disableAutoTrack = "1"),
+          t.viewEndpoint && (r.viewEndpoint = a(t.viewEndpoint)),
+          t.eventEndpoint && (r.eventEndpoint = a(t.eventEndpoint)),
+          t.sessionEndpoint && (r.sessionEndpoint = a(t.sessionEndpoint)),
+          d() && t.debug === !1 && (r.debug = "false"),
+          t.dsn && (r.dsn = t.dsn),
+          t.endpoint
+            ? (r.endpoint = t.endpoint)
+            : t.basePath && (r.endpoint = a(`${t.basePath}/insights`)),
+          { beforeSend: t.beforeSend, src: E(t), dataset: r }
+        );
+      }
+      function a(e) {
+        return e.startsWith("http://") ||
+          e.startsWith("https://") ||
+          e.startsWith("/")
+          ? e
+          : `/${e}`;
+      }
+      function k(e = { debug: !0 }, i) {
+        var n;
+        if (!u()) return;
+        const { beforeSend: t, src: r, dataset: s } = S(e, i);
+        if (
+          (v(),
+          t && ((n = window.va) == null || n.call(window, "beforeSend", t)),
+          document.head.querySelector(`script[src*="${r}"]`))
+        )
+          return;
+        const o = document.createElement("script");
+        o.src = r;
+        for (const [c, l] of Object.entries(s)) o.dataset[c] = l;
+        ((o.defer = !0),
+          (o.onerror = () => {
+            const c = d()
+              ? "Please check if any ad blockers are enabled and try again."
+              : "Be sure to enable Web Analytics for your project and deploy again. See https://vercel.com/docs/analytics/quickstart for more information.";
+            console.log(
+              `[Vercel Web Analytics] Failed to load script from ${r}. ${c}`,
+            );
+          }),
+          document.head.appendChild(o));
+      }
+      function $({ route: e, path: i }) {
+        var n;
+        (n = window.va) == null ||
+          n.call(window, "pageview", { route: e, path: i });
+      }
+      function A() {
+        try {
+          return;
+        } catch {}
+      }
+      function j() {
+        try {
+          return '{"analytics":{"scriptSrc":"4f2fc2b0f6c6cf73/script.js","viewEndpoint":"4f2fc2b0f6c6cf73/view","eventEndpoint":"4f2fc2b0f6c6cf73/event","sessionEndpoint":"4f2fc2b0f6c6cf73/session"},"speedInsights":{"scriptSrc":"63b14a5d36ded04d/script.js","endpoint":"63b14a5d36ded04d/vitals"}}';
+        } catch {}
+      }
+      customElements.define(
+        "vercel-analytics",
+        class extends HTMLElement {
+          constructor() {
+            super();
+            try {
+              const i = JSON.parse(this.dataset.props ?? "{}"),
+                n = JSON.parse(this.dataset.params ?? "{}");
+              k(
+                {
+                  ...i,
+                  disableAutoTrack: !0,
+                  framework: "astro",
+                  basePath: A(),
+                  beforeSend: window.webAnalyticsBeforeSend,
+                },
+                j(),
+              );
+              const t = this.dataset.pathname;
+              $({ route: m(t ?? "", n), path: t });
+            } catch (i) {
+              throw new Error(`Failed to parse WebAnalytics properties: ${i}`);
+            }
+          }
+        },
+      );
+    </script>
+
+    <link rel="stylesheet" href="/css/main.css" />
+    <canvas id="canvas"></canvas>
+    <div class="pointer"><div class="pointer__dot"></div></div>
+    <svg
+      style="position:absolute;width:0;height:0;overflow:hidden;"
+      aria-hidden="true"
+    >
+      <defs>
+        <filter id="inkFilter" x="-25%" y="-50%" width="150%" height="200%">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.035"
+            numOctaves="4"
+            seed="5"
+            result="n"></feTurbulence>
+          <feDisplacementMap
+            id="inkDisp"
+            in="SourceGraphic"
+            in2="n"
+            scale="70"
+            xChannelSelector="R"
+            yChannelSelector="G"
+            result="d"></feDisplacementMap>
+          <feGaussianBlur id="inkBlur" in="d" stdDeviation="10"
+          ></feGaussianBlur>
+        </filter>
+      </defs>
+    </svg>
+
+    {showHeaderFooter && <Header />}
+
+    <slot />
+
+    {showHeaderFooter && <Footer />}
+
+    <script
+      type="module"
+      src="/js/animations.js"
+    ></script>
+  </body>
+</html>
