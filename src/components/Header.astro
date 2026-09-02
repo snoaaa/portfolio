@@ -7,6 +7,11 @@
     <p class="header__logo-text ink-anim">ABRAHAM NOUMSI</p>
     <span class="header__logo-label ink-anim">WEB DESIGN / DEVELOPMENT</span>
   </div>
+  <button class="header__hamburger" aria-label="Menu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
   <nav class="header__nav">
     <ul class="header__list">
       <li class="header__list-item">
@@ -47,3 +52,22 @@
     </ul>
   </nav>
 </header>
+
+<script>
+  const hamburger = document.querySelector('.header__hamburger');
+  const nav = document.querySelector('.header__nav');
+  const body = document.querySelector('body');
+
+  if (hamburger && nav) {
+    hamburger.addEventListener('click', () => {
+      const isActive = nav.classList.toggle('is-active');
+      hamburger.classList.toggle('is-active');
+      hamburger.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+      if (isActive) {
+        body.style.overflow = 'hidden';
+      } else {
+        body.style.overflow = '';
+      }
+    });
+  }
+</script>
