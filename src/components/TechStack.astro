@@ -1,0 +1,205 @@
+---
+const stack = [
+  // Frontend
+  { name: 'React', icon: 'react', category: 'Frontend', expMonths: 48 },
+  { name: 'Angular', icon: 'angular', category: 'Frontend', expMonths: 36 },
+  { name: 'Next.js', icon: 'nextjs', category: 'Frontend', expMonths: 24 },
+  { name: 'HTML5', icon: 'html5', category: 'Frontend', expMonths: 60 },
+  { name: 'CSS3', icon: 'css3', category: 'Frontend', expMonths: 60 },
+  { name: 'JavaScript', icon: 'javascript', category: 'Frontend', expMonths: 54 },
+  { name: 'Bootstrap', icon: 'bootstrap', category: 'Frontend', expMonths: 42 },
+  { name: 'Tailwind CSS', icon: 'tailwindcss', category: 'Frontend', expMonths: 30 },
+  { name: 'Astro', icon: 'astro', category: 'Frontend', expMonths: 18 },
+  { name: 'Thymeleaf', icon: 'thymeleaf', category: 'Frontend', expMonths: 24 },
+
+  // Backend
+  { name: 'Java', icon: 'java', category: 'Backend', expMonths: 48 },
+  { name: 'Spring Boot', icon: 'spring-boot', category: 'Backend', expMonths: 42 },
+  { name: 'Node.js', icon: 'nodejs', category: 'Backend', expMonths: 36 },
+  { name: 'Python', icon: 'python', category: 'Backend', expMonths: 40 },
+  { name: 'Flask', icon: 'flask', category: 'Backend', expMonths: 24 },
+  { name: 'Django', icon: 'django', category: 'Backend', expMonths: 20 },
+  { name: 'Go', icon: 'go', category: 'Backend', expMonths: 18 },
+
+  // Mobile
+  { name: 'React Native', icon: 'react', category: 'Mobile', expMonths: 30 },
+  { name: 'Flutter', icon: 'flutter', category: 'Mobile', expMonths: 24 },
+
+  // Database
+  { name: 'PostgreSQL', icon: 'postgresql', category: 'Database', expMonths: 40 },
+  { name: 'MySQL', icon: 'mysql', category: 'Database', expMonths: 36 },
+  { name: 'MongoDB', icon: 'mongodb', category: 'Database', expMonths: 24 },
+
+  // Cloud & DevOps
+  { name: 'Docker', icon: 'docker', category: 'Cloud & DevOps', expMonths: 36 },
+  { name: 'AWS', icon: 'aws', category: 'Cloud & DevOps', expMonths: 30 },
+  { name: 'GCP', icon: 'gcp', category: 'Cloud & DevOps', expMonths: 24 },
+  { name: 'Azure', icon: 'azure', category: 'Cloud & DevOps', expMonths: 18 },
+  { name: 'GitHub Actions', icon: 'githubactions', category: 'Cloud & DevOps', expMonths: 26 },
+
+  // Tools
+  { name: 'Git', icon: 'git', category: 'Tools', expMonths: 60 },
+  { name: 'WordPress', icon: 'wordpress', category: 'Tools', expMonths: 36 },
+  { name: 'Figma', icon: 'figma', category: 'Tools', expMonths: 24 },
+];
+
+const formatExp = (months) => {
+  const y = Math.max(1, Math.round(months / 12));
+  return `${y} yr${y > 1 ? 's' : ''}`;
+};
+
+stack.sort((a, b) => b.expMonths - a.expMonths);
+
+const categoryOrder = ['Frontend', 'Backend', 'Database', 'Mobile', 'Cloud & DevOps', 'Tools'];
+const categories = [...new Set(stack.map((s) => s.category))].sort(
+  (a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b)
+);
+---
+
+<style>
+  .p-about-skills {
+    width: 100%;
+    margin-bottom: 96px;
+  }
+  @media(min-width: 1024px) {
+    .p-about-skills { margin-bottom: 160px; }
+  }
+  .p-about-skills__wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media(min-width: 1024px) {
+    .p-about-skills__wrapper {
+      grid-template-columns: repeat(12, 1fr);
+    }
+  }
+  .p-about-skills__content {
+    grid-column: 1/5;
+  }
+  @media(min-width: 1024px) {
+    .p-about-skills__content {
+      padding-left: 32px;
+      grid-column: 5/13;
+    }
+  }
+  .p-about-skills__title {
+    font-family: 'The Night Watch', serif;
+    margin-bottom: 40px;
+  }
+  @media(min-width: 1024px) {
+    .p-about-skills__title {
+      margin-bottom: 72px;
+    }
+  }
+
+  /* Accordion styles */
+  .skill-accordion {
+    border-bottom: 1px solid rgba(229, 106, 68, 0.2);
+  }
+  .skill-accordion__summary {
+    list-style: none; /* Hide default arrow */
+    padding: 16px 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    color: rgba(229, 106, 68, 0.8);
+    transition: color 0.3s ease;
+  }
+  .skill-accordion__summary::-webkit-details-marker {
+    display: none;
+  }
+  .skill-accordion__summary:hover {
+    color: rgba(229, 106, 68, 1);
+  }
+  .skill-accordion__arrow {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+    opacity: 0.6;
+  }
+  .skill-accordion[open] .skill-accordion__arrow {
+    transform: rotate(180deg);
+  }
+  .skill-accordion__content {
+    padding: 16px 0 32px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+    justify-items: center;
+    row-gap: 32px;
+    column-gap: 16px;
+    animation: fadeIn 0.3s ease;
+  }
+  @media(min-width: 768px) {
+    .skill-accordion__content {
+      column-gap: 48px;
+    }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+<section class="p-about-skills">
+  <div class="p-about-skills__wrapper l-wrapper">
+    <div class="p-about-skills__content">
+      <h2 class="text-3xl p-about-skills__title">skills</h2>
+      
+      <div class="skills-list">
+        {categories.map((category) => (
+          <details class="skill-accordion js-skill-accordion" name="skills">
+            <summary class="skill-accordion__summary text-lg">
+              {category}
+              <svg class="skill-accordion__arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </summary>
+            <div class="skill-accordion__content">
+              {stack
+                .filter((s) => s.category === category)
+                .map((tech) => (
+                  <div style="display: flex; flex-direction: column; align-items: center; width: 64px; text-align: center; gap: 8px;">
+                    <div style="height: 40px; display: flex; align-items: center; justify-content: center;">
+                      <img 
+                        src={`/images/stacks/${tech.icon}.svg`} 
+                        alt={`${tech.name} logo`} 
+                        loading="lazy"
+                        style="width: 32px; height: 32px; object-fit: contain;"
+                      />
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 2px;">
+                      <span style="font-size: 13px; font-weight: 500; line-height: 1.2;">{tech.name}</span>
+                      <div style="display: flex; align-items: center; justify-content: center; gap: 4px; opacity: 0.6;">
+                        <img src="/images/stacks/clock.svg" alt="" style="width: 12px; height: 12px;" />
+                        <span style="font-size: 11px;">{formatExp(tech.expMonths)}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </details>
+        ))}
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<script>
+  // Desktop hover functionality 
+  const accordions = document.querySelectorAll('.js-skill-accordion');
+  
+  accordions.forEach(acc => {
+    acc.addEventListener('mouseenter', () => {
+      if (window.innerWidth >= 1024) {
+        acc.setAttribute('open', '');
+      }
+    });
+    
+    acc.addEventListener('mouseleave', () => {
+      if (window.innerWidth >= 1024) {
+        acc.removeAttribute('open');
+      }
+    });
+  });
+</script>
