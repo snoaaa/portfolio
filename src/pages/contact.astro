@@ -1,0 +1,108 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="CONTACT | KAISEI SADATOKI | Portfolio-V4"
+  description="Kaisei Sadatoki — Freelance developer and designer based in Japan, focused on clean, modern, and minimal design with attention to typography, layout, and animation."
+  pathname="/contact/"
+  showHeaderFooter={true}
+>
+  <style
+    slot="head"
+    set:html={`.p-contact__wrapper{display:grid;grid-template-columns:1fr;row-gap:72px;grid-template-rows:repeat(2,auto);margin-bottom:96px}@media(min-width:768px){.p-contact__wrapper{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(1,auto);row-gap:0px;margin-bottom:0}}@media(min-width:1280px){.p-contact__wrapper{grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(1,auto)}}.p-contact__info{grid-row:1/2}@media(min-width:768px){.p-contact__info{padding-left:32px;grid-column:2/3;grid-row:1/2;align-self:end}}@media(min-width:1280px){.p-contact__info{grid-column:5/9;grid-row:1/2}}.p-contact__inquiry{display:grid;grid-template-columns:repeat(2,1fr)}@media(min-width:1280px){.p-contact__inquiry{grid-template-columns:1fr;grid-template-rows:repeat(2,auto);row-gap:32px}}.p-contact__inquiry-mail{grid-column:1/2;grid-row:1/2}@media(min-width:1280px){.p-contact__inquiry-mail{grid-column:1/2;grid-row:1/2}}.p-contact__inquiry-social{grid-column:2/3;grid-row:1/2}@media(min-width:1280px){.p-contact__inquiry-social{grid-column:1/2;grid-row:2/3}}.p-contact__inquiry-label{margin-bottom:8px}.p-contact__social{display:flex;flex-direction:column}@media(min-width:1280px){.p-contact__social{flex-direction:row;gap:16px}}.p-contact__social-link{display:flex}.p-contact__img{grid-row:2/3;position:relative;z-index:-1}@media(min-width:768px){.p-contact__img{grid-column:1/2;grid-row:1/2}}@media(min-width:1280px){.p-contact__img{grid-column:1/5;grid-row:1/2}}.p-contact__img-text{position:absolute;top:-18px;left:50%;transform:translate(-50%);line-height:1;font-size:clamp(2rem,1.8239rem + .7512vw,2.5rem);font-family:Zen Old Mincho,serif;font-weight:500;font-style:normal;color:#f4f1e3;white-space:nowrap}.p-contact__img img{width:100%;height:auto;object-fit:cover;display:block}.p-contact__desc{margin-bottom:32px}
+`}
+  ></style>
+  <main class="main">
+    <div class="page-header">
+      <div class="page-header__wrapper l-wrapper">
+        <p class="text-7xl page-header__titleja ink-anim ink-anim--07">
+          連絡先
+        </p>
+        <h1 class="text-6xl page-header__title ink-anim">contact<br /></h1>
+        <p class="page-header__label text-lg ink-anim">Get in touch</p>
+        <div class="page-header__scroll">
+          <span class="text-sm page-header__scroll-text ink-anim js-scroll-text"
+            >Scroll</span
+          >
+          <span
+            class="text-sm page-header__scroll-text ink-anim page-header__scroll-text--clone js-scroll-text-clone"
+            >Scroll</span
+          >
+        </div>
+        <div class="page-header__border">
+          <!-- {
+        showCircle && (
+          <div class="page-header__border-circle">
+            <svg viewBox="0 0 200 200">
+              <defs>
+                <path
+                  id="circlePath"
+                  d="M 100,100 m -75,0 a 75,75 0 1,1 150,0 a 75,75 0 1,1 -150,0"
+                />
+              </defs>
+
+              <text>
+                <textPath href="#circlePath">Hello World Hello World</textPath>
+              </text>
+            </svg>
+          </div>
+        )
+      } -->
+        </div>
+      </div>
+    </div>
+    <section class="p-contact">
+      <div class="p-contact__wrapper l-wrapper">
+        <div class="p-contact__img">
+          <img src="images/contact.BU45WIjz.png" alt="" />
+        </div>
+        <div class="p-contact__info">
+          <p class="p-contact__desc text-base ink-anim">
+            Thank you for looking at my website. If you have any ideas,
+            projects, or things that you would like to work on together, feel
+            free to reach out. I'm looking forward to meeting new people and
+            hearing new ideas from you.
+          </p>
+          <div class="p-contact__inquiry">
+            <div class="p-contact__inquiry-mail">
+              <p class="p-contact__inquiry-label text-sm ink-anim">[Mail]</p>
+              <a class="text-base ink-anim" href="mailto:k25ts09@outlook.jp"
+                >k25ts09@outlook.jp</a
+              >
+            </div>
+            <div class="p-contact__inquiry-social">
+              <p class="p-contact__inquiry-label text-sm ink-anim">[Social]</p>
+              <ul class="p-contact__social">
+                <li class="p-contact__social-list">
+                  <a
+                    class="text-base p-contact__social-link ink-anim"
+                    href="https://www.linkedin.com/in/s-kaisei/"
+                    target="_blank"
+                    rel="noopener noreferrer">LinkedIn</a
+                  >
+                </li>
+                <li class="p-contact__social-list">
+                  <a
+                    class="text-base p-contact__social-link ink-anim"
+                    href="https://www.instagram.com/kaiseee_i_j/"
+                    target="_blank"
+                    rel="noopener noreferrer">Instagram</a
+                  >
+                </li>
+                <li class="p-contact__social-list">
+                  <a
+                    class="text-base p-contact__social-link ink-anim"
+                    href="https://www.awwwards.com/kaiseisadatoki/"
+                    target="_blank"
+                    rel="noopener noreferrer">Awwwards</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
