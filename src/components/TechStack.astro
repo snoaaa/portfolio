@@ -163,7 +163,9 @@ const categories = [...new Set(stack.map((s) => s.category))].sort(
                       <img 
                         src={`/images/stacks/${tech.icon}.svg`} 
                         alt={`${tech.name} logo`} 
-                        loading="lazy"
+                        loading="eager"
+                        decoding="async"
+                        fetchpriority="high"
                         style="width: 32px; height: 32px; object-fit: contain;"
                       />
                     </div>

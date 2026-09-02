@@ -8402,7 +8402,7 @@ document.addEventListener("astro:page-load", () => {
     tt.to(d, {
       scale: 0,
       blur: 0,
-      duration: 1.8,
+      duration: 0.4,
       ease: "power3.out",
       onUpdate() {
         (h?.setAttribute("scale", d.scale),
@@ -8569,7 +8569,7 @@ document.addEventListener("astro:page-load", () => {
       tt.to(a, {
         scale: 0,
         blur: 0,
-        duration: 1.8,
+        duration: 0.4,
         ease: "power3.out",
         onUpdate() {
           (r?.setAttribute("scale", a.scale),
