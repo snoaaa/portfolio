@@ -83,7 +83,7 @@ const categories = [...new Set(stack.map((s) => s.category))].sort(
     }
   }
   .p-about-skills__title {
-    font-family: 'The Night Watch', serif;
+    font-family: ''RufinaALT02-Regular'', serif;
     margin-bottom: 40px;
   }
   @media(min-width: 1024px) {
@@ -94,7 +94,7 @@ const categories = [...new Set(stack.map((s) => s.category))].sort(
 
   /* Accordion styles */
   .skill-accordion {
-    border-bottom: 1px solid rgba(229, 106, 68, 0.2);
+    border-bottom: 1px solid rgba(35, 53, 128, 0.2);
   }
   .skill-accordion__summary {
     list-style: none; /* Hide default arrow */
@@ -104,14 +104,14 @@ const categories = [...new Set(stack.map((s) => s.category))].sort(
     justify-content: space-between;
     align-items: center;
     font-weight: bold;
-    color: rgba(229, 106, 68, 0.8);
+    color: rgba(35, 53, 128, 0.8);
     transition: color 0.3s ease;
   }
   .skill-accordion__summary::-webkit-details-marker {
     display: none;
   }
   .skill-accordion__summary:hover {
-    color: rgba(229, 106, 68, 1);
+    color: rgba(35, 53, 128, 1);
   }
   .skill-accordion__arrow {
     width: 20px;
@@ -145,7 +145,7 @@ const categories = [...new Set(stack.map((s) => s.category))].sort(
 <section class="p-about-skills">
   <div class="p-about-skills__wrapper l-wrapper">
     <div class="p-about-skills__content">
-      <h2 class="text-3xl p-about-skills__title">skills</h2>
+      <h2 class="text-3xl p-about-skills__title">Skills</h2>
       
       <div class="skills-list">
         {categories.map((category) => (

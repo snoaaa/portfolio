@@ -10,9 +10,12 @@
   height: 1px;
 }
 @font-face {
-  font-family: The Night Watch;
-  src: url(../fonts/TheNightWatch.Cvpcoixj.woff2) format("woff2");
+  font-family: 'RufinaALT02-Regular';
+  src: url(../fonts/RufinaALT02-Regular.woff2) format("woff2");
+  font-weight: 400;
+  font-style: normal;
 }
+
 body,
 h1,
 h2,
@@ -75,11 +78,11 @@ button {
 body {
   width: 100%;
   height: 100%;
-  font-family: Inter, sans-serif;
+  font-family: 'Raleway', sans-serif;
   font-weight: 500;
   font-style: normal;
   background-color: #fffdf1;
-  color: #e56a44;
+  color: #333333;
   font-size: 16px;
 }
 .l-wrapper {
@@ -89,9 +92,7 @@ body {
 .text-7xl {
   font-size: clamp(4rem, 2.5915rem + 6.0094vw, 8rem);
   line-height: 1;
-  font-family:
-    Zen Old Mincho,
-    serif;
+  font-family: 'RufinaALT02-Regular', serif;
   font-weight: 500;
   font-style: normal;
   color: #e1dbc3;
@@ -100,9 +101,7 @@ body {
   font-size: clamp(3.5rem, 2.7277rem + 3.2952vw, 8rem);
   letter-spacing: -0.02em;
   line-height: 1;
-  font-family:
-    The Night Watch,
-    serif;
+  font-family: 'RufinaALT02-Regular', serif;
 }
 .text-3xl {
   font-size: clamp(2rem, 1.8239rem + 0.7512vw, 2.5rem);
@@ -131,13 +130,13 @@ body {
 }
 a:not(.header__list-link) {
   text-decoration: underline;
-  text-decoration-color: rgba(229, 106, 68, 0.4);
+  text-decoration-color: rgba(35, 53, 128, 0.4);
   text-underline-offset: 4px;
   text-decoration-thickness: 1px;
   transition: text-decoration-color 0.3s ease, text-decoration-thickness 0.3s ease;
 }
 a:not(.header__list-link):hover {
-  text-decoration-color: rgba(229, 106, 68, 1);
+  text-decoration-color: rgba(35, 53, 128, 1);
   text-decoration-thickness: 2px;
 }
 img {
@@ -152,18 +151,18 @@ img {
   align-items: center;
   justify-content: center;
   padding: 10px 24px;
-  border: 1px solid #e56a44;
+  border: 1px solid #233580;
   border-radius: 999px;
-  color: #e56a44 !important;
+  color: #233580 !important;
   text-decoration: none !important;
   transition: all 0.3s ease;
-  font-family: Inter, sans-serif;
+  font-family: 'Raleway', sans-serif;
   font-size: 0.85rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 .btn-download:hover {
-  background-color: #e56a44;
+  background-color: #233580;
   color: #fffdf1 !important;
 }
 
@@ -210,7 +209,7 @@ a[target="_blank"]::after {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: solid 1px #e56a44;
+  border: solid 1px #233580;
   pointer-events: none;
   z-index: 9999;
   display: none;
@@ -223,7 +222,7 @@ a[target="_blank"]::after {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: #e56a44;
+  background-color: #233580;
 }
 #canvas {
   position: fixed;
@@ -233,7 +232,7 @@ a[target="_blank"]::after {
 .c-textloop {
   display: flex;
   overflow: hidden;
-  background-color: #e56a44;
+  background-color: #233580;
   padding: 16px 0;
   color: #fffdf1;
   font-weight: 400;
@@ -296,7 +295,7 @@ a[target="_blank"]::after {
 .header__hamburger span {
   width: 100%;
   height: 2px;
-  background-color: #e56a44;
+  background-color: #233580;
   transition: all 0.3s ease-in-out;
   border-radius: 2px;
 }
@@ -430,7 +429,7 @@ a[target="_blank"]::after {
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-  border-bottom: dashed 1px #e56a44;
+  border-bottom: dashed 1px #233580;
   position: relative;
 }
 .page-header__border-circle {
@@ -441,7 +440,7 @@ a[target="_blank"]::after {
   position: absolute;
   right: 20%;
   transform: translateY(-50%);
-  background-color: #e56a44;
+  background-color: #233580;
 }
 @media (min-width: 1024px) {
   .page-header__border-circle {
@@ -571,7 +570,7 @@ a[target="_blank"]::after {
   }
 }
 .footer__title {
-  font-family: The Night Watch;
+  font-family: 'RufinaALT02-Regular';
   text-align: center;
   font-size: clamp(3rem, -0.4539rem + 14.7368vw, 23.125rem);
   line-height: 1;
