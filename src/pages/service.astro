@@ -1,0 +1,109 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="SERVICE | KAISEI SADATOKI | Portfolio-V4"
+  description="Kaisei Sadatoki — Freelance developer and designer based in Japan, focused on clean, modern, and minimal design with attention to typography, layout, and animation."
+  pathname="/service/"
+  showHeaderFooter={true}
+>
+  <style
+    slot="head"
+    set:html={`.p-service-list__item{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,auto);row-gap:24px;margin-bottom:96px}@media(min-width:1024px){.p-service-list__item{grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(1,auto);row-gap:0px;margin-bottom:160px}}.p-service-list__item-num{grid-column:1/2;grid-row:1/2}.p-service-list__item-title{grid-column:2/5;grid-row:1/2}@media(min-width:1024px){.p-service-list__item-title{grid-column:4/7;grid-row:1/2}}.p-service-list__item-content{grid-column:2/5;grid-row:2/3}@media(min-width:1024px){.p-service-list__item-content{grid-column:9/13;grid-row:1/2}}.p-service-list__item-titleja{grid-column:1/5;grid-row:3/4}@media(min-width:1024px){.p-service-list__item-titleja{grid-column:1/8;grid-row:1/2;align-self:end}}.p-service-list__item-img{margin-bottom:16px;aspect-ratio:455/366}@media(min-width:1024px){.p-service-list__item-img{margin-bottom:24px}}.p-service-list__item-img img{width:100%;height:auto;object-fit:cover;display:block;position:relative}
+`}
+  ></style>
+  <main class="main">
+    <div class="page-header">
+      <div class="page-header__wrapper l-wrapper">
+        <p class="text-7xl page-header__titleja ink-anim ink-anim--07">
+          提供物
+        </p>
+        <h1 class="text-6xl page-header__title ink-anim">service<br /></h1>
+        <p class="page-header__label text-lg ink-anim">What I can do</p>
+        <div class="page-header__scroll">
+          <span class="text-sm page-header__scroll-text ink-anim js-scroll-text"
+            >Scroll</span
+          >
+          <span
+            class="text-sm page-header__scroll-text ink-anim page-header__scroll-text--clone js-scroll-text-clone"
+            >Scroll</span
+          >
+        </div>
+        <div class="page-header__border">
+          <!-- {
+        showCircle && (
+          <div class="page-header__border-circle">
+            <svg viewBox="0 0 200 200">
+              <defs>
+                <path
+                  id="circlePath"
+                  d="M 100,100 m -75,0 a 75,75 0 1,1 150,0 a 75,75 0 1,1 -150,0"
+                />
+              </defs>
+
+              <text>
+                <textPath href="#circlePath">Hello World Hello World</textPath>
+              </text>
+            </svg>
+          </div>
+        )
+      } -->
+        </div>
+      </div>
+    </div>
+    <section class="p-service-list">
+      <div class="p-service-list__wrapper l-wrapper">
+        <article class="p-service-list__item">
+          <div class="p-service-list__item-num text-3xl ink-anim">[01]</div>
+          <h2 class="p-service-list__item-title text-3xl ink-anim">DESIGN</h2>
+          <div class="p-service-list__item-content">
+            <div class="p-service-list__item-img">
+              <img src="images/service-design.DANzH9G8.jpg" alt="" />
+            </div>
+            <p class="p-service-list__item-desc text-base">
+              I design websites that work seamlessly across all devices, from
+              smartphones to desktops. Clean, modern, and minimal visuals are my
+              specialty. I also take on simple graphic design work such as
+              business cards.
+            </p>
+          </div>
+          <p class="p-service-list__item-titleja text-7xl js-ink">画面設計</p>
+        </article>
+        <article class="p-service-list__item">
+          <div class="p-service-list__item-num text-3xl">[02]</div>
+          <h2 class="p-service-list__item-title text-3xl">DEVELOPMENT</h2>
+          <div class="p-service-list__item-content">
+            <div class="p-service-list__item-img">
+              <img src="images/service-development.zf5f0QOP.jpg" alt="" />
+            </div>
+            <p class="p-service-list__item-desc text-base">
+              I handle everything from static site development using HTML or
+              Astro to full website builds with WordPress. I also take on
+              implementation-only projects based on completed designs. All
+              builds are responsive and implemented with care.
+            </p>
+          </div>
+          <p class="p-service-list__item-titleja text-7xl js-ink">機能実装</p>
+        </article>
+        <article class="p-service-list__item">
+          <div class="p-service-list__item-num text-3xl">[03]</div>
+          <h2 class="p-service-list__item-title text-3xl">MOTION</h2>
+          <div class="p-service-list__item-content">
+            <div class="p-service-list__item-img">
+              <img src="images/service-motion.BpDYBiLe.jpg" alt="" />
+            </div>
+            <p class="p-service-list__item-desc text-base">
+              I add smooth motion to websites through hover interactions and
+              scroll animations. By bringing movement into the experience, I aim
+              to create a sense of depth that goes beyond static visuals and
+              leave a lasting impression that a design file alone cannot
+              capture.
+            </p>
+          </div>
+          <p class="p-service-list__item-titleja text-7xl js-ink">体験設計</p>
+        </article>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
