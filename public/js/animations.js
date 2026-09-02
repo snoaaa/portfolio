@@ -8424,13 +8424,14 @@ document.addEventListener("astro:page-load", () => {
     ((n = c.clientX), (s = c.clientY));
   });
   function u() {
+    if (!e) return;
     ((a += (n - a) * 0.1),
       (l += (s - l) * 0.1),
       (e.style.transform = `translate(${a}px, ${l}px)`),
       requestAnimationFrame(u));
   }
   r.add("(min-width: 1024px)", () => {
-    (tt.set(e, { display: "block" }), u());
+    (e && tt.set(e, { display: "block" }), e && u());
   });
 });
 let Zi = null,
@@ -8503,8 +8504,8 @@ document.addEventListener("astro:page-load", () => {
         r = document.querySelector(".js-time-minute");
       if (!e || !r) return;
       const n = new Date(),
-        s = new Intl.DateTimeFormat("ja-JP", {
-          timeZone: "Asia/Tokyo",
+        s = new Intl.DateTimeFormat("en-GB", {
+          timeZone: "Africa/Douala",
           hour: "numeric",
           minute: "numeric",
           day: "numeric",
