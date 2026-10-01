@@ -1,47 +1,67 @@
 ---
 const stack = [
-  // Frontend
-  { name: 'React', icon: 'react', category: 'Frontend', expMonths: 48 },
-  { name: 'Angular', icon: 'angular', category: 'Frontend', expMonths: 36 },
-  { name: 'Next.js', icon: 'nextjs', category: 'Frontend', expMonths: 24 },
-  { name: 'HTML5', icon: 'html5', category: 'Frontend', expMonths: 60 },
-  { name: 'CSS3', icon: 'css3', category: 'Frontend', expMonths: 60 },
-  { name: 'JavaScript', icon: 'javascript', category: 'Frontend', expMonths: 54 },
-  { name: 'Bootstrap', icon: 'bootstrap', category: 'Frontend', expMonths: 42 },
-  { name: 'Tailwind CSS', icon: 'tailwindcss', category: 'Frontend', expMonths: 30 },
-  { name: 'Astro', icon: 'astro', category: 'Frontend', expMonths: 18 },
-  { name: 'Thymeleaf', icon: 'thymeleaf', category: 'Frontend', expMonths: 24 },
-
   // Backend
-  { name: 'Java', icon: 'java', category: 'Backend', expMonths: 48 },
-  { name: 'Spring Boot', icon: 'spring-boot', category: 'Backend', expMonths: 42 },
-  { name: 'Node.js', icon: 'nodejs', category: 'Backend', expMonths: 36 },
-  { name: 'Python', icon: 'python', category: 'Backend', expMonths: 40 },
-  { name: 'Flask', icon: 'flask', category: 'Backend', expMonths: 24 },
-  { name: 'Django', icon: 'django', category: 'Backend', expMonths: 20 },
-  { name: 'Go', icon: 'go', category: 'Backend', expMonths: 18 },
-
-  // Mobile
-  { name: 'React Native', icon: 'react', category: 'Mobile', expMonths: 30 },
-  { name: 'Flutter', icon: 'flutter', category: 'Mobile', expMonths: 24 },
+  { name: 'Java', icon: 'java', category: 'Backend', expMonths: 36 },
+  { name: 'Python', icon: 'python', category: 'Backend', expMonths: 36 },
+  { name: 'C', icon: 'c', category: 'Backend', expMonths: 24 },
+  { name: 'Go', icon: 'go', category: 'Backend', expMonths: 12 },
+  { name: 'Ruby', icon: 'ruby', category: 'Backend', expMonths: 12 },
+  { name: 'Spring Boot', icon: 'spring-boot', category: 'Backend', expMonths: 24 },
+  { name: 'Django', icon: 'django', category: 'Backend', expMonths: 18 },
+  { name: 'Node.js', icon: 'nodejs', category: 'Backend', expMonths: 24 },
+  { name: 'Express.js', icon: 'express', category: 'Backend', expMonths: 24 },
+  { name: 'FastAPI', icon: 'fastapi', category: 'Backend', expMonths: 12 },
+  { name: 'Flask', icon: 'flask', category: 'Backend', expMonths: 18 },
 
   // Database
-  { name: 'PostgreSQL', icon: 'postgresql', category: 'Database', expMonths: 40 },
-  { name: 'MySQL', icon: 'mysql', category: 'Database', expMonths: 36 },
-  { name: 'MongoDB', icon: 'mongodb', category: 'Database', expMonths: 24 },
+  { name: 'PostgreSQL', icon: 'postgresql', category: 'Database', expMonths: 24 },
+  { name: 'MySQL', icon: 'mysql', category: 'Database', expMonths: 24 },
+  { name: 'MongoDB', icon: 'mongodb', category: 'Database', expMonths: 18 },
+  { name: 'Redis', icon: 'redis', category: 'Database', expMonths: 12 },
+  { name: 'Kafka', icon: 'kafka', category: 'Database', expMonths: 12 },
+  { name: 'Elasticsearch', icon: 'elasticsearch', category: 'Database', expMonths: 12 },
+  { name: 'Qdrant (Vector)', icon: 'qdrant', category: 'Database', expMonths: 12 },
 
   // Cloud & DevOps
-  { name: 'Docker', icon: 'docker', category: 'Cloud & DevOps', expMonths: 36 },
-  { name: 'AWS', icon: 'aws', category: 'Cloud & DevOps', expMonths: 30 },
-  { name: 'GCP', icon: 'gcp', category: 'Cloud & DevOps', expMonths: 24 },
-  { name: 'Azure', icon: 'azure', category: 'Cloud & DevOps', expMonths: 18 },
-  { name: 'GitHub Actions', icon: 'githubactions', category: 'Cloud & DevOps', expMonths: 26 },
+  { name: 'Linux', icon: 'linux', category: 'Cloud & DevOps', expMonths: 36 },
+  { name: 'Docker', icon: 'docker', category: 'Cloud & DevOps', expMonths: 18 },
+  { name: 'Kubernetes', icon: 'kubernetes', category: 'Cloud & DevOps', expMonths: 12 },
+  { name: 'Terraform', icon: 'terraform', category: 'Cloud & DevOps', expMonths: 12 },
+  { name: 'AWS', icon: 'aws', category: 'Cloud & DevOps', expMonths: 18 },
+  { name: 'GCP', icon: 'gcp', category: 'Cloud & DevOps', expMonths: 12 },
+  { name: 'GitHub Actions', icon: 'githubactions', category: 'Cloud & DevOps', expMonths: 12 },
+
+  // Frontend
+  { name: 'TypeScript', icon: 'typescript', category: 'Frontend', expMonths: 24 },
+  { name: 'JavaScript', icon: 'javascript', category: 'Frontend', expMonths: 36 },
+  { name: 'HTML5', icon: 'html5', category: 'Frontend', expMonths: 36 },
+  { name: 'CSS3', icon: 'css3', category: 'Frontend', expMonths: 36 },
+  { name: 'React', icon: 'react', category: 'Frontend', expMonths: 24 },
+  { name: 'Next.js', icon: 'nextjs', category: 'Frontend', expMonths: 18 },
+  { name: 'Angular', icon: 'angular', category: 'Frontend', expMonths: 12 },
+  { name: 'Astro', icon: 'astro', category: 'Frontend', expMonths: 12 },
+  { name: 'Tailwind CSS', icon: 'tailwindcss', category: 'Frontend', expMonths: 24 },
+  { name: 'Bootstrap', icon: 'bootstrap', category: 'Frontend', expMonths: 18 },
+
+  // Mobile
+  { name: 'React Native', icon: 'react', category: 'Mobile', expMonths: 18 },
+  { name: 'Flutter', icon: 'flutter', category: 'Mobile', expMonths: 12 },
 
   // Tools
-  { name: 'Git', icon: 'git', category: 'Tools', expMonths: 60 },
-  { name: 'WordPress', icon: 'wordpress', category: 'Tools', expMonths: 36 },
-  { name: 'Figma', icon: 'figma', category: 'Tools', expMonths: 24 },
+  { name: 'Git', icon: 'git', category: 'Tools', expMonths: 36 },
+  { name: 'Postman', icon: 'postman', category: 'Tools', expMonths: 24 },
+  { name: 'Prometheus', icon: 'prometheus', category: 'Tools', expMonths: 12 },
+  { name: 'Grafana', icon: 'grafana', category: 'Tools', expMonths: 12 },
+  { name: 'Figma', icon: 'figma', category: 'Tools', expMonths: 18 },
 ];
+
+const BASE_YEAR = 2026;
+const currentYear = new Date().getFullYear();
+const additionalMonths = Math.max(0, (currentYear - BASE_YEAR) * 12);
+
+stack.forEach(tech => {
+  tech.expMonths += additionalMonths;
+});
 
 const formatExp = (months) => {
   const y = Math.max(1, Math.round(months / 12));
@@ -50,7 +70,7 @@ const formatExp = (months) => {
 
 stack.sort((a, b) => b.expMonths - a.expMonths);
 
-const categoryOrder = ['Frontend', 'Backend', 'Database', 'Mobile', 'Cloud & DevOps', 'Tools'];
+const categoryOrder = ['Backend', 'Database', 'Cloud & DevOps', 'Frontend', 'Mobile', 'Tools'];
 const categories = [...new Set(stack.map((s) => s.category))].sort(
   (a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b)
 );
@@ -160,14 +180,20 @@ const categories = [...new Set(stack.map((s) => s.category))].sort(
                 .map((tech) => (
                   <div style="display: flex; flex-direction: column; align-items: center; width: 64px; text-align: center; gap: 8px;">
                     <div style="height: 40px; display: flex; align-items: center; justify-content: center;">
-                      <img 
-                        src={`/images/stacks/${tech.icon}.svg`} 
-                        alt={`${tech.name} logo`} 
-                        loading="eager"
-                        decoding="async"
-                        fetchpriority="high"
-                        style="width: 32px; height: 32px; object-fit: contain;"
-                      />
+                      {tech.icon ? (
+                        <img 
+                          src={`/images/stacks/${tech.icon}.svg`} 
+                          alt={`${tech.name} logo`} 
+                          loading="eager"
+                          decoding="async"
+                          fetchpriority="high"
+                          style="width: 32px; height: 32px; object-fit: contain;"
+                        />
+                      ) : (
+                        <div style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: rgba(35, 53, 128, 0.1); border-radius: 8px; font-weight: bold; font-size: 16px; color: rgba(35, 53, 128, 0.8);">
+                          {tech.name.charAt(0)}
+                        </div>
+                      )}
                     </div>
                     <div style="display: flex; flex-direction: column; gap: 2px;">
                       <span style="font-size: 13px; font-weight: 500; line-height: 1.2;">{tech.name}</span>
