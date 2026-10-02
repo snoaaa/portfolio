@@ -8498,7 +8498,7 @@ document.addEventListener("astro:before-swap", Sc);
 document.addEventListener("astro:after-swap", Ol);
 Ol();
 document.addEventListener("astro:page-load", () => {
-  if (window.location.pathname == "/") {
+  if ((window.location.pathname == "/" || window.location.pathname == "/fr/" || window.location.pathname == "/fr" || (window.location.pathname == "/fr" && "" == ""))) {
     let i = function () {
       const e = document.querySelector(".js-time-hour"),
         r = document.querySelector(".js-time-minute");
@@ -8525,7 +8525,7 @@ document.addEventListener("astro:page-load", () => {
   }
 });
 document.addEventListener("astro:page-load", () => {
-  if (window.location.pathname == "/about") {
+  if ((window.location.pathname == "/about" || window.location.pathname == "/fr/about" || window.location.pathname == "/frabout" || (window.location.pathname == "/fr" && "about" == ""))) {
     tt.registerPlugin(Y);
     const o = tt.matchMedia(),
       t = document.querySelector(".p-about-info"),
@@ -8557,7 +8557,7 @@ document.addEventListener("astro:page-load", () => {
   }
 });
 document.addEventListener("astro:page-load", () => {
-  if (window.location.pathname == "/service") {
+  if ((window.location.pathname == "/service" || window.location.pathname == "/fr/service" || window.location.pathname == "/frservice" || (window.location.pathname == "/fr" && "service" == ""))) {
     let t = function (e) {
       const r = document.getElementById("inkDisp"),
         n = document.getElementById("inkBlur");
@@ -8597,7 +8597,7 @@ document.addEventListener("astro:page-load", () => {
   }
 });
 document.addEventListener("astro:page-load", () => {
-  window.location.pathname == "/work" &&
+  (window.location.pathname == "/work" || window.location.pathname == "/fr/work" || window.location.pathname == "/frwork" || (window.location.pathname == "/fr" && "work" == "")) &&
     (tt.registerPlugin(Y),
     tt.matchMedia().add("(min-width: 1024px)", () => {
       const t = document.querySelectorAll(".p-work-list__item"),

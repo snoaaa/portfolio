@@ -1,5 +1,21 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const currentPath = Astro.url.pathname;
+const isFr = currentPath.startsWith('/fr');
+
+const getLangLink = (lang) => {
+  if (lang === 'fr') {
+    return isFr ? currentPath : `/fr${currentPath === '/' ? '' : currentPath}`;
+  } else {
+    return isFr ? currentPath.replace(/^\/fr/, '') || '/' : currentPath;
+  }
+};
+
+const getNavLink = (path) => {
+  if (path === '/') return isFr ? '/fr' : '/';
+  return isFr ? `/fr${path}` : path;
+};
 ---
 
 <BaseLayout
@@ -119,9 +135,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             </div>
           </div>
           <div class="p-top-body__bottom">
-            <div class="p-top-body__version">
-              <span class="text-xs ink-anim">Version</span>
-              <span class="text-base ink-anim">Portfolio-V2</span>
+            <div class="p-top-body__version" style="display: flex; flex-direction: column; gap: 8px;">
+              <span class="text-xs ink-anim">Language</span>
+              <div style="display: flex; gap: 8px;">
+                <a class="text-base ink-anim" style={isFr ? 'opacity: 0.5; transition: opacity 0.3s' : 'font-weight: bold; transition: opacity 0.3s'} href={getLangLink('en')}>EN</a>
+                <span class="text-base ink-anim" style="opacity: 0.3">|</span>
+                <a class="text-base ink-anim" style={!isFr ? 'opacity: 0.5; transition: opacity 0.3s' : 'font-weight: bold; transition: opacity 0.3s'} href={getLangLink('fr')}>FR</a>
+              </div>
             </div>
             <div class="p-top-body__time">
               <span class="text-xs ink-anim">Local Time</span>
@@ -140,27 +160,27 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 <li class="p-top-body__menu-item">
                   <span class="text-sm p-top-body__menu-num ink-anim">01</span
                   >
-                  <a class="text-sm ink-anim" href="/about">About</a>
+                  <a class="text-sm ink-anim" href={getNavLink('/about')}>{isFr ? 'À propos' : 'About'}</a>
                 </li>
                 <li class="p-top-body__menu-item">
                   <span class="text-sm p-top-body__menu-num ink-anim">02</span
                   >
-                  <a class="text-sm ink-anim" href="/service">Service</a>
+                  <a class="text-sm ink-anim" href={getNavLink('/service')}>Service</a>
                 </li>
                 <li class="p-top-body__menu-item">
                   <span class="text-sm p-top-body__menu-num ink-anim">03</span
                   >
-                  <a class="text-sm ink-anim" href="/work">Work</a>
+                  <a class="text-sm ink-anim" href={getNavLink('/work')}>{isFr ? 'Projets' : 'Work'}</a>
                 </li>
                 <li class="p-top-body__menu-item">
                   <span class="text-sm p-top-body__menu-num ink-anim">04</span
                   >
-                  <a class="text-sm ink-anim" href="/reading-list">Reading List</a>
+                  <a class="text-sm ink-anim" href={getNavLink('/reading-list')}>{isFr ? 'Lectures' : 'Reading List'}</a>
                 </li>
                 <li class="p-top-body__menu-item">
                   <span class="text-sm p-top-body__menu-num ink-anim">05</span
                   >
-                  <a class="text-sm ink-anim" href="/contact">Contact</a>
+                  <a class="text-sm ink-anim" href={getNavLink('/contact')}>Contact</a>
                 </li>
               </ul>
             </div>

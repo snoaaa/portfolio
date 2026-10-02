@@ -1,5 +1,19 @@
 ---
+const currentPath = Astro.url.pathname;
+const isFr = currentPath.startsWith('/fr');
 
+const getLangLink = (lang) => {
+  if (lang === 'fr') {
+    return isFr ? currentPath : `/fr${currentPath === '/' ? '' : currentPath}`;
+  } else {
+    return isFr ? currentPath.replace(/^\/fr/, '') || '/' : currentPath;
+  }
+};
+
+const getNavLink = (path) => {
+  if (path === '/') return isFr ? '/fr' : '/';
+  return isFr ? `/fr${path}` : path;
+};
 ---
 
 <header class="header">
@@ -15,46 +29,51 @@
   <nav class="header__nav">
     <ul class="header__list">
       <li class="header__list-item">
-        <a class="text-base header__list-link" href="/">
+        <a class="text-base header__list-link" href={getNavLink('/')}>
           <span class="header__list-hover">[</span>
-          <span class="ink-anim">Top</span>
+          <span class="ink-anim">{isFr ? 'Accueil' : 'Top'}</span>
           <span class="header__list-hover">]</span>
         </a>
       </li>
       <li class="header__list-item">
-        <a class="text-base header__list-link" href="/about">
+        <a class="text-base header__list-link" href={getNavLink('/about')}>
           <span class="header__list-hover">[</span>
-          <span class="ink-anim">About</span>
+          <span class="ink-anim">{isFr ? 'À propos' : 'About'}</span>
           <span class="header__list-hover">]</span>
         </a>
       </li>
       <li class="header__list-item">
-        <a class="text-base header__list-link" href="/service">
+        <a class="text-base header__list-link" href={getNavLink('/service')}>
           <span class="header__list-hover">[</span>
           <span class="ink-anim">Service</span>
           <span class="header__list-hover">]</span>
         </a>
       </li>
       <li class="header__list-item">
-        <a class="text-base header__list-link" href="/work">
+        <a class="text-base header__list-link" href={getNavLink('/work')}>
           <span class="header__list-hover">[</span>
-          <span class="ink-anim">Work</span>
+          <span class="ink-anim">{isFr ? 'Projets' : 'Work'}</span>
           <span class="header__list-hover">]</span>
         </a>
       </li>
       <li class="header__list-item">
-        <a class="text-base header__list-link" href="/reading-list">
+        <a class="text-base header__list-link" href={getNavLink('/reading-list')}>
           <span class="header__list-hover">[</span>
-          <span class="ink-anim">Reading List</span>
+          <span class="ink-anim">{isFr ? 'Lectures' : 'Reading List'}</span>
           <span class="header__list-hover">]</span>
         </a>
       </li>
       <li class="header__list-item">
-        <a class="text-base header__list-link" href="/contact">
+        <a class="text-base header__list-link" href={getNavLink('/contact')}>
           <span class="header__list-hover">[</span>
           <span class="ink-anim">Contact</span>
           <span class="header__list-hover">]</span>
         </a>
+      </li>
+      <li class="header__list-item" style="margin-left: 24px; display: flex; align-items: center; gap: 8px;">
+        <a class="text-sm ink-anim" style={`transition: opacity 0.3s; ${isFr ? 'opacity: 0.5;' : 'opacity: 1; font-weight: bold;'}`} href={getLangLink('en')}>EN</a>
+        <span class="text-sm ink-anim" style="opacity: 0.3;">|</span>
+        <a class="text-sm ink-anim" style={`transition: opacity 0.3s; ${!isFr ? 'opacity: 0.5;' : 'opacity: 1; font-weight: bold;'}`} href={getLangLink('fr')}>FR</a>
       </li>
     </ul>
   </nav>

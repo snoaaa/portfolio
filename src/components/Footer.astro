@@ -1,5 +1,11 @@
 ---
+const currentPath = Astro.url.pathname;
+const isFr = currentPath.startsWith('/fr');
 
+const getNavLink = (path) => {
+  if (path === '/') return isFr ? '/fr' : '/';
+  return isFr ? `/fr${path}` : path;
+};
 ---
 
 <footer class="footer">
@@ -10,27 +16,27 @@
           <p class="footer__head-label text-sm">[Menu]</p>
           <ul class="footer__menu-list">
             <li class="footer__list-item">
-              <a class="text-sm footer__list-link" href="/">Top</a>
+              <a class="text-sm footer__list-link" href={getNavLink('/')}>{isFr ? 'Accueil' : 'Top'}</a>
             </li>
             <li class="footer__list-item">
-              <a class="text-sm footer__list-link" href="/about">About</a>
+              <a class="text-sm footer__list-link" href={getNavLink('/about')}>{isFr ? 'À propos' : 'About'}</a>
             </li>
             <li class="footer__list-item">
-              <a class="text-sm footer__list-link" href="/service">Service</a>
+              <a class="text-sm footer__list-link" href={getNavLink('/service')}>Service</a>
             </li>
             <li class="footer__list-item">
-              <a class="text-sm footer__list-link" href="/work">Work</a>
+              <a class="text-sm footer__list-link" href={getNavLink('/work')}>{isFr ? 'Projets' : 'Work'}</a>
             </li>
             <li class="footer__list-item">
-              <a class="text-sm footer__list-link" href="/reading-list">Reading List</a>
+              <a class="text-sm footer__list-link" href={getNavLink('/reading-list')}>{isFr ? 'Lectures' : 'Reading List'}</a>
             </li>
             <li class="footer__list-item">
-              <a class="text-sm footer__list-link" href="/contact">Contact</a>
+              <a class="text-sm footer__list-link" href={getNavLink('/contact')}>Contact</a>
             </li>
           </ul>
         </div>
         <div class="footer__social">
-          <p class="footer__head-label text-sm">[Social]</p>
+          <p class="footer__head-label text-sm">[{isFr ? 'Réseaux sociaux' : 'Social'}]</p>
           <ul class="footer__social-list">
             <li class="footer__social-item">
               <a
@@ -60,16 +66,16 @@
         </div>
       </div>
       <div class="footer__credit">
-        <p class="footer__head-label text-sm">[Credit]</p>
+        <p class="footer__head-label text-sm">[{isFr ? 'Crédits' : 'Credit'}]</p>
         <p class="text-sm">
-          Design &amp; Development by
+          {isFr ? 'Design & Développement par' : 'Design & Development by'}
           <span class="footer__credit-name"> Abraham</span>
         </p>
       </div>
     </div>
     <div class="footer__bottom">
       <h2 class="footer__title">
-        <span class="text-wrapper"> Thank you </span>
+        <span class="text-wrapper"> {isFr ? 'Merci' : 'Thank you'} </span>
       </h2>
     </div>
   </div>

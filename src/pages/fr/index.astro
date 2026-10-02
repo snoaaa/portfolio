@@ -1,0 +1,194 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const currentPath = Astro.url.pathname;
+const isFr = currentPath.startsWith('/fr');
+
+const getLangLink = (lang) => {
+  if (lang === 'fr') {
+    return isFr ? currentPath : `/fr${currentPath === '/' ? '' : currentPath}`;
+  } else {
+    return isFr ? currentPath.replace(/^\/fr/, '') || '/' : currentPath;
+  }
+};
+
+const getNavLink = (path) => {
+  if (path === '/') return isFr ? '/fr' : '/';
+  return isFr ? `/fr${path}` : path;
+};
+---
+
+<BaseLayout
+  title="Abraham Noumsi"
+  pathname="/"
+  showHeaderFooter={false}
+>
+<style
+    slot="head"
+    set:html={`.p-top-body{width:100%;min-height:100svh}.p-top-body__wrapper{width:100%;height:100%;min-height:100svh;display:flex;flex-direction:column;padding-top:clamp(32px,4vw,64px);padding-bottom:clamp(40px,31.549px + 2.254vw,64px)}.p-top-body__main{position:relative;flex:1;display:flex;flex-direction:column;row-gap:64px}.p-top-body__head{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto}@media(min-width:1024px){.p-top-body__head{grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(3,auto);position:relative}}.p-top-body__bottom{margin-top:auto;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,auto);row-gap:40px}@media(min-width:1024px){.p-top-body__bottom{grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(1,auto)}}.p-top-body__title{width:fit-content;grid-column:1/13;grid-row:1/2}.p-top-body__textloop{margin-bottom:64px}@media(min-width:1024px){.p-top-body__textloop{margin-bottom:96px}}.p-top-body__titleja{display:none}@media(min-width:1024px){.p-top-body__titleja{display:block;position:absolute;right:0;bottom:0;z-index:-1}}.p-top-body__subtitle{grid-column:1/13;grid-row:2/3;margin-bottom:40px}.p-top-body__desc{grid-column:1/4;grid-row:3/4;display:flex}.p-top-body__version{display:flex;flex-direction:column;grid-column:1/3;grid-row:1/2}.p-top-body__time{display:flex;flex-direction:column;grid-column:3/5;grid-row:1/2}@media(min-width:1024px){.p-top-body__time{grid-column:4/6}}.p-top-body__time .blink{animation:blink 1s infinite}@keyframes blink{0%{opacity:1}50%{opacity:0}to{opacity:1}}.p-top-body__time .localtime{display:flex}.p-top-body__time .localtime span{flex-shrink:0}.p-top-body__menu{grid-column:1/3;grid-row:2/3}@media(min-width:1024px){.p-top-body__menu{grid-column:7/10;grid-row:1/2}}.p-top-body__menu-label{margin-bottom:8px}@media(min-width:1024px){.p-top-body__menu-label{margin-bottom:16px}}.p-top-body__menu-list{display:grid;grid-template-rows:repeat(2,auto);grid-auto-flow:column;row-gap:12px;column-gap:24px}.p-top-body__menu-item{display:flex;gap:24px}.p-top-body__menu-num{font-variant-numeric:tabular-nums}.p-top-body__cv{grid-column:3/5;grid-row:2/3;display:flex;align-items:center;}@media(min-width:1024px){.p-top-body__cv{grid-column:11/13;grid-row:1/2;justify-content:flex-end;}}
+`}
+  ></style>
+  <main class="main">
+    <section class="p-top-body">
+      <div class="p-top-body__wrapper l-wrapper">
+        <div class="c-textloop p-top-body__textloop js-textloop">
+          <div class="c-textloop__container">
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+          </div>
+          <div class="c-textloop__container">
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+          </div>
+          <div class="c-textloop__container">
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+          </div>
+          <div class="c-textloop__container">
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+          </div>
+          <div class="c-textloop__container">
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+            <span class="text-sm ink-anim"
+              >DISPONIBLE POUR DES TRAVAUX INTERNATIONAUX.</span
+            >
+          </div>
+        </div>
+        <div class="p-top-body__main">
+          <div class="p-top-body__head">
+            <h1 class="p-top-body__title text-6xl ink-anim">
+              ABRAHAM<br class="br-sp" /> NOUMSI
+            </h1>
+            <p class="text-lg p-top-body__subtitle ink-anim">
+              INGÉNIERIE LOGICIELLE &amp; SYSTÈMES D'INFORMATION
+              <br />Basé au Cameroun
+            </p>
+            <div class="text-base p-top-body__desc ink-anim">
+              Bonjour ! Je suis étudiant en 4ème année d'ingénierie en Systèmes d'Information. 
+              Je passe mon temps à concevoir des architectures backend, développer des applications mobiles, 
+              et construire des applications full-stack robustes. J'aime relever des défis 
+              techniques complexes, expérimenter avec de nouvelles technologies, et trouver 
+              comment rendre le code performant.
+            </div>
+          </div>
+          <div class="p-top-body__bottom">
+            <div class="p-top-body__version" style="display: flex; flex-direction: column; gap: 8px;">
+              <span class="text-xs ink-anim">Langue</span>
+              <div style="display: flex; gap: 8px;">
+                <a class="text-base ink-anim" style={isFr ? 'opacity: 0.5; transition: opacity 0.3s' : 'font-weight: bold; transition: opacity 0.3s'} href={getLangLink('en')}>EN</a>
+                <span class="text-base ink-anim" style="opacity: 0.3">|</span>
+                <a class="text-base ink-anim" style={!isFr ? 'opacity: 0.5; transition: opacity 0.3s' : 'font-weight: bold; transition: opacity 0.3s'} href={getLangLink('fr')}>FR</a>
+              </div>
+            </div>
+            <div class="p-top-body__time">
+              <span class="text-xs ink-anim">Heure Locale</span>
+              <span class="localtime">
+                <span class="text-base ink-anim">Yaoundé, Cameroun</span>
+                &nbsp;
+                <span class="text-base js-time-hour ink-anim"></span>
+                <span class="text-base blink ink-anim">:</span>
+                <span class="text-base js-time-minute ink-anim"></span>
+                <span class="textbase js-time-dayperiod ink-anim"></span>
+              </span>
+            </div>
+            <div class="p-top-body__menu">
+              <p class="text-sm p-top-body__menu-label ink-anim">[Menu]</p>
+              <ul class="p-top-body__menu-list">
+                <li class="p-top-body__menu-item">
+                  <span class="text-sm p-top-body__menu-num ink-anim">01</span
+                  >
+                  <a class="text-sm ink-anim" href={getNavLink('/about')}>{isFr ? 'À propos' : 'About'}</a>
+                </li>
+                <li class="p-top-body__menu-item">
+                  <span class="text-sm p-top-body__menu-num ink-anim">02</span
+                  >
+                  <a class="text-sm ink-anim" href={getNavLink('/service')}>Service</a>
+                </li>
+                <li class="p-top-body__menu-item">
+                  <span class="text-sm p-top-body__menu-num ink-anim">03</span
+                  >
+                  <a class="text-sm ink-anim" href={getNavLink('/work')}>{isFr ? 'Projets' : 'Work'}</a>
+                </li>
+                <li class="p-top-body__menu-item">
+                  <span class="text-sm p-top-body__menu-num ink-anim">04</span
+                  >
+                  <a class="text-sm ink-anim" href={getNavLink('/reading-list')}>{isFr ? 'Lectures' : 'Reading List'}</a>
+                </li>
+                <li class="p-top-body__menu-item">
+                  <span class="text-sm p-top-body__menu-num ink-anim">05</span
+                  >
+                  <a class="text-sm ink-anim" href={getNavLink('/contact')}>Contact</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
