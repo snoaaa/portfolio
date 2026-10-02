@@ -1,0 +1,167 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TechStack from "../../components/TechStack.astro";
+
+const birthDate = new Date('2005-03-03');
+const today = new Date();
+let age = today.getFullYear() - birthDate.getFullYear();
+const m = today.getMonth() - birthDate.getMonth();
+if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+  age--;
+}
+---
+
+<BaseLayout
+  title="À propos | Abraham Noumsi"
+  pathname="/fr/about/"
+  showHeaderFooter={true}
+>
+  <style
+    slot="head"
+    set:html={`.p-about-info{width:100%;margin-bottom:96px}@media(min-width:1024px){.p-about-info{margin-bottom:160px}}.p-about-info__wrapper{display:grid;grid-template-columns:repeat(4,1fr);row-gap:64px;grid-template-rows:repeat(2,auto)}@media(min-width:1024px){.p-about-info__wrapper{row-gap:0px;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(2,1fr)}}.p-about-info__img{grid-column:1/3;grid-row:1/2;overflow:hidden}@media(min-width:1024px){.p-about-info__img{grid-column:1/5;grid-row:1/3;position:relative;height:100%}}.p-about-info__img img{width:100%;height:auto;object-fit:cover;display:block;position:relative}@media(min-width:1024px){.p-about-info__img img{height:120%;position:absolute;top:0;left:0}}.p-about-info__age{padding-left:16px;grid-column:3/5;grid-row:1/2;display:flex;flex-direction:column;justify-content:space-between}@media(min-width:1024px){.p-about-info__age{padding-left:0;grid-column:7/13}}.p-about-info__age-num{text-align:right;font-size:clamp(6rem,2.7391rem + 13.913vw,25rem);line-height:1;letter-spacing:-.07em;display:flex;justify-content:flex-end}.p-about-info__profile{grid-column:1/5;grid-row:2/3}@media(min-width:1024px){.p-about-info__profile{padding-left:32px;grid-column:5/13;grid-row:1/3;align-self:start;padding-top:24px}}.p-about-info__profile-wrapper{margin-top:0;display:grid;grid-template-columns:repeat(1,1fr);grid-auto-rows:auto;row-gap:48px}@media(min-width:1024px){.p-about-info__profile-wrapper{grid-template-columns:repeat(2,1fr);grid-auto-rows:auto;row-gap:48px;column-gap:64px}}.p-about-info__profile-title{font-family:'RufinaALT02-Regular';margin-bottom:40px}@media(min-width:1024px){.p-about-info__profile-title{margin-bottom:72px}}.p-about-info__profile-item{display:flex;flex-direction:column;gap:16px}@media(min-width:1024px){.p-about-info__profile-item{gap:16px}}.p-about-approach{width:100%;padding:64px 0;color:#fffdf1;margin-bottom:96px;background-image:url(/images/about-bg.DK3abAYJ.jpg);background-size:cover;background-repeat:no-repeat;background-position-x:40%;position:relative;overflow:hidden}@media(min-width:1024px){.p-about-approach{background-image:none;padding:96px 0}}.p-about-approach__bg{display:none;overflow:hidden}.p-about-approach__bg img{width:100%;height:120%;position:absolute;top:0;left:0;object-fit:cover}@media(min-width:1024px){.p-about-approach__bg{display:block}}.p-about-approach__wrapper{position:relative}@media(min-width:1024px){.p-about-approach__wrapper{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(2,auto);row-gap:120px}}.p-about-approach__head{margin-bottom:96px}@media(min-width:1024px){.p-about-approach__head{margin-bottom:0}}@media(min-width:1024px){.p-about-approach__list{grid-column:6/13;grid-row:2/3;max-width:800px}}.p-about-approach__list-item{margin-bottom:48px}@media(min-width:1024px){.p-about-approach__list-item{margin-bottom:80px}}.p-about-approach__list-item:last-child{margin-bottom:0}.p-about-approach__list-title{margin-bottom:16px}.p-about-award__title{font-family:'RufinaALT02-Regular';text-align:center;font-size:clamp(3rem,-.4539rem + 14.7368vw,23.125rem);line-height:1}
+`}
+  ></style>
+  <main class="main">
+    <div class="page-header">
+      <div class="page-header__wrapper l-wrapper">
+
+        <h1 class="text-6xl page-header__title ink-anim">
+          Je suis un<br /> Étudiant en<br /> Ingénierie Logicielle<br />
+        </h1>
+        <p class="page-header__label text-lg ink-anim">À propos de moi</p>
+        <div class="page-header__scroll">
+          <span class="text-sm page-header__scroll-text ink-anim js-scroll-text"
+            >Défiler</span
+          >
+          <span
+            class="text-sm page-header__scroll-text ink-anim page-header__scroll-text--clone js-scroll-text-clone"
+            >Défiler</span
+          >
+        </div>
+        <div class="page-header__border">
+        </div>
+      </div>
+    </div>
+    <section class="p-about-info">
+      <div class="p-about-info__wrapper l-wrapper">
+        <div class="p-about-info__img">
+          <img src="/images/about-info.DdXBfFtL.jpg" alt="" />
+        </div>
+
+        <div class="p-about-info__profile">
+          <h2 class="text-3xl p-about-info__profile-title">Infos</h2>
+          <div class="p-about-info__profile-wrapper">
+            <div class="p-about-info__profile-item">
+              <span class="text-sm p-about-info__profile-label">[Âge]</span>
+              <p class="text-base">{age} Ans</p>
+            </div>
+            
+            <div class="p-about-info__profile-item">
+              <span class="text-sm p-about-info__profile-label">[Profil]</span>
+              <p class="text-base">
+                Je suis un étudiant en 4ème année d'école d'ingénieurs avec une spécialisation en Systèmes d'Information. Je me concentre sur l'architecture backend, la conception de systèmes et la création d'applications fiables. J'aime écrire du code propre et résoudre des problèmes techniques pratiques.
+              </p>
+            </div>
+
+            <div class="p-about-info__profile-item">
+              <span class="text-sm p-about-info__profile-label">[Formation]</span>
+              <p class="text-base">
+                <strong>Institut Universitaire Saint Jean du Cameroun - Saint Jean Ingénieur</strong><br />
+                Eyang, Cameroun (2023 - 2028)<br /><br />
+                <strong>Collège Catholique Bilingue Saint Benoît</strong><br />
+                Mvolye, Yaoundé, Cameroun (2016 - 2023)
+              </p>
+            </div>
+
+            <div class="p-about-info__profile-item">
+              <span class="text-sm p-about-info__profile-label">[Expertise Principale]</span>
+              <p class="text-base">
+                Architecture de systèmes, développement Full-Stack, optimisation de bases de données relationnelles et NoSQL, conception d'API et automatisation du déploiement Cloud.
+              </p>
+            </div>
+
+            <div class="p-about-info__profile-item">
+              <span class="text-sm p-about-info__profile-label">[Objectif Actuel]</span>
+              <p class="text-base">
+                Actuellement concentré sur la sécurité logicielle, les microservices et les déploiements cloud.
+              </p>
+            </div>
+
+            <div class="p-about-info__profile-item">
+              <span class="text-sm p-about-info__profile-label">[Langue / Disponibilité]</span>
+              <p class="text-base">
+                Anglais (Courant), Français (Courant)<br /><br />
+                Ouvert aux postes d'ingénieur logiciel locaux, aux missions freelances à distance et aux collaborations techniques internationales.
+              </p>
+            </div>
+
+            <div class="p-about-info__profile-item">
+              <span class="text-sm p-about-info__profile-label">[Centres d'intérêt]</span>
+              <p class="text-base">
+                Contribution open-source, rédaction technique, résolution de problèmes algorithmiques et exploration de technologies émergentes dans les systèmes distribués.
+              </p>
+            </div>
+
+            <div class="p-about-info__profile-item" style="grid-column: 1 / -1;">
+              <span class="text-sm p-about-info__profile-label">[Curriculum vitæ]</span>
+              <div class="p-about-info__cv" style="margin-top: 8px;">
+                <a class="btn-download ink-anim" href="/docs/cv.pdf" target="_blank" rel="noopener noreferrer">Télécharger le CV</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="p-about-story" style="margin-bottom: 120px; padding: 0 20px;">
+      <div class="l-wrapper" style="max-width: 900px; margin: 0 auto; padding-left: 32px; border-left: 1px solid rgba(35, 53, 128, 0.2);">
+        <h2 class="text-4xl ink-anim" style="font-family: 'RufinaALT02-Regular'; margin-bottom: 32px;">Mon parcours d'ingénieur</h2>
+        <div class="ink-anim" style="display: flex; flex-direction: column; gap: 24px; opacity: 0.85; line-height: 1.8;">
+          <p class="text-base">
+            Je me suis lancé dans l'ingénierie logicielle parce que je voulais comprendre le fonctionnement des systèmes sous le capot. Mon approche technique s'est toujours concentrée sur la création d'applications fiables et faciles à maintenir.
+          </p>
+          <p class="text-base">
+            Je passe la majeure partie de mon temps à travailler sur le backend : concevoir des schémas de bases de données, créer des API et trouver la meilleure façon de les déployer. Je préfère les solutions simples à celles qui sont sur-ingéniérées, et j'attache beaucoup d'importance à la qualité du code.
+          </p>
+          <p class="text-base">
+            Actuellement, je termine mon diplôme et j'ai hâte de rejoindre de plus grandes équipes d'ingénierie où je pourrai contribuer à l'infrastructure de base et continuer à améliorer mes compétences techniques.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <TechStack />
+
+    <section class="p-about-approach">
+      <div class="p-about-approach__bg">
+        <img src="/images/about-bg-pc.wpM8tw5S.jpg" alt="" />
+      </div>
+      <div class="p-about-approach__wrapper l-wrapper">
+        <div class="p-about-approach__head">
+          <h2 class="text-6xl p-about-approach__head-title">Approche</h2>
+          <p class="text-lg">Ce à quoi j'attache de l'importance lorsque je travaille sur des projets</p>
+        </div>
+        <div class="p-about-approach__list">
+          <div class="p-about-approach__list-item">
+            <h3 class="text-3xl p-about-approach__list-title">Communication</h3>
+            <p class="text-base">
+              Je crois qu'un bon travail commence par une conversation ouverte. Je mets un point d'honneur à partager mes préoccupations, mes questions ou mes incertitudes plutôt que de les garder sous silence, et j'apprécie les relations où chacun peut s'exprimer librement. Mon objectif est que les personnes avec qui je travaille soient satisfaites de notre collaboration et aient envie de travailler de nouveau ensemble. C'est ce qui mène à un travail de qualité.
+            </p>
+          </div>
+          <div class="p-about-approach__list-item">
+            <h3 class="text-3xl p-about-approach__list-title">Précision</h3>
+            <p class="text-base">
+              J'accorde une grande attention à la qualité du code et à l'architecture des systèmes. Cela signifie construire des logiciels robustes et maintenables, ainsi que faire des recherches sur tout ce dont je ne suis pas certain afin de proposer les approches techniques les plus optimales. Je crois que consacrer du temps à l'ingénierie fondamentale est ce qui garantit le succès de tout projet complexe.
+            </p>
+          </div>
+          <div class="p-about-approach__list-item">
+            <h3 class="text-3xl p-about-approach__list-title">Exploration</h3>
+            <p class="text-base">
+              J'aime relever différents défis techniques et exigences à chaque projet. Je suis attiré par le fait de rencontrer des problèmes complexes que je ne sais pas encore résoudre, et je pense que c'est ce qui rend l'ingénierie passionnante. Plutôt que de m'en tenir à ce qui m'est familier, j'apprécie d'explorer de nouvelles technologies et méthodologies avec une curiosité sincère.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

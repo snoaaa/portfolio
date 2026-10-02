@@ -1,4 +1,6 @@
 ---
+const isFr = Astro.url.pathname.startsWith('/fr');
+
 const stack = [
   // Backend
   { name: 'Java', icon: 'java', category: 'Backend', expMonths: 36 },
@@ -65,12 +67,24 @@ stack.forEach(tech => {
 
 const formatExp = (months) => {
   const y = Math.max(1, Math.round(months / 12));
+  if (isFr) {
+    return `${y} an${y > 1 ? 's' : ''}`;
+  }
   return `${y} yr${y > 1 ? 's' : ''}`;
 };
 
 stack.sort((a, b) => b.expMonths - a.expMonths);
 
 const categoryOrder = ['Backend', 'Database', 'Cloud & DevOps', 'Frontend', 'Mobile', 'Tools'];
+const categoryI18n = {
+  'Backend': 'Backend',
+  'Database': isFr ? 'Base de données' : 'Database',
+  'Cloud & DevOps': 'Cloud & DevOps',
+  'Frontend': 'Frontend',
+  'Mobile': 'Mobile',
+  'Tools': isFr ? 'Outils' : 'Tools'
+};
+
 const categories = [...new Set(stack.map((s) => s.category))].sort(
   (a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b)
 );
@@ -165,13 +179,13 @@ const categories = [...new Set(stack.map((s) => s.category))].sort(
 <section class="p-about-skills">
   <div class="p-about-skills__wrapper l-wrapper">
     <div class="p-about-skills__content">
-      <h2 class="text-3xl p-about-skills__title">Skills</h2>
+      <h2 class="text-3xl p-about-skills__title">{isFr ? 'Compétences' : 'Skills'}</h2>
       
       <div class="skills-list">
         {categories.map((category) => (
           <details class="skill-accordion js-skill-accordion" name="skills">
             <summary class="skill-accordion__summary text-lg">
-              {category}
+              {categoryI18n[category] || category}
               <svg class="skill-accordion__arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </summary>
             <div class="skill-accordion__content">
