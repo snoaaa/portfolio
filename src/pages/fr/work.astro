@@ -1,0 +1,128 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Projets | Abraham Noumsi"
+  pathname="/fr/work/"
+  showHeaderFooter={true}
+>
+  <style
+    slot="head"
+    set:html={`.p-work-list__item{display:grid;grid-template-columns:1fr;grid-template-rows:repeat(2,auto);row-gap:40px;margin-bottom:96px;position:relative}@media(min-width:1024px){.p-work-list__item{grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(1,auto);row-gap:0px;margin-bottom:160px}}.p-work-list__img{grid-row:1/2;overflow:hidden}@media(min-width:1024px){.p-work-list__img{grid-column:8/13;grid-row:1/2;position:relative;aspect-ratio:576/420}}.p-work-list__img img{width:100%;height:auto;object-fit:cover}@media(min-width:1024px){.p-work-list__img img{height:120%;position:absolute;top:0;left:0}}.p-work-list__info{grid-row:2/3}@media(min-width:1024px){.p-work-list__info{grid-column:1/6;grid-row:1/2;max-width:600px;height:fit-content;position:sticky;top:80px}}.p-work-list__info-detail{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,auto);row-gap:12px;margin-bottom:40px}@media(min-width:1024px){.p-work-list__info-detail{display:flex;gap:72px}}.p-work-list__info-year,.p-work-list__info-role{grid-column:1/2}.p-work-list__info-stack{grid-column:2/3}.p-work-list__info-title{margin-bottom:16px}@media(min-width:1024px){.p-work-list__info-title{margin-bottom:32px}}.p-work-list__info-desc{margin-bottom:40px}.p-work-list__link{width:fit-content;display:flex;align-items:center;gap:16px}@media(min-width:1024px){.p-work-list__link{gap:24px}.p-work-list__link:hover .p-work-list__link-text{opacity:.5}}.p-work-list__link-circle{width:40px;height:40px;border-radius:50%;border:solid 1px #233580;position:relative}@media(min-width:1024px){.p-work-list__link-circle{width:50px;height:50px}}.p-work-list__link-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:4px;height:4px;border-radius:50%;background-color:#233580}@media(min-width:1024px){.p-work-list__link-dot{width:6px;height:6px}}@media(min-width:1024px){.p-work-list__link-text{opacity:1;transition:opacity .3s ease-in-out}}
+`}
+  ></style>
+  <main class="main">
+    <div class="page-header">
+      <div class="page-header__wrapper l-wrapper">
+
+        <h1 class="text-6xl page-header__title ink-anim">Projets<br /></h1>
+        <p class="page-header__label text-lg ink-anim">Mes projets jusqu'à présent</p>
+        <div class="page-header__scroll">
+          <span class="text-sm page-header__scroll-text ink-anim js-scroll-text"
+            >Défiler</span
+          >
+          <span
+            class="text-sm page-header__scroll-text ink-anim page-header__scroll-text--clone js-scroll-text-clone"
+            >Défiler</span
+          >
+        </div>
+        <div class="page-header__border">
+        </div>
+      </div>
+    </div>
+    <section class="p-work-list">
+      <div class="p-work-list__wrapper l-wrapper">
+        <article class="p-work-list__item">
+          <div class="p-work-list__info">
+            <h2 class="p-work-list__info-title text-3xl ink-anim">
+              Kaia
+            </h2>
+            <p class="p-work-list__info-desc text-base ink-anim">
+              Je construis actuellement Kaia, une application de gestion de documents et de chat alimentée par l'IA et basée sur une architecture RAG (Retrieval-Augmented Generation). Elle permet aux utilisateurs d'interroger des corpus de documents complexes (comme des manuels et des PDF) et d'obtenir des réponses vérifiées avec des citations de sources directes. Je développe à la fois le portail web Angular pour les administrateurs et l'application mobile React Native, qui intègre une synchronisation hors ligne et un mode expérimental de Réalité Augmentée (AR) pour une assistance contextuelle sur site.
+            </p>
+            <div class="p-work-list__info-detail">
+              <div class="p-work-list__info-stack">
+                <span class="text-xs ink-anim">Stack</span>
+                <p class="text-base ink-anim">Angular, React Native, Nest.js, RAG</p>
+              </div>
+              <div class="p-work-list__info-role">
+                <span class="text-xs ink-anim">Rôle</span>
+                <p class="text-base ink-anim">Full-Stack & Intégration IA</p>
+              </div>
+            </div>
+            <div class="p-work-list__link" style="opacity: 0.5; cursor: not-allowed;">
+              <div class="p-work-list__link-circle">
+                <div class="p-work-list__link-dot"></div>
+              </div>
+              <p class="text-base p-work-list__link-text">En Développement</p>
+            </div>
+          </div>
+          <div class="p-work-list__img">
+            <img src="/images/kaia_project.jpg" alt="Kaia Project" />
+          </div>
+        </article>
+
+        <article class="p-work-list__item">
+          <div class="p-work-list__info">
+            <h2 class="p-work-list__info-title text-3xl ink-anim">
+              AKIBA
+            </h2>
+            <p class="p-work-list__info-desc text-base ink-anim">
+              Je développe AKIBA pour connecter les clients à des prestataires de services vérifiés à travers le pays. Je construis les versions web et mobile de la plateforme, en me concentrant fortement sur l'ingénierie d'un moteur de recherche rapide et fiable afin que les utilisateurs puissent facilement trouver les services dont ils ont besoin. L'objectif principal est de rendre le processus de découverte et de réservation aussi fluide que possible.
+            </p>
+            <div class="p-work-list__info-detail">
+              <div class="p-work-list__info-stack">
+                <span class="text-xs ink-anim">Stack</span>
+                <p class="text-base ink-anim">Next.js, Node.js, PostgreSQL, React Native</p>
+              </div>
+              <div class="p-work-list__info-role">
+                <span class="text-xs ink-anim">Rôle</span>
+                <p class="text-base ink-anim">Ingénierie Full-Stack</p>
+              </div>
+            </div>
+            <div class="p-work-list__link" style="opacity: 0.5; cursor: not-allowed;">
+              <div class="p-work-list__link-circle">
+                <div class="p-work-list__link-dot"></div>
+              </div>
+              <p class="text-base p-work-list__link-text">En Développement</p>
+            </div>
+          </div>
+          <div class="p-work-list__img">
+            <img src="/images/akiba_project.jpg" alt="AKIBA Project" />
+          </div>
+        </article>
+
+        <article class="p-work-list__item">
+          <div class="p-work-list__info">
+            <h2 class="p-work-list__info-title text-3xl ink-anim">
+              We Choose!
+            </h2>
+            <p class="p-work-list__info-desc text-base ink-anim">
+              Je développe We Choose! en tant que système de vote en ligne sécurisé conçu pour gérer des élections pour des milliers d'utilisateurs. Ma priorité technique est de rendre le processus de dépôt des bulletins de vote totalement transparent et résistant à la fraude. Je construis également les outils d'administration backend pour automatiser la gestion des candidats et le dépouillement.
+            </p>
+            <div class="p-work-list__info-detail">
+              <div class="p-work-list__info-stack">
+                <span class="text-xs ink-anim">Stack</span>
+                <p class="text-base ink-anim">Go, TypeScript, PostgreSQL</p>
+              </div>
+              <div class="p-work-list__info-role">
+                <span class="text-xs ink-anim">Rôle</span>
+                <p class="text-base ink-anim">Backend & Frontend</p>
+              </div>
+            </div>
+            <div class="p-work-list__link" style="opacity: 0.5; cursor: not-allowed;">
+              <div class="p-work-list__link-circle">
+                <div class="p-work-list__link-dot"></div>
+              </div>
+              <p class="text-base p-work-list__link-text">En Développement</p>
+            </div>
+          </div>
+          <div class="p-work-list__img">
+            <img src="/images/wechoose_project.jpg" alt="We Choose! Project" />
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
