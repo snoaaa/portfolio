@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import TechStack from "../components/TechStack.astro";
 
-const birthDate = new Date('2005-03-03');
+const birthDate = new Date("2005-03-03");
 const today = new Date();
 let age = today.getFullYear() - birthDate.getFullYear();
 const m = today.getMonth() - birthDate.getMonth();
@@ -24,7 +24,6 @@ if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
   <main class="main">
     <div class="page-header">
       <div class="page-header__wrapper l-wrapper">
-
         <h1 class="text-6xl page-header__title ink-anim">
           I'm a<br /> Software Engineering<br /> Student<br />
         </h1>
@@ -73,20 +72,26 @@ if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
               <span class="text-sm p-about-info__profile-label">[Age]</span>
               <p class="text-base">{age} Years Old</p>
             </div>
-            
+
             <div class="p-about-info__profile-item">
               <span class="text-sm p-about-info__profile-label">[Profile]</span>
               <p class="text-base">
-                I am a 4th-year engineering student specializing in Information Systems. I focus on 
-                backend architecture, system design, and building reliable applications. I enjoy 
-                writing clean code and solving practical technical problems.
+                I am a 4th-year engineering student specializing in Information
+                Systems. I focus on backend architecture, system design, and
+                building reliable applications. I enjoy writing clean code and
+                solving practical technical problems.
               </p>
             </div>
 
             <div class="p-about-info__profile-item">
-              <span class="text-sm p-about-info__profile-label">[Education]</span>
+              <span class="text-sm p-about-info__profile-label"
+                >[Education]</span
+              >
               <p class="text-base">
-                <strong>Institut Universitaire Saint Jean du Cameroun - Saint Jean Ingénieur</strong><br />
+                <strong
+                  >Institut Universitaire Saint Jean du Cameroun - Saint Jean
+                  Ingénieur</strong
+                ><br />
                 Eyang, Cameroon (2023 - 2028)<br /><br />
                 <strong>Saint Benedict Catholic Bilingual College</strong><br />
                 Mvolye, Yaounde, Cameroon (2016 - 2023)
@@ -94,41 +99,60 @@ if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
             </div>
 
             <div class="p-about-info__profile-item">
-              <span class="text-sm p-about-info__profile-label">[Core Expertise]</span>
+              <span class="text-sm p-about-info__profile-label"
+                >[Core Expertise]</span
+              >
               <p class="text-base">
-                System Architecture, Full-Stack Development, Relational & NoSQL Database Optimization, 
-                API Design, and Cloud Deployment Automation.
+                System Architecture, Full-Stack Development, Relational & NoSQL
+                Database Optimization, API Design, and Cloud Deployment
+                Automation.
               </p>
             </div>
 
             <div class="p-about-info__profile-item">
-              <span class="text-sm p-about-info__profile-label">[Current Focus]</span>
+              <span class="text-sm p-about-info__profile-label"
+                >[Current Focus]</span
+              >
               <p class="text-base">
-                Currently focusing on software security, microservices, and cloud deployments.
+                Currently focusing on software security, microservices, and
+                cloud deployments.
               </p>
             </div>
 
             <div class="p-about-info__profile-item">
-              <span class="text-sm p-about-info__profile-label">[Language / Availability]</span>
+              <span class="text-sm p-about-info__profile-label"
+                >[Language / Availability]</span
+              >
               <p class="text-base">
                 English (Fluent), French (Fluent)<br /><br />
-                Open to local software engineering roles, remote freelance projects, 
+                Open to local software engineering roles, remote freelance projects,
                 and international technical collaborations.
               </p>
             </div>
 
             <div class="p-about-info__profile-item">
-              <span class="text-sm p-about-info__profile-label">[Interests]</span>
+              <span class="text-sm p-about-info__profile-label"
+                >[Interests]</span
+              >
               <p class="text-base">
-                Open-source contribution, technical writing, algorithmic problem solving, 
-                and exploring emerging technologies in distributed systems.
+                Open-source contribution, technical writing, algorithmic problem
+                solving, and exploring emerging technologies in distributed
+                systems.
               </p>
             </div>
 
-            <div class="p-about-info__profile-item" style="grid-column: 1 / -1;">
+            <div
+              class="p-about-info__profile-item"
+              style="grid-column: 1 / -1;"
+            >
               <span class="text-sm p-about-info__profile-label">[Resume]</span>
               <div class="p-about-info__cv" style="margin-top: 8px;">
-                <a class="btn-download ink-anim" href="/docs/cv.pdf" target="_blank" rel="noopener noreferrer">Download CV</a>
+                <a
+                  class="btn-download ink-anim"
+                  href="https://drive.google.com/file/d/1WUd8_Fm50Va8JZPXI2xX3XuJUAJ-hsTR/view?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer">Download Resume</a
+                >
               </div>
             </div>
           </div>
@@ -136,18 +160,40 @@ if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
       </div>
     </section>
 
-    <section class="p-about-story" style="margin-bottom: 120px; padding: 0 20px;">
-      <div class="l-wrapper" style="max-width: 900px; margin: 0 auto; padding-left: 32px; border-left: 1px solid rgba(35, 53, 128, 0.2);">
-        <h2 class="text-4xl ink-anim" style="font-family: 'RufinaALT02-Regular'; margin-bottom: 32px;">My Engineering Journey</h2>
-        <div class="ink-anim" style="display: flex; flex-direction: column; gap: 24px; opacity: 0.85; line-height: 1.8;">
+    <section
+      class="p-about-story"
+      style="margin-bottom: 120px; padding: 0 20px;"
+    >
+      <div
+        class="l-wrapper"
+        style="max-width: 900px; margin: 0 auto; padding-left: 32px; border-left: 1px solid rgba(35, 53, 128, 0.2);"
+      >
+        <h2
+          class="text-4xl ink-anim"
+          style="font-family: 'RufinaALT02-Regular'; margin-bottom: 32px;"
+        >
+          My Engineering Journey
+        </h2>
+        <div
+          class="ink-anim"
+          style="display: flex; flex-direction: column; gap: 24px; opacity: 0.85; line-height: 1.8;"
+        >
           <p class="text-base">
-            I got into software engineering because I wanted to understand how systems work under the hood. My technical focus has always been centered around building applications that are reliable and easy to maintain.
+            I got into software engineering because I wanted to understand how
+            systems work under the hood. My technical focus has always been
+            centered around building applications that are reliable and easy to
+            maintain.
           </p>
           <p class="text-base">
-            I spend most of my time working on the backend: designing database schemas, building APIs, and figuring out the best way to deploy them. I prefer straightforward solutions over over-engineered ones, and I care a lot about code quality.
+            I spend most of my time working on the backend: designing database
+            schemas, building APIs, and figuring out the best way to deploy
+            them. I prefer straightforward solutions over over-engineered ones,
+            and I care a lot about code quality.
           </p>
           <p class="text-base">
-            Right now, I'm wrapping up my degree and looking forward to working on larger engineering teams where I can contribute to core infrastructure and continue improving my technical skills.
+            Right now, I'm wrapping up my degree and looking forward to working
+            on larger engineering teams where I can contribute to core
+            infrastructure and continue improving my technical skills.
           </p>
         </div>
       </div>
@@ -179,21 +225,23 @@ if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
           <div class="p-about-approach__list-item">
             <h3 class="text-3xl p-about-approach__list-title">Precision</h3>
             <p class="text-base">
-              I pay close attention to code quality and system architecture. This means 
-              building robust and maintainable software, as well as researching anything 
-              I'm unsure about to suggest the most optimal technical approaches. I believe 
-              that dedicating time to foundational engineering is what ensures the success 
-              of any complex project.
+              I pay close attention to code quality and system architecture.
+              This means building robust and maintainable software, as well as
+              researching anything I'm unsure about to suggest the most optimal
+              technical approaches. I believe that dedicating time to
+              foundational engineering is what ensures the success of any
+              complex project.
             </p>
           </div>
           <div class="p-about-approach__list-item">
             <h3 class="text-3xl p-about-approach__list-title">Exploration</h3>
             <p class="text-base">
-              I enjoy tackling different technical challenges and requirements with every
-              project. I find myself drawn to the process of encountering complex problems
-              I don't know how to solve yet, and I think that's what makes engineering
-              exciting. Rather than sticking to the familiar, I value exploring new 
-              technologies and methodologies with genuine curiosity.
+              I enjoy tackling different technical challenges and requirements
+              with every project. I find myself drawn to the process of
+              encountering complex problems I don't know how to solve yet, and I
+              think that's what makes engineering exciting. Rather than sticking
+              to the familiar, I value exploring new technologies and
+              methodologies with genuine curiosity.
             </p>
           </div>
         </div>
