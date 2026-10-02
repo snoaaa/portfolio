@@ -1,0 +1,207 @@
+%-------------------------
+% Resume in Latex
+% Author : Jake Gutierrez
+% Based off of: https://github.com/sb2nov/resume
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+
+%----------FONT OPTIONS----------
+% sans-serif
+% \usepackage[sfdefault]{FiraSans}
+% \usepackage[sfdefault]{roboto}
+% \usepackage[sfdefault]{noto-sans}
+% \usepackage[default]{sourcesanspro}
+
+% serif
+% \usepackage{CormorantGaramond}
+% \usepackage{charter}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%----------HEADING----------
+% \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+%   \textbf{\href{http://sourabhbajaj.com/}{\Large Sourabh Bajaj}} & Email : \href{mailto:sourabh@sourabhbajaj.com}{sourabh@sourabhbajaj.com}\\
+%   \href{http://sourabhbajaj.com/}{http://www.sourabhbajaj.com} & Mobile : +1-123-456-7890 \\
+% \end{tabular*}
+
+\begin{center}
+    \textbf{\Huge \scshape SIMO NOUMSI Abraham} \\ \vspace{1pt}
+    \small +237 658 117 002 $|$ \href{mailto:ab.noumsi@gmail.com}{\underline{ab.noumsi@gmail.com}} $|$ 
+    \href{https://www.linkedin.com/in/abrahamnoumsi}{\underline{LinkedIn}} $|$
+    \href{https://github.com/snoaaa}{\underline{GitHub}} $|$
+    \href{https://abrahamnoumsi-v2.vercel.app/}{\underline{Portfolio}}
+\end{center}
+
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Saint Jean Engineer}{Eyang, Yaounde, Cameroon}
+      {Engineering degree in Computer Science and Information Systems}{September 2023 --- October 2028 (Expected)}
+ 
+  \resumeSubHeadingListEnd
+
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Python/Odoo Developer Intern }{June 2025 --- September 2025}
+      {N2T SOLUTIONS SARL}{Yaounde, Cameroon}
+      \resumeItemListStart
+        \resumeItem{Led the technical migration of the Kribi Autonomous Port's core ERP (Odoo 8 to 17), ensuring zero downtime for critical operations that support over \textbf{500 daily users}.}
+        \resumeItem{Customized and engineered Python-based Odoo modules using ORM and PostgreSQL, streamlining complex operational workflows and cutting processing time by \textbf{30\%}.}
+        \resumeItem{Managed end-to-end regression testing and the migration of over \textbf{100,000 records} with \textbf{100\%} data integrity, effectively resolving legacy bugs across all updated modules.}
+      \resumeItemListEnd
+      
+% -----------Multiple Positions Heading-----------
+%    \resumeSubSubheading
+%     {Software Engineer I}{Oct 2014 - Sep 2016}
+%     \resumeItemListStart
+%        \resumeItem{Apache Beam}
+%          {Apache Beam is a unified model for defining both batch and streaming data-parallel processing pipelines}
+%     \resumeItemListEnd
+%    \resumeSubHeadingListEnd
+%-------------------------------------------
+
+    \resumeSubheading
+      {IT Intern}{June 2024 --- August 2024}
+      {SEJOCE SARL}{Douala, Cameroon}
+      \resumeItemListStart
+        \resumeItem{Stabilized the company's IT infrastructure and core business applications, sustaining a \textbf{99.9\%} system uptime to support daily distribution operations without interruption.}
+        \resumeItem{Overhauled digital inventory tracking and data management, achieving \textbf{100\%} accuracy in product, stock, and administrative electronic records.}
+        \resumeItem{Revamped internal IT support processes to deliver rapid resolution of hardware and software issues, providing reliable technical access to more than \textbf{50 employees}.}
+      \resumeItemListEnd
+
+
+  \resumeSubHeadingListEnd
+
+
+%-----------PROJECTS-----------
+\section{Personal Projects}
+    \resumeSubHeadingListStart
+      \resumeProjectHeading
+          {\textbf{AKIBA} $|$ \emph{Next.js, Express.js, Node.js, TypeScript PostgreSQL}, React Native}{}
+          \resumeItemListStart
+            \resumeItem{Architected a full-stack professional services marketplace, successfully connecting customers with a network of over \textbf{200 verified service providers} nationwide.}
+            \resumeItem{Built a highly efficient service discovery and matching engine that streamlined the user experience and drove a \textbf{40\%} increase in booking conversions.}
+            \resumeItem{Developed the platform simultaneously for web and mobile, delivering a highly responsive and unified user experience across all devices.}
+          \resumeItemListEnd
+      \resumeProjectHeading
+          {\textbf{We Choose!} $|$ \emph{TypeScript, Go, PostgreSQL}}{}
+          \resumeItemListStart
+            \resumeItem{Developed a secure, university-wide online voting platform that reliably processed elections for a student body of over \textbf{3,000}.}
+            \resumeItem{Designed a fraud-resistant, intuitive voting workflow that provided transparent and seamless ballot casting.}
+            \resumeItem{Automated the entire election lifecycle from candidate management to result tallying, cutting administrative overhead by \textbf{60\%}.}
+
+          \resumeItemListEnd
+    \resumeSubHeadingListEnd
+
+
+
+%-----------PROGRAMMING SKILLS-----------
+\section{Technical Skills}
+\begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{:\ Python, Java, C, Go, JavaScript, TypeScript, SQL, HTML/CSS} \\
+     \textbf{Frameworks}{:\ Spring Boot, React, Next.js, Node.js, Express.js, Django, FastAPI, Angular} \\
+     \textbf{Mobile}{:\ React Native, Flutter} \\
+     \textbf{Databases \& Brokers}{:\ PostgreSQL, MySQL, MongoDB, Redis, Kafka, Vector Databases} \\
+     \textbf{Cloud \& DevOps}{:\ Docker, Kubernetes, Terraform, Google Cloud Platform, Git, GitHub Actions, CI/CD, Linux} \\
+     \textbf{Testing \& Tools}{:\ JUnit, Mockito, Jest, Postman, Prometheus, Grafana, Maven, Gradle, VS Code, IntelliJ IDEA} \\
+     \textbf{Core Concepts}{:\ Microservices Architecture, gRPC, REST APIs, Security (OAuth2/JWT), Data Structures, Agile/Scrum}
+    }}
+\end{itemize}
+
+
+%-------------------------------------------
+\end{document}
