@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Contact | Abraham Noumsi"
+  pathname="/fr/contact/"
+  showHeaderFooter={true}
+>
+  <style
+    slot="head"
+    set:html={`.p-contact__wrapper{display:flex;flex-direction:column;margin-bottom:96px}@media(min-width:768px){.p-contact__wrapper{margin-bottom:0;align-items:center;}}.p-contact__info{max-width:800px;width:100%;}.p-contact__inquiry{display:grid;grid-template-columns:repeat(2,1fr);margin-top:32px}@media(min-width:1280px){.p-contact__inquiry{grid-template-columns:1fr;grid-template-rows:repeat(2,auto);row-gap:32px}}.p-contact__inquiry-mail{grid-column:1/2;grid-row:1/2}.p-contact__inquiry-social{grid-column:2/3;grid-row:1/2}@media(min-width:1280px){.p-contact__inquiry-social{grid-column:1/2;grid-row:2/3}}.p-contact__inquiry-label{margin-bottom:8px}.p-contact__social{display:flex;flex-direction:column}@media(min-width:1280px){.p-contact__social{flex-direction:row;gap:16px}}.p-contact__social-link{display:flex}.p-contact__desc{margin-bottom:32px}`}
+  ></style>
+  <main class="main">
+    <div class="page-header">
+      <div class="page-header__wrapper l-wrapper">
+        <h1 class="text-6xl page-header__title ink-anim">Contact<br /></h1>
+        <p class="page-header__label text-lg ink-anim">Me contacter</p>
+        <div class="page-header__scroll">
+          <span class="text-sm page-header__scroll-text ink-anim js-scroll-text"
+            >Défiler</span
+          >
+          <span
+            class="text-sm page-header__scroll-text ink-anim page-header__scroll-text--clone js-scroll-text-clone"
+            >Défiler</span
+          >
+        </div>
+        <div class="page-header__border"></div>
+      </div>
+    </div>
+    <section class="p-contact">
+      <div class="p-contact__wrapper l-wrapper">
+        <div class="p-contact__info">
+          <p class="p-contact__desc text-base ink-anim">
+            Merci d'avoir pris le temps de parcourir mon portfolio. Que vous ayez un projet d'ingénierie spécifique en tête, une idée passionnante à discuter, ou que vous souhaitiez simplement échanger sur les logiciels et la technologie, j'aimerais beaucoup avoir de vos nouvelles. <br /><br />
+            Je suis toujours ouvert à de nouvelles opportunités de développement logiciel, à des collaborations et à des conversations qui repoussent les limites techniques. N'hésitez pas à me contacter en utilisant les liens dans le pied de page ci-dessous, et construisons ensemble quelque chose de formidable.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
