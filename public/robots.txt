@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://abrahamnoumsi.com/sitemap-index.xml
