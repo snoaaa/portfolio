@@ -59,9 +59,9 @@ const getNavLink = (path) => {
         </a>
       </li>
       <li class="header__list-item" style="margin-left: 24px; display: flex; align-items: center; gap: 8px;">
-        <a class="text-sm ink-anim header__lang-link" style={`transition: opacity 0.3s; ${isFr ? 'opacity: 0.5;' : 'opacity: 1; font-weight: bold;'}`} href={getLangLink('en')}>EN</a>
+        <a class="text-sm ink-anim header__lang-link" data-astro-reload style={`transition: opacity 0.3s; ${isFr ? 'opacity: 0.5;' : 'opacity: 1; font-weight: bold;'}`} href={getLangLink('en')}>EN</a>
         <span class="text-sm ink-anim" style="opacity: 0.3;">|</span>
-        <a class="text-sm ink-anim header__lang-link" style={`transition: opacity 0.3s; ${!isFr ? 'opacity: 0.5;' : 'opacity: 1; font-weight: bold;'}`} href={getLangLink('fr')}>FR</a>
+        <a class="text-sm ink-anim header__lang-link" data-astro-reload style={`transition: opacity 0.3s; ${!isFr ? 'opacity: 0.5;' : 'opacity: 1; font-weight: bold;'}`} href={getLangLink('fr')}>FR</a>
       </li>
     </ul>
   </nav>
