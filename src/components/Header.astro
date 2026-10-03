@@ -30,50 +30,38 @@ const getNavLink = (path) => {
     <ul class="header__list">
       <li class="header__list-item">
         <a class="text-base header__list-link" href={getNavLink('/')}>
-          <span class="header__list-hover">[</span>
           <span class="ink-anim">{isFr ? 'Accueil' : 'Top'}</span>
-          <span class="header__list-hover">]</span>
         </a>
       </li>
       <li class="header__list-item">
         <a class="text-base header__list-link" href={getNavLink('/about')}>
-          <span class="header__list-hover">[</span>
           <span class="ink-anim">{isFr ? 'À propos' : 'About'}</span>
-          <span class="header__list-hover">]</span>
         </a>
       </li>
       <li class="header__list-item">
         <a class="text-base header__list-link" href={getNavLink('/service')}>
-          <span class="header__list-hover">[</span>
           <span class="ink-anim">Service</span>
-          <span class="header__list-hover">]</span>
         </a>
       </li>
       <li class="header__list-item">
         <a class="text-base header__list-link" href={getNavLink('/work')}>
-          <span class="header__list-hover">[</span>
           <span class="ink-anim">{isFr ? 'Projets' : 'Work'}</span>
-          <span class="header__list-hover">]</span>
         </a>
       </li>
       <li class="header__list-item">
         <a class="text-base header__list-link" href={getNavLink('/reading-list')}>
-          <span class="header__list-hover">[</span>
           <span class="ink-anim">{isFr ? 'Lectures' : 'Reading List'}</span>
-          <span class="header__list-hover">]</span>
         </a>
       </li>
       <li class="header__list-item">
         <a class="text-base header__list-link" href={getNavLink('/contact')}>
-          <span class="header__list-hover">[</span>
           <span class="ink-anim">Contact</span>
-          <span class="header__list-hover">]</span>
         </a>
       </li>
       <li class="header__list-item" style="margin-left: 24px; display: flex; align-items: center; gap: 8px;">
-        <a class="text-sm ink-anim" style={`transition: opacity 0.3s; ${isFr ? 'opacity: 0.5;' : 'opacity: 1; font-weight: bold;'}`} href={getLangLink('en')}>EN</a>
+        <a class="text-sm ink-anim header__lang-link" style={`transition: opacity 0.3s; ${isFr ? 'opacity: 0.5;' : 'opacity: 1; font-weight: bold;'}`} href={getLangLink('en')}>EN</a>
         <span class="text-sm ink-anim" style="opacity: 0.3;">|</span>
-        <a class="text-sm ink-anim" style={`transition: opacity 0.3s; ${!isFr ? 'opacity: 0.5;' : 'opacity: 1; font-weight: bold;'}`} href={getLangLink('fr')}>FR</a>
+        <a class="text-sm ink-anim header__lang-link" style={`transition: opacity 0.3s; ${!isFr ? 'opacity: 0.5;' : 'opacity: 1; font-weight: bold;'}`} href={getLangLink('fr')}>FR</a>
       </li>
     </ul>
   </nav>

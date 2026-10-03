@@ -17,7 +17,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       <div class="page-header__wrapper l-wrapper">
 
         <h1 class="text-6xl page-header__title ink-anim">Service<br /></h1>
-        <p class="page-header__label text-lg ink-anim">Ce que je peux faire</p>
+        <p class="page-header__label text-lg ink-anim">
+          <span style="opacity: 0.5; margin-right: 8px;">></span>
+          <span class="js-typewriter" data-strings='["Ce que je peux faire", "Mon expertise", "Services techniques"]'>Ce que je peux faire</span><span class="typewriter-cursor"></span>
+        </p>
         <div class="page-header__scroll">
           <span class="text-sm page-header__scroll-text ink-anim js-scroll-text"
             >Défiler</span
