@@ -28,7 +28,10 @@ if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
         <h1 class="text-6xl page-header__title ink-anim">
           Je suis un<br /> Étudiant en<br /> Ingénierie Logicielle<br />
         </h1>
-        <p class="page-header__label text-lg ink-anim">À propos de moi</p>
+        <p class="page-header__label text-lg ink-anim">
+          <span style="opacity: 0.5; margin-right: 8px;">></span>
+          <span class="js-typewriter" data-strings='["À propos de moi", "Mon parcours", "Qui je suis"]'>À propos de moi</span><span class="typewriter-cursor"></span>
+        </p>
         <div class="page-header__scroll">
           <span class="text-sm page-header__scroll-text ink-anim js-scroll-text"
             >Défiler</span
