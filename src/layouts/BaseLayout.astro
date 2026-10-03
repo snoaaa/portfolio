@@ -17,6 +17,8 @@ const {
   pathname = "/",
   showHeaderFooter = true,
 } = Astro.props;
+
+const canonicalURL = new URL(pathname, Astro.site || 'https://abrahamnoumsi.com');
 ---
 
 <!doctype html>
@@ -31,15 +33,40 @@ const {
     <link rel="icon" type="image/png" href="/images/favicon-16.png" sizes="16x16" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonicalURL} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
     <link
       href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;0,700;1,400;1,700&display=swap"
       rel="stylesheet"
     />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="/images/ogp.jpg" />
+    <meta property="og:image" content={new URL("/images/ogp.jpg", Astro.site || 'https://abrahamnoumsi.com')} />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL("/images/ogp.jpg", Astro.site || 'https://abrahamnoumsi.com')} />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org/",
+      "@type": "Person",
+      "name": "Abraham Noumsi",
+      "jobTitle": "Engineering Student in Information Systems",
+      "url": "https://abrahamnoumsi.com",
+      "image": "https://abrahamnoumsi.com/images/ogp.jpg",
+      "description": "4th-year Engineering Student in Information Systems building reliable web applications with a focus on clean code, backend architecture, and maintainable systems."
+    })} />
+
     <title>{title}</title>
 
     <meta name="astro-view-transitions-enabled" content="true" />
