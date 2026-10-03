@@ -8494,7 +8494,21 @@ function _o(o) {
     Ns.clearRect(0, 0, Xe.width, Xe.height),
     Ns.drawImage(ai, 0, 0, ai.width, ai.height, 0, 0, Xe.width, Xe.height));
 }
-document.addEventListener("astro:before-swap", Sc);
+document.addEventListener("astro:before-swap", () => {
+  Sc();
+  if (typeof Y !== "undefined" && Y.getAll) {
+    Y.getAll().forEach(t => t.kill());
+  }
+});
+document.addEventListener("astro:page-load", () => {
+  if (typeof Y !== "undefined" && Y.refresh) {
+    setTimeout(() => Y.refresh(), 100);
+    setTimeout(() => Y.refresh(), 500);
+    document.querySelectorAll("img").forEach(img => {
+      if (!img.complete) img.addEventListener("load", () => Y.refresh());
+    });
+  }
+});
 document.addEventListener("astro:after-swap", Ol);
 Ol();
 document.addEventListener("astro:page-load", () => {
