@@ -1,0 +1,116 @@
+<style>
+  /* Code Syntax Hover Effects */
+  :global(.code-hover) {
+    position: relative;
+    display: inline-block;
+  }
+  :global(.code-hover::before), :global(.code-hover::after) {
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    color: rgba(35, 53, 128, 0.4);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em;
+    position: absolute;
+    pointer-events: none;
+  }
+  :global(.code-hover::before) {
+    content: "<";
+    left: -14px;
+    transform: translateX(5px);
+  }
+  :global(.code-hover::after) {
+    content: "/>";
+    right: -20px;
+    transform: translateX(-5px);
+  }
+  :global(.code-hover:hover::before), :global(.code-hover:hover::after) {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Typewriter cursor */
+  :global(.typewriter-cursor) {
+    display: inline-block;
+    width: 8px;
+    height: 1em;
+    background-color: currentColor;
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+    margin-left: 4px;
+    opacity: 0.7;
+  }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+</style>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    document.querySelectorAll(".footer__list-link, .p-top-body__menu-item a, .btn-download, .p-work-list__link, .header__list-link, .header__lang-link").forEach(el => {
+      el.classList.add("code-hover");
+    });
+
+    // Typewriter Effect
+    const typewriters = document.querySelectorAll(".js-typewriter");
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          if (el.hasAttribute("data-typed")) return;
+          el.setAttribute("data-typed", "true");
+
+          const strings = JSON.parse(el.getAttribute("data-strings") || "[]");
+          const loop = el.getAttribute("data-loop") !== "false";
+          
+          if (strings.length === 0) return;
+          
+          let currentStringIndex = 0;
+          let currentCharIndex = 0;
+          let isDeleting = false;
+          let isPaused = false;
+          
+          el.textContent = "";
+
+          function type() {
+            if (isPaused) return;
+
+            const currentString = strings[currentStringIndex];
+            
+            if (isDeleting) {
+              currentCharIndex--;
+              el.textContent = currentString.substring(0, currentCharIndex);
+              if (currentCharIndex === 0) {
+                isDeleting = false;
+                currentStringIndex = (currentStringIndex + 1) % strings.length;
+                isPaused = true;
+                setTimeout(() => { isPaused = false; type(); }, 500);
+                return;
+              }
+            } else {
+              currentCharIndex++;
+              el.textContent = strings[currentStringIndex].substring(0, currentCharIndex);
+              if (currentCharIndex === strings[currentStringIndex].length) {
+                if (!loop && currentStringIndex === strings.length - 1) {
+                  // If not looping and at the last string, stop here.
+                  return;
+                }
+                isDeleting = true;
+                isPaused = true;
+                setTimeout(() => { isPaused = false; type(); }, 2000);
+                return;
+              }
+            }
+            
+            const speed = isDeleting ? 30 : 60;
+            setTimeout(type, speed + Math.random() * 30);
+          }
+          
+          setTimeout(() => {
+            type();
+          }, 300); // Small delay after intersecting
+        }
+      });
+    }, { threshold: 0.1 });
+
+    typewriters.forEach(el => observer.observe(el));
+  });
+</script>
