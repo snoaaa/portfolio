@@ -54,6 +54,11 @@ const getNavLink = (path) => {
         </a>
       </li>
       <li class="header__list-item">
+        <a class="text-base header__list-link" href={getNavLink('/guestbook')}>
+          <span class="ink-anim">{isFr ? 'Livre d\'or' : 'Guestbook'}</span>
+        </a>
+      </li>
+      <li class="header__list-item">
         <a class="text-base header__list-link" href={getNavLink('/contact')}>
           <span class="ink-anim">Contact</span>
         </a>
