@@ -1,0 +1,556 @@
+---
+import { supabase } from '../lib/supabase';
+
+const currentPath = Astro.url.pathname;
+const isFr = currentPath.startsWith('/fr');
+
+const { data: messages, count, error } = await supabase
+  .from("guestbook")
+  .select("*", { count: "exact" })
+  .order("created_at", { ascending: false })
+  .limit(10);
+
+if (error) {
+  console.error("Error fetching data:", error);
+}
+
+const totalCount = count || 0;
+const hasMore = totalCount > 10;
+---
+
+<div class="guestbook-module">
+  
+  <div class="gb-left-column">
+    <form id="gb-form" class="gb-form">
+      <div class="gb-field">
+        <label for="name" class="gb-label">{isFr ? "Nom" : "Name"}</label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          required 
+          maxlength="50"
+          class="gb-input"
+          placeholder={isFr ? "Votre nom" : "Your Name"}
+        />
+      </div>
+      
+      <div class="gb-field">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <label for="message" class="gb-label">Message</label>
+          <span id="gb-char-count" class="gb-char-count">0 / 400</span>
+        </div>
+        <textarea 
+          id="message" 
+          name="message" 
+          required 
+          rows="4"
+          maxlength="400"
+          class="gb-input gb-textarea"
+          placeholder={isFr ? "Laissez un message (max 400 caractères)..." : "Leave a message (max 400 characters)..."}
+        ></textarea>
+      </div>
+      
+      <div class="gb-submit-row">
+        <button type="submit" id="gb-submit" class="gb-button">
+          {isFr ? "Signer le livre d'or" : "Sign Guestbook"}
+        </button>
+        <span id="gb-success-msg" class="gb-success-text" style="display: none;">
+          {isFr ? "✓ Message publié." : "✓ Message posted."}
+        </span>
+      </div>
+    </form>
+  </div>
+
+  <div class="gb-right-column">
+    <div class="gb-messages-section">
+      <h3 class="gb-messages-title">
+        {isFr ? "Messages récents" : "Recent Messages"} 
+      </h3>
+      
+      <div class="gb-scroll-box" data-smoother-ignore>
+        <div id="gb-messages-container" class="gb-messages-list">
+          {messages && messages.length > 0 ? (
+            messages.map((entry) => (
+              <div class="gb-message-card" data-id={entry.id}>
+                <div class="gb-message-meta">
+                  <div class="gb-meta-item">
+                    <span class="gb-meta-label">{isFr ? "Nom" : "Name"}</span>
+                    <span class="gb-message-name">{entry.name}</span>
+                  </div>
+                  <div class="gb-meta-item">
+                    <span class="gb-meta-label">Date</span>
+                    <span class="gb-message-date">
+                      {new Date(entry.created_at).toLocaleDateString(isFr ? 'fr-FR' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </span>
+                  </div>
+                </div>
+                <div class="gb-message-content">
+                  <p class="gb-message-body">{entry.message}</p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p id="gb-empty-state" class="gb-no-messages">{isFr ? "Aucun message pour le moment. Soyez le premier !" : "No messages yet. Be the first!"}</p>
+          )}
+        </div>
+
+        {hasMore && (
+          <div class="gb-load-more-container">
+            <button id="gb-load-more" class="gb-button gb-button-outline">
+              {isFr ? "Charger plus" : "Load More"}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { supabase } from '../lib/supabase';
+
+  document.addEventListener('astro:page-load', () => {
+    const form = document.getElementById('gb-form') as HTMLFormElement;
+    const submitBtn = document.getElementById('gb-submit') as HTMLButtonElement;
+    const successMsg = document.getElementById('gb-success-msg');
+    const messagesContainer = document.getElementById('gb-messages-container');
+    const emptyState = document.getElementById('gb-empty-state');
+    const loadMoreBtn = document.getElementById('gb-load-more') as HTMLButtonElement;
+    const messageInput = document.getElementById('message') as HTMLTextAreaElement;
+    const charCount = document.getElementById('gb-char-count');
+    const scrollBox = document.querySelector('.gb-scroll-box');
+    
+    const isFr = window.location.pathname.startsWith('/fr');
+    
+    let currentOffset = 10;
+    const MAX_CHARS = 400;
+
+    if (scrollBox) {
+      scrollBox.addEventListener('wheel', (e) => {
+        e.stopPropagation();
+      }, { passive: false });
+      
+      scrollBox.addEventListener('touchmove', (e) => {
+        e.stopPropagation();
+      }, { passive: false });
+    }
+
+    if (messageInput && charCount) {
+      messageInput.addEventListener('input', () => {
+        const currentLength = messageInput.value.length;
+        charCount.innerText = `${currentLength} / ${MAX_CHARS}`;
+        if (currentLength >= MAX_CHARS) {
+          charCount.style.color = '#e74c3c';
+        } else {
+          charCount.style.color = 'inherit';
+        }
+      });
+    }
+
+    const formatDate = (dateString: string) => {
+      const date = new Date(dateString);
+      return date.toLocaleDateString(isFr ? 'fr-FR' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    };
+
+    const createCard = (id: string, name: string, message: string, date: string) => {
+      const card = document.createElement('div');
+      card.className = 'gb-message-card';
+      card.setAttribute('data-id', id);
+      
+      const labelName = isFr ? "Nom" : "Name";
+      const labelDate = "Date";
+
+      card.innerHTML = `
+        <div class="gb-message-meta">
+          <div class="gb-meta-item">
+            <span class="gb-meta-label">${labelName}</span>
+            <span class="gb-message-name">${name.replace(/</g, "&lt;")}</span>
+          </div>
+          <div class="gb-meta-item">
+            <span class="gb-meta-label">${labelDate}</span>
+            <span class="gb-message-date">${date}</span>
+          </div>
+        </div>
+        <div class="gb-message-content">
+          <p class="gb-message-body">${message.replace(/</g, "&lt;")}</p>
+        </div>
+      `;
+      
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(10px)';
+      card.style.transition = 'all 0.5s ease';
+      card.style.backgroundColor = 'rgba(17, 17, 17, 0.05)';
+      
+      setTimeout(() => {
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, 50);
+
+      setTimeout(() => {
+        card.style.backgroundColor = 'transparent';
+        card.style.transition = 'background-color 2s ease';
+      }, 2000);
+
+      return card;
+    };
+
+    supabase
+      .channel('guestbook-live')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'guestbook' }, (payload) => {
+        const newRow = payload.new;
+        if (!document.querySelector(`[data-id="${newRow.id}"]`)) {
+          if (emptyState) emptyState.style.display = 'none';
+          const newCard = createCard(newRow.id, newRow.name, newRow.message, formatDate(newRow.created_at));
+          messagesContainer.prepend(newCard);
+        }
+      })
+      .subscribe();
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const name = formData.get('name')?.toString().trim();
+        const message = formData.get('message')?.toString().trim();
+
+        if (!name || !message || message.length > MAX_CHARS || name.length > 50) return;
+
+        const originalText = submitBtn.innerText;
+        submitBtn.innerText = isFr ? "Envoi..." : "Sending...";
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.5';
+        successMsg.style.display = 'none';
+
+        const { data, error } = await supabase
+          .from('guestbook')
+          .insert([{ name, message }])
+          .select();
+
+        if (error) {
+          console.error(error);
+          alert(isFr ? "Une erreur s'est produite." : "An error occurred. Please try again.");
+          submitBtn.innerText = originalText;
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = '1';
+          return;
+        }
+
+        form.reset();
+        if (charCount) {
+          charCount.innerText = `0 / ${MAX_CHARS}`;
+          charCount.style.color = 'inherit';
+        }
+        submitBtn.innerText = originalText;
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+        
+        successMsg.style.display = 'inline-block';
+        successMsg.style.animation = 'fadeIn 0.5s ease forwards';
+        
+        setTimeout(() => {
+          successMsg.style.animation = 'fadeOut 0.5s ease forwards';
+          setTimeout(() => {
+            successMsg.style.display = 'none';
+          }, 500);
+        }, 4000);
+        
+        if (emptyState) emptyState.style.display = 'none';
+
+        if (data && data[0]) {
+          if (!document.querySelector(`[data-id="${data[0].id}"]`)) {
+            const newCard = createCard(data[0].id, data[0].name, data[0].message, formatDate(data[0].created_at));
+            messagesContainer.prepend(newCard);
+            
+            // Scroll box to top so they see their new comment
+            const scrollBox = document.querySelector('.gb-scroll-box');
+            if(scrollBox) scrollBox.scrollTop = 0;
+          }
+        }
+      });
+    }
+
+    if (loadMoreBtn) {
+      loadMoreBtn.addEventListener('click', async () => {
+        const originalText = loadMoreBtn.innerText;
+        loadMoreBtn.innerText = isFr ? "Chargement..." : "Loading...";
+        loadMoreBtn.disabled = true;
+        loadMoreBtn.style.opacity = '0.5';
+
+        const { data, error } = await supabase
+          .from('guestbook')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .range(currentOffset, currentOffset + 9);
+
+        if (error) {
+          console.error(error);
+          loadMoreBtn.innerText = originalText;
+          loadMoreBtn.disabled = false;
+          loadMoreBtn.style.opacity = '1';
+          return;
+        }
+
+        if (data && data.length > 0) {
+          data.forEach(entry => {
+            const card = createCard(entry.id, entry.name, entry.message, formatDate(entry.created_at));
+            card.style.backgroundColor = 'transparent';
+            messagesContainer.appendChild(card);
+          });
+          currentOffset += 10;
+        }
+
+        if (!data || data.length < 10) {
+          loadMoreBtn.style.display = 'none';
+        } else {
+          loadMoreBtn.innerText = originalText;
+          loadMoreBtn.disabled = false;
+          loadMoreBtn.style.opacity = '1';
+        }
+      });
+    }
+  });
+</script>
+
+<style is:global>
+  .guestbook-module {
+    width: 100%;
+    margin-top: 4rem;
+    font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+  }
+
+  @media(min-width: 900px) {
+    .guestbook-module {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    
+    .gb-left-column {
+      width: 47%; /* Exactly equal width to the right column */
+    }
+
+    .gb-right-column {
+      width: 47%; /* Exactly equal width to the left column */
+    }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-5px); }
+  }
+
+  .gb-form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .gb-field {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .gb-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #111;
+    opacity: 0.6;
+  }
+
+  .gb-char-count {
+    font-size: 0.7rem;
+    font-family: monospace;
+    opacity: 0.5;
+    transition: color 0.3s ease;
+  }
+
+  .gb-input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+    background-color: transparent;
+    padding: 8px 0 16px 0;
+    font-size: 1.1rem;
+    color: #111;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    font-family: inherit;
+  }
+
+  .gb-input:focus {
+    outline: none;
+    border-bottom-color: #111;
+  }
+
+  .gb-textarea {
+    resize: none;
+  }
+
+  .gb-submit-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .gb-success-text {
+    font-size: 0.85rem;
+    color: #111;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .gb-button {
+    background-color: #111;
+    color: #fff;
+    border: 1px solid #111;
+    padding: 16px 32px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.4s ease;
+  }
+
+  .gb-button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .gb-button:hover:not(:disabled) {
+    background-color: transparent;
+    color: #111;
+  }
+
+  .gb-messages-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .gb-messages-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #111;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding-bottom: 24px;
+    margin-bottom: 0;
+    opacity: 0.4;
+  }
+
+  .gb-scroll-box {
+    height: 400px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 32px;
+    padding-top: 24px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,0,0,0.2) transparent;
+  }
+
+  .gb-scroll-box::-webkit-scrollbar {
+    width: 6px;
+  }
+  .gb-scroll-box::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .gb-scroll-box::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+  }
+  .gb-scroll-box::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.4);
+  }
+
+  .gb-messages-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .gb-message-card {
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .gb-message-card:last-child {
+    border-bottom: none;
+  }
+
+  .gb-message-meta {
+    display: flex;
+    gap: 32px;
+  }
+
+  .gb-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .gb-meta-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.3;
+  }
+
+  .gb-message-name {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #111;
+    letter-spacing: 0.05em;
+  }
+
+  .gb-message-date {
+    font-size: 0.9rem;
+    color: #111;
+    opacity: 0.8;
+  }
+
+  .gb-message-content {
+    padding-left: 0;
+  }
+
+  .gb-message-body {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #111;
+    opacity: 0.85;
+    white-space: pre-wrap;
+    margin: 0;
+  }
+
+  .gb-no-messages {
+    font-size: 0.95rem;
+    font-style: italic;
+    opacity: 0.5;
+    padding: 24px 0;
+  }
+
+  .gb-load-more-container {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 32px;
+    padding-bottom: 32px;
+  }
+</style>

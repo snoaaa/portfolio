@@ -1,0 +1,53 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Guestbook from "../../components/Guestbook.astro";
+
+const currentPath = Astro.url.pathname;
+const isFr = currentPath.startsWith('/fr');
+---
+
+<BaseLayout
+  title={isFr ? "Livre d'or | Abraham Noumsi" : "Guestbook | Abraham Noumsi"}
+  pathname="/guestbook/"
+  showHeaderFooter={true}
+>
+  <style
+    slot="head"
+    set:html={`.p-guestbook__wrapper{display:flex;flex-direction:column;margin-bottom:96px}@media(min-width:768px){.p-guestbook__wrapper{margin-bottom:0;align-items:flex-start;}}.p-guestbook__info{max-width:100%;width:100%;}.p-guestbook__desc{max-width:800px;margin-bottom:32px}`}
+  ></style>
+  <main class="main">
+    <div class="page-header">
+      <div class="page-header__wrapper l-wrapper">
+        <h1 class="text-6xl page-header__title ink-anim">{isFr ? "Livre d'or" : "Guestbook"}<br /></h1>
+        <p class="page-header__label text-lg ink-anim">
+          <span style="opacity: 0.5; margin-right: 8px;">></span>
+          <span class="js-typewriter" data-strings={isFr ? '["Laissez une trace", "Signez le livre", "Partagez un mot"]' : '["Leave a trace", "Sign the book", "Share a thought"]'}>{isFr ? "Laissez une trace" : "Leave a trace"}</span><span class="typewriter-cursor"></span>
+        </p>
+        <div class="page-header__scroll">
+          <span class="text-sm page-header__scroll-text ink-anim js-scroll-text"
+            >Scroll</span
+          >
+          <span
+            class="text-sm page-header__scroll-text ink-anim page-header__scroll-text--clone js-scroll-text-clone"
+            >Scroll</span
+          >
+        </div>
+        <div class="page-header__border"></div>
+      </div>
+    </div>
+    <section class="p-guestbook">
+      <div class="p-guestbook__wrapper l-wrapper">
+        <div class="p-guestbook__info">
+          <p class="p-guestbook__desc text-base ink-anim">
+            {isFr 
+              ? "Merci d'avoir pris le temps de visiter mon portfolio. N'hésitez pas à laisser un petit message ci-dessous pour les futurs visiteurs." 
+              : "Thank you for taking the time to explore my portfolio. Feel free to leave a small message below for future visitors."}
+          </p>
+          <div class="ink-anim">
+            <Guestbook />
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
