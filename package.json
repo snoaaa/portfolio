@@ -14,10 +14,12 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
     "@astrojs/vercel": "^11.0.11",
+    "@lucide/astro": "^1.52.0",
     "@supabase/supabase-js": "^2.117.2",
     "@tailwindcss/vite": "^4.3.3",
     "@vercel/analytics": "^2.0.1",
     "astro": "^7.2.10",
+    "dotenv": "^18.0.5",
     "tailwindcss": "^4.3.3"
   },
   "allowScripts": {

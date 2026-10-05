@@ -1,5 +1,15 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { supabase } from "../../lib/supabase";
+
+const { data: projects, error } = await supabase
+  .from('projects')
+  .select('*')
+  .order('created_at', { ascending: true });
+
+if (error) {
+  console.error("Error fetching projects:", error);
+}
 ---
 
 <BaseLayout
@@ -36,95 +46,47 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     </div>
     <section class="p-work-list">
       <div class="p-work-list__wrapper l-wrapper">
-        <article class="p-work-list__item">
-          <div class="p-work-list__info">
-            <h2 class="p-work-list__info-title text-3xl ink-anim">
-              Kaia
-            </h2>
-            <p class="p-work-list__info-desc text-base ink-anim">
-              Je construis actuellement Kaia, une application de gestion de documents et de chat alimentée par l'IA et basée sur une architecture RAG (Retrieval-Augmented Generation). Elle permet aux utilisateurs d'interroger des corpus de documents complexes (comme des manuels et des PDF) et d'obtenir des réponses vérifiées avec des citations de sources directes. Je développe à la fois le portail web Angular pour les administrateurs et l'application mobile React Native, qui intègre une synchronisation hors ligne et un mode expérimental de Réalité Augmentée (AR) pour une assistance contextuelle sur site.
-            </p>
-            <div class="p-work-list__info-detail">
-              <div class="p-work-list__info-stack">
-                <span class="text-xs ink-anim">Stack</span>
-                <p class="text-base ink-anim">Angular, React Native, Nest.js, RAG</p>
+        {projects && projects.map((project) => (
+          <article class="p-work-list__item">
+            <div class="p-work-list__info">
+              <h2 class="p-work-list__info-title text-3xl ink-anim">
+                {project.title}
+              </h2>
+              <p class="p-work-list__info-desc text-base ink-anim">
+                {project.description_fr}
+              </p>
+              <div class="p-work-list__info-detail">
+                <div class="p-work-list__info-stack">
+                  <span class="text-xs ink-anim">Stack</span>
+                  <p class="text-base ink-anim">{project.stack}</p>
+                </div>
+                <div class="p-work-list__info-role">
+                  <span class="text-xs ink-anim">Rôle</span>
+                  <p class="text-base ink-anim">{project.role_fr}</p>
+                </div>
               </div>
-              <div class="p-work-list__info-role">
-                <span class="text-xs ink-anim">Rôle</span>
-                <p class="text-base ink-anim">Full-Stack & Intégration IA</p>
-              </div>
+              
+              {project.link ? (
+                <a href={project.link} target="_blank" rel="noopener noreferrer" class="p-work-list__link">
+                  <div class="p-work-list__link-circle">
+                    <div class="p-work-list__link-dot"></div>
+                  </div>
+                  <p class="text-base p-work-list__link-text">Voir le Projet</p>
+                </a>
+              ) : (
+                <div class="p-work-list__link" style="opacity: 0.5; cursor: not-allowed;">
+                  <div class="p-work-list__link-circle">
+                    <div class="p-work-list__link-dot"></div>
+                  </div>
+                  <p class="text-base p-work-list__link-text">{project.status === 'In Development' ? 'En Développement' : project.status}</p>
+                </div>
+              )}
             </div>
-            <div class="p-work-list__link" style="opacity: 0.5; cursor: not-allowed;">
-              <div class="p-work-list__link-circle">
-                <div class="p-work-list__link-dot"></div>
-              </div>
-              <p class="text-base p-work-list__link-text">En Développement</p>
+            <div class="p-work-list__img">
+              <img src={project.image_url} alt={project.title} />
             </div>
-          </div>
-          <div class="p-work-list__img">
-            <img src="/images/kaia_project.jpg" alt="Kaia Project" />
-          </div>
-        </article>
-
-        <article class="p-work-list__item">
-          <div class="p-work-list__info">
-            <h2 class="p-work-list__info-title text-3xl ink-anim">
-              AKIBA
-            </h2>
-            <p class="p-work-list__info-desc text-base ink-anim">
-              Je développe AKIBA pour connecter les clients à des prestataires de services vérifiés à travers le pays. Je construis les versions web et mobile de la plateforme, en me concentrant fortement sur l'ingénierie d'un moteur de recherche rapide et fiable afin que les utilisateurs puissent facilement trouver les services dont ils ont besoin. L'objectif principal est de rendre le processus de découverte et de réservation aussi fluide que possible.
-            </p>
-            <div class="p-work-list__info-detail">
-              <div class="p-work-list__info-stack">
-                <span class="text-xs ink-anim">Stack</span>
-                <p class="text-base ink-anim">Next.js, Node.js, PostgreSQL, React Native</p>
-              </div>
-              <div class="p-work-list__info-role">
-                <span class="text-xs ink-anim">Rôle</span>
-                <p class="text-base ink-anim">Ingénierie Full-Stack</p>
-              </div>
-            </div>
-            <div class="p-work-list__link" style="opacity: 0.5; cursor: not-allowed;">
-              <div class="p-work-list__link-circle">
-                <div class="p-work-list__link-dot"></div>
-              </div>
-              <p class="text-base p-work-list__link-text">En Développement</p>
-            </div>
-          </div>
-          <div class="p-work-list__img">
-            <img src="/images/akiba_project.jpg" alt="AKIBA Project" />
-          </div>
-        </article>
-
-        <article class="p-work-list__item">
-          <div class="p-work-list__info">
-            <h2 class="p-work-list__info-title text-3xl ink-anim">
-              We Choose!
-            </h2>
-            <p class="p-work-list__info-desc text-base ink-anim">
-              Je développe We Choose! en tant que système de vote en ligne sécurisé conçu pour gérer des élections pour des milliers d'utilisateurs. Ma priorité technique est de rendre le processus de dépôt des bulletins de vote totalement transparent et résistant à la fraude. Je construis également les outils d'administration backend pour automatiser la gestion des candidats et le dépouillement.
-            </p>
-            <div class="p-work-list__info-detail">
-              <div class="p-work-list__info-stack">
-                <span class="text-xs ink-anim">Stack</span>
-                <p class="text-base ink-anim">Go, TypeScript, PostgreSQL</p>
-              </div>
-              <div class="p-work-list__info-role">
-                <span class="text-xs ink-anim">Rôle</span>
-                <p class="text-base ink-anim">Backend & Frontend</p>
-              </div>
-            </div>
-            <div class="p-work-list__link" style="opacity: 0.5; cursor: not-allowed;">
-              <div class="p-work-list__link-circle">
-                <div class="p-work-list__link-dot"></div>
-              </div>
-              <p class="text-base p-work-list__link-text">En Développement</p>
-            </div>
-          </div>
-          <div class="p-work-list__img">
-            <img src="/images/wechoose_project.jpg" alt="We Choose! Project" />
-          </div>
-        </article>
+          </article>
+        ))}
       </div>
     </section>
   </main>

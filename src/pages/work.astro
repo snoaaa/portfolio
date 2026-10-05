@@ -1,5 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { supabase } from "../lib/supabase";
+
+const { data: projects, error } = await supabase
+  .from('projects')
+  .select('*')
+  .order('created_at', { ascending: true });
+
+if (error) {
+  console.error("Error fetching projects:", error);
+}
 ---
 
 <BaseLayout
@@ -54,101 +64,47 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </div>
     <section class="p-work-list">
       <div class="p-work-list__wrapper l-wrapper">
-        <article class="p-work-list__item">
-          <div class="p-work-list__info">
-            <h2 class="p-work-list__info-title text-3xl ink-anim">
-              Kaia
-            </h2>
-            <p class="p-work-list__info-desc text-base ink-anim">
-              I am currently building Kaia, an AI-powered document management and chat application based on a Retrieval-Augmented Generation (RAG) architecture. It allows users to query complex document corpora (like manuals and PDFs) and receive verified answers with direct source citations. I'm building out both the Angular web portal for administrators and the React Native mobile app, which features offline synchronization and an experimental Augmented Reality (AR) mode for contextual on-site assistance.
-            </p>
-            <div class="p-work-list__info-detail">
-              <div class="p-work-list__info-stack">
-                <span class="text-xs ink-anim">Stack</span>
-                <p class="text-base ink-anim">Angular, React Native, Nest.js, RAG</p>
+        {projects && projects.map((project) => (
+          <article class="p-work-list__item">
+            <div class="p-work-list__info">
+              <h2 class="p-work-list__info-title text-3xl ink-anim">
+                {project.title}
+              </h2>
+              <p class="p-work-list__info-desc text-base ink-anim">
+                {project.description_en}
+              </p>
+              <div class="p-work-list__info-detail">
+                <div class="p-work-list__info-stack">
+                  <span class="text-xs ink-anim">Stack</span>
+                  <p class="text-base ink-anim">{project.stack}</p>
+                </div>
+                <div class="p-work-list__info-role">
+                  <span class="text-xs ink-anim">Role</span>
+                  <p class="text-base ink-anim">{project.role_en}</p>
+                </div>
               </div>
-              <div class="p-work-list__info-role">
-                <span class="text-xs ink-anim">Role</span>
-                <p class="text-base ink-anim">Full-Stack & AI Integration</p>
-              </div>
+              
+              {project.link ? (
+                <a href={project.link} target="_blank" rel="noopener noreferrer" class="p-work-list__link">
+                  <div class="p-work-list__link-circle">
+                    <div class="p-work-list__link-dot"></div>
+                  </div>
+                  <p class="text-base p-work-list__link-text">Visit Project</p>
+                </a>
+              ) : (
+                <div class="p-work-list__link" style="opacity: 0.5; cursor: not-allowed;">
+                  <div class="p-work-list__link-circle">
+                    <div class="p-work-list__link-dot"></div>
+                  </div>
+                  <p class="text-base p-work-list__link-text">{project.status}</p>
+                </div>
+              )}
             </div>
-            <div class="p-work-list__link" style="opacity: 0.5; cursor: not-allowed;">
-              <div class="p-work-list__link-circle">
-                <div class="p-work-list__link-dot"></div>
-              </div>
-              <p class="text-base p-work-list__link-text">In Development</p>
+            <div class="p-work-list__img">
+              <img src={project.image_url} alt={project.title} />
             </div>
-          </div>
-          <div class="p-work-list__img">
-            <img src="/images/kaia_project.jpg" alt="Kaia Project" />
-          </div>
-        </article>
-
-        <article class="p-work-list__item">
-          <div class="p-work-list__info">
-            <h2 class="p-work-list__info-title text-3xl ink-anim">
-              AKIBA
-            </h2>
-            <p class="p-work-list__info-desc text-base ink-anim">
-              I am developing AKIBA to connect customers with verified service providers across the country. 
-              I am building both the web and mobile versions of the platform, focusing heavily on engineering a 
-              fast and reliable search engine so users can easily find the services they need. The main 
-              goal is to make the discovery and booking process as smooth as possible.
-            </p>
-            <div class="p-work-list__info-detail">
-              <div class="p-work-list__info-stack">
-                <span class="text-xs ink-anim">Stack</span>
-                <p class="text-base ink-anim">Next.js, Node.js, PostgreSQL, React Native</p>
-              </div>
-              <div class="p-work-list__info-role">
-                <span class="text-xs ink-anim">Role</span>
-                <p class="text-base ink-anim">Full-Stack Engineering</p>
-              </div>
-            </div>
-            <div class="p-work-list__link" style="opacity: 0.5; cursor: not-allowed;">
-              <div class="p-work-list__link-circle">
-                <div class="p-work-list__link-dot"></div>
-              </div>
-              <p class="text-base p-work-list__link-text">In Development</p>
-            </div>
-          </div>
-          <div class="p-work-list__img">
-            <img src="/images/akiba_project.jpg" alt="AKIBA Project" />
-          </div>
-        </article>
-
-        <article class="p-work-list__item">
-          <div class="p-work-list__info">
-            <h2 class="p-work-list__info-title text-3xl ink-anim">
-              We Choose!
-            </h2>
-            <p class="p-work-list__info-desc text-base ink-anim">
-              I am developing We Choose! as a secure online voting system designed to handle elections 
-              for thousands of users. My technical focus is on making the ballot casting process completely 
-              transparent and fraud-resistant. I am also building out the backend administrative tools to automate 
-              candidate management and tallying.
-            </p>
-            <div class="p-work-list__info-detail">
-              <div class="p-work-list__info-stack">
-                <span class="text-xs ink-anim">Stack</span>
-                <p class="text-base ink-anim">Go, TypeScript, PostgreSQL</p>
-              </div>
-              <div class="p-work-list__info-role">
-                <span class="text-xs ink-anim">Role</span>
-                <p class="text-base ink-anim">Backend & Frontend</p>
-              </div>
-            </div>
-            <div class="p-work-list__link" style="opacity: 0.5; cursor: not-allowed;">
-              <div class="p-work-list__link-circle">
-                <div class="p-work-list__link-dot"></div>
-              </div>
-              <p class="text-base p-work-list__link-text">In Development</p>
-            </div>
-          </div>
-          <div class="p-work-list__img">
-            <img src="/images/wechoose_project.jpg" alt="We Choose! Project" />
-          </div>
-        </article>
+          </article>
+        ))}
       </div>
     </section>
   </main>

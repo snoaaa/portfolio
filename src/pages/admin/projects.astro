@@ -1,0 +1,827 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+---
+
+<AdminLayout title="Projects Administration">
+  <div class="admin-header">
+    <div class="admin-header-left">
+      <h1 class="admin-title">Projects</h1>
+      <p class="admin-subtitle">Manage your portfolio projects and case studies.</p>
+    </div>
+    <button id="open-drawer-btn" class="btn-primary">
+      <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      Add Project
+    </button>
+  </div>
+
+  <div class="admin-content">
+    <div id="projects-list" class="projects-grid">
+      <p style="opacity: 0.5; grid-column: 1 / -1;">Loading projects...</p>
+    </div>
+  </div>
+
+  <!-- Slide-over Drawer for Add/Edit -->
+  <div id="form-drawer-overlay" class="admin-drawer-overlay"></div>
+  <div id="form-drawer" class="admin-drawer" data-lenis-prevent>
+    <div class="drawer-header">
+      <h2 id="form-title">Add New Project</h2>
+      <button id="close-drawer-btn" class="btn-close">&times;</button>
+    </div>
+    <div class="drawer-body">
+      <form id="project-form" class="admin-form">
+        <input type="hidden" id="project-id" name="id" />
+        <input type="hidden" id="existing-image" name="existing_image" />
+
+        <div class="form-group">
+          <label>Cover Image (Required for new projects)</label>
+          <div class="image-upload-wrapper">
+            <label for="image-upload" class="image-upload-label">
+              <div id="image-preview" class="image-preview">
+                <div class="preview-placeholder">
+                  <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                  <span>Click to select an image</span>
+                </div>
+              </div>
+            </label>
+            <input type="file" id="image-upload" name="image_file" accept="image/png, image/jpeg, image/webp, image/gif" class="file-input-hidden" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="title">Project Title</label>
+          <input type="text" id="title" name="title" required class="form-input" placeholder="e.g. Kaia" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="status">Status</label>
+            <input type="text" id="status" name="status" required class="form-input" placeholder="e.g. In Development" />
+          </div>
+          <div class="form-group">
+            <label for="link">Project Link (Optional)</label>
+            <input type="url" id="link" name="link" class="form-input" placeholder="https://" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="stack">Tech Stack</label>
+          <input type="text" id="stack" name="stack" required class="form-input" placeholder="e.g. Angular, React Native, Nest.js" />
+        </div>
+
+        <div class="form-section-title">Role Details</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="role_en">Role (EN)</label>
+            <input type="text" id="role_en" name="role_en" required class="form-input" placeholder="e.g. Full-Stack Engineer" />
+          </div>
+          <div class="form-group">
+            <label for="role_fr">Role (FR)</label>
+            <input type="text" id="role_fr" name="role_fr" required class="form-input" placeholder="e.g. Ingénieur Full-Stack" />
+          </div>
+        </div>
+
+        <div class="form-section-title">Descriptions</div>
+        <div class="form-group">
+          <label for="description_en">Description (EN)</label>
+          <textarea id="description_en" name="description_en" required class="form-textarea" placeholder="Detailed description of the project..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="description_fr">Description (FR)</label>
+          <textarea id="description_fr" name="description_fr" required class="form-textarea" placeholder="Description détaillée du projet..."></textarea>
+        </div>
+
+      </form>
+    </div>
+    <div class="drawer-footer">
+      <button type="button" id="drawer-cancel-btn" class="btn-secondary">Cancel</button>
+      <button type="submit" form="project-form" id="submit-project-btn" class="btn-primary">Save Project</button>
+    </div>
+  </div>
+
+  <!-- Delete Modal -->
+  <div id="delete-modal" class="admin-modal-overlay">
+    <div class="admin-modal">
+      <h3 class="admin-modal-title">Delete Project</h3>
+      <p class="admin-modal-desc">Are you sure you want to permanently delete this project? This will also remove the image from storage.</p>
+      <div class="admin-modal-actions">
+        <button id="modal-cancel-btn" class="admin-modal-cancel">Cancel</button>
+        <button id="modal-confirm-btn" class="admin-modal-confirm">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    import { supabase } from '../../lib/supabase';
+
+    document.addEventListener('astro:page-load', () => {
+      const form = document.getElementById('project-form') as HTMLFormElement;
+      const projectsList = document.getElementById('projects-list');
+      
+      // Drawer elements
+      const drawer = document.getElementById('form-drawer');
+      const drawerOverlay = document.getElementById('form-drawer-overlay');
+      const openDrawerBtn = document.getElementById('open-drawer-btn');
+      const closeDrawerBtn = document.getElementById('close-drawer-btn');
+      const drawerCancelBtn = document.getElementById('drawer-cancel-btn');
+      const submitBtn = document.getElementById('submit-project-btn') as HTMLButtonElement;
+      const formTitle = document.getElementById('form-title');
+
+      // Image elements
+      const imageUpload = document.getElementById('image-upload') as HTMLInputElement;
+      const imagePreview = document.getElementById('image-preview') as HTMLDivElement;
+      const existingImageInput = document.getElementById('existing-image') as HTMLInputElement;
+
+      if (!form || !projectsList) return;
+
+      // Image Preview Logic
+      imageUpload.addEventListener('change', (e) => {
+        const file = (e.target as HTMLInputElement).files?.[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            imagePreview.innerHTML = `<img src="${e.target?.result}" alt="Preview" style="width: 100%; height: 100%; object-fit: cover;" />`;
+          };
+          reader.readAsDataURL(file);
+        } else {
+          imagePreview.innerHTML = `
+            <div class="preview-placeholder">
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              <span>Click to select an image</span>
+            </div>
+          `;
+        }
+      });
+
+      const fetchProjects = async () => {
+        const { data, error } = await supabase
+          .from('projects')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error(error);
+          projectsList.innerHTML = '<p style="color: #e74c3c; grid-column: 1 / -1;">Failed to load projects.</p>';
+          if ((window as any).showToast) (window as any).showToast("Failed to fetch projects", "error");
+          return;
+        }
+
+        if (data.length === 0) {
+          projectsList.innerHTML = '<p style="opacity: 0.5; grid-column: 1 / -1;">No projects added yet.</p>';
+          return;
+        }
+
+        projectsList.innerHTML = data.map(project => `
+          <div class="project-card">
+            <div class="project-img">
+              <img src="${project.image_url}" alt="${project.title}" />
+            </div>
+            <div class="project-info">
+              <span class="project-status">${project.status}</span>
+              <h3 class="project-title">${project.title}</h3>
+              <p class="project-stack">${project.stack}</p>
+            </div>
+            <div class="project-actions">
+              <button class="btn-icon btn-edit" data-id="${project.id}">Edit</button>
+              <button class="btn-icon danger btn-delete" data-id="${project.id}">Delete</button>
+            </div>
+          </div>
+        `).join('');
+
+        (window as any).projectsData = data;
+
+        // Custom Modal Logic
+        const deleteModal = document.getElementById('delete-modal');
+        const modalCancelBtn = document.getElementById('modal-cancel-btn');
+        const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+        let projectIdToDelete: string | null = null;
+        let imageUrlToDelete: string | null = null;
+
+        const closeDeleteModal = () => {
+          deleteModal?.classList.remove('active');
+          projectIdToDelete = null;
+          imageUrlToDelete = null;
+        };
+
+        modalCancelBtn?.addEventListener('click', closeDeleteModal);
+
+        modalConfirmBtn?.addEventListener('click', async () => {
+          if(projectIdToDelete) {
+            modalConfirmBtn.innerText = 'Deleting...';
+            modalConfirmBtn.style.opacity = '0.5';
+            
+            // If image is in supabase storage, we should ideally delete it too
+            // Format is usually: https://[project].supabase.co/storage/v1/object/public/portfolio-images/filename
+            if (imageUrlToDelete && imageUrlToDelete.includes('portfolio-images/')) {
+              const filename = imageUrlToDelete.split('portfolio-images/')[1];
+              if (filename) {
+                await supabase.storage.from('portfolio-images').remove([filename]);
+              }
+            }
+
+            const { error } = await supabase.from('projects').delete().eq('id', projectIdToDelete);
+            
+            modalConfirmBtn.innerText = 'Delete';
+            modalConfirmBtn.style.opacity = '1';
+            closeDeleteModal();
+            
+            if (error) {
+              console.error(error);
+              if ((window as any).showToast) (window as any).showToast("Failed to delete project", "error");
+            } else {
+              if ((window as any).showToast) (window as any).showToast("Project deleted successfully");
+              fetchProjects();
+            }
+          }
+        });
+
+        // Attach delete listeners
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const id = (e.target as HTMLButtonElement).getAttribute('data-id');
+            const project = ((window as any).projectsData || []).find((p: any) => p.id === id);
+            projectIdToDelete = id;
+            imageUrlToDelete = project?.image_url || null;
+            deleteModal?.classList.add('active');
+          });
+        });
+
+        // Attach edit listeners
+        document.querySelectorAll('.btn-edit').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const id = (e.target as HTMLButtonElement).getAttribute('data-id');
+            const projects = (window as any).projectsData || [];
+            const project = projects.find((p: any) => p.id === id);
+            
+            if(project) {
+              (document.getElementById('project-id') as HTMLInputElement).value = project.id;
+              existingImageInput.value = project.image_url;
+              
+              imagePreview.innerHTML = `<img src="${project.image_url}" alt="Preview" style="width: 100%; height: 100%; object-fit: cover;" />`;
+              imageUpload.required = false; // Not required when editing
+
+              ['title', 'status', 'link', 'stack', 'role_en', 'role_fr', 'description_en', 'description_fr'].forEach(key => {
+                const el = document.querySelector(`[name="${key}"]`) as HTMLInputElement | HTMLTextAreaElement;
+                if(el) {
+                  el.value = project[key] || '';
+                  if(el.classList.contains('form-textarea')) {
+                    autoResizeTextarea(el as HTMLTextAreaElement);
+                  }
+                }
+              });
+
+              formTitle!.innerText = 'Edit Project';
+              submitBtn.innerText = 'Update Project';
+              openDrawer();
+            }
+          });
+        });
+      };
+
+      const openDrawer = () => {
+        drawer?.classList.add('active');
+        drawerOverlay?.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      };
+      
+      const closeDrawer = () => {
+        drawer?.classList.remove('active');
+        drawerOverlay?.classList.remove('active');
+        document.body.style.overflow = '';
+        resetForm();
+      };
+
+      openDrawerBtn?.addEventListener('click', () => {
+        resetForm();
+        imageUpload.required = true; // Required when creating new
+        openDrawer();
+      });
+      closeDrawerBtn?.addEventListener('click', closeDrawer);
+      drawerCancelBtn?.addEventListener('click', closeDrawer);
+      drawerOverlay?.addEventListener('click', closeDrawer);
+
+      const resetForm = () => {
+        form.reset();
+        (document.getElementById('project-id') as HTMLInputElement).value = '';
+        existingImageInput.value = '';
+        formTitle!.innerText = 'Add New Project';
+        submitBtn.innerText = 'Save Project';
+        imagePreview.innerHTML = `
+          <div class="preview-placeholder">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            <span>Click to select an image</span>
+          </div>
+        `;
+        
+        document.querySelectorAll('.form-textarea').forEach(textarea => {
+          (textarea as HTMLTextAreaElement).style.height = '120px';
+        });
+      };
+
+      const autoResizeTextarea = (el: HTMLTextAreaElement) => {
+        el.style.height = '120px';
+        el.style.height = (el.scrollHeight) + 'px';
+      };
+
+      document.querySelectorAll('.form-textarea').forEach(textarea => {
+        textarea.addEventListener('input', (e) => {
+          autoResizeTextarea(e.target as HTMLTextAreaElement);
+        });
+      });
+
+      fetchProjects();
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        submitBtn.innerText = 'Uploading...';
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.5';
+
+        const formData = new FormData(form);
+        const newProject: any = {};
+        
+        // Extract basic fields
+        ['title', 'status', 'link', 'stack', 'role_en', 'role_fr', 'description_en', 'description_fr'].forEach(key => {
+          newProject[key] = formData.get(key)?.toString().trim() || null;
+        });
+
+        const idToUpdate = formData.get('id')?.toString();
+        let imageUrl = formData.get('existing_image')?.toString();
+
+        // Handle Image Upload
+        const imageFile = formData.get('image_file') as File;
+        if (imageFile && imageFile.size > 0) {
+          const fileExt = imageFile.name.split('.').pop();
+          const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+          const filePath = `${fileName}`;
+
+          const { data: uploadData, error: uploadError } = await supabase.storage
+            .from('portfolio-images')
+            .upload(filePath, imageFile);
+
+          if (uploadError) {
+            console.error("Upload error:", uploadError);
+            if ((window as any).showToast) (window as any).showToast("Image upload failed.", "error");
+            submitBtn.innerText = idToUpdate ? 'Update Project' : 'Save Project';
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+            return;
+          }
+
+          const { data: publicUrlData } = supabase.storage
+            .from('portfolio-images')
+            .getPublicUrl(filePath);
+            
+          imageUrl = publicUrlData.publicUrl;
+        }
+
+        if (!imageUrl) {
+          if ((window as any).showToast) (window as any).showToast("Image is required.", "error");
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = '1';
+          return;
+        }
+
+        newProject.image_url = imageUrl;
+
+        submitBtn.innerText = 'Saving DB...';
+
+        let dbError;
+        if (idToUpdate) {
+          const { error } = await supabase.from('projects').update(newProject).eq('id', idToUpdate);
+          dbError = error;
+        } else {
+          const { error } = await supabase.from('projects').insert([newProject]);
+          dbError = error;
+        }
+
+        submitBtn.innerText = idToUpdate ? 'Update Project' : 'Save Project';
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+
+        if (dbError) {
+          console.error(dbError);
+          if ((window as any).showToast) (window as any).showToast("Error saving project.", "error");
+        } else {
+          if ((window as any).showToast) (window as any).showToast(idToUpdate ? "Project updated successfully!" : "Project saved successfully!");
+          fetchProjects();
+          closeDrawer();
+        }
+      });
+    });
+  </script>
+
+  <style is:global>
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 48px;
+    }
+    .admin-title {
+      font-family: 'RufinaALT02-Regular', serif;
+      font-size: 2.5rem;
+      margin: 0 0 8px 0;
+      color: #111;
+    }
+    .admin-subtitle {
+      font-size: 0.95rem;
+      color: #111;
+      opacity: 0.6;
+      margin: 0;
+    }
+
+    .btn-primary {
+      background: #111;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .btn-primary:hover {
+      background: #333;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: #111;
+      border: 1px solid rgba(0,0,0,0.2);
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-secondary:hover {
+      background: #f0f0f0;
+    }
+
+    .admin-content {
+      background: transparent;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 32px;
+    }
+
+    .project-card {
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+    }
+    
+    .project-img {
+      width: 100%;
+      height: 200px;
+      background: #f0f0f0;
+      position: relative;
+    }
+    .project-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .project-info {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .project-status {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #27ae60;
+      margin-bottom: 8px;
+    }
+    .project-title {
+      font-size: 1.5rem;
+      margin: 0 0 8px 0;
+      color: #111;
+    }
+    .project-stack {
+      font-size: 0.9rem;
+      color: #666;
+      margin: 0;
+    }
+
+    .project-actions {
+      padding: 16px 24px;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .btn-icon {
+      background: transparent;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: #444;
+      transition: all 0.2s ease;
+    }
+    .btn-icon:hover {
+      background: #f0f0f0;
+      color: #111;
+    }
+    .btn-icon.danger {
+      color: #d32f2f;
+      border-color: rgba(211,47,47,0.2);
+    }
+    .btn-icon.danger:hover {
+      background: #ffebee;
+      border-color: #d32f2f;
+    }
+
+    /* Drawer Styles (Same as books) */
+    .admin-drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(4px);
+      z-index: 9998;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .admin-drawer-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .admin-drawer {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 100%;
+      max-width: 600px;
+      height: 100vh;
+      background: #fff;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+      transition: right 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    .admin-drawer.active {
+      right: 0;
+    }
+
+    .drawer-header {
+      padding: 32px 40px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+    }
+    .drawer-header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #111;
+    }
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #111;
+      opacity: 0.5;
+      transition: opacity 0.2s;
+    }
+    .btn-close:hover {
+      opacity: 1;
+    }
+
+    .drawer-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px;
+      background: #fafafa;
+    }
+
+    .drawer-footer {
+      padding: 24px 40px;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      background: #fff;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    /* Form Styles */
+    .admin-form {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .form-row {
+      display: flex;
+      gap: 24px;
+    }
+    .form-row > * {
+      flex: 1;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .form-group label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #555;
+    }
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      border: 1px solid rgba(0,0,0,0.15);
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-size: 1rem;
+      background: #fff;
+      color: #111;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      outline: none;
+      border-color: #111;
+      box-shadow: 0 0 0 3px rgba(17,17,17,0.05);
+    }
+    .form-textarea {
+      resize: none;
+      min-height: 120px;
+      line-height: 1.5;
+      overflow-y: hidden;
+    }
+    .form-section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #111;
+      margin-top: 16px;
+      margin-bottom: -8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    /* Image Upload Styles */
+    .image-upload-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .image-upload-label {
+      cursor: pointer;
+      display: block;
+      width: 100%;
+    }
+    .image-preview {
+      width: 100%;
+      height: 200px;
+      border: 2px dashed rgba(0,0,0,0.15);
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f9f9f9;
+      overflow: hidden;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    .image-preview:hover {
+      background: #f0f0f0;
+      border-color: rgba(0,0,0,0.3);
+    }
+    .preview-placeholder {
+      font-size: 0.9rem;
+      color: #888;
+      font-weight: 500;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .file-input-hidden {
+      display: none;
+    }
+
+    /* Modal styling directly inherited from admin/index.astro pattern */
+    .admin-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(4px);
+      z-index: 10000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .admin-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .admin-modal {
+      background: #fff;
+      padding: 32px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.1);
+      transform: translateY(20px) scale(0.95);
+      transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    .admin-modal-overlay.active .admin-modal {
+      transform: translateY(0) scale(1);
+    }
+    .admin-modal-title {
+      margin: 0 0 12px 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #111;
+    }
+    .admin-modal-desc {
+      margin: 0 0 24px 0;
+      font-size: 0.95rem;
+      color: #555;
+      line-height: 1.5;
+    }
+    .admin-modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+    .admin-modal-cancel, .admin-modal-confirm {
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .admin-modal-cancel {
+      background: transparent;
+      color: #555;
+    }
+    .admin-modal-cancel:hover {
+      background: #f0f0f0;
+      color: #111;
+    }
+    .admin-modal-confirm {
+      background: #d32f2f;
+      color: #fff;
+    }
+    .admin-modal-confirm:hover {
+      background: #b71c1c;
+      box-shadow: 0 4px 12px rgba(211,47,47,0.2);
+    }
+
+    @media (max-width: 768px) {
+      .form-row {
+        flex-direction: column;
+        gap: 24px;
+      }
+      .drawer-body, .drawer-header, .drawer-footer {
+        padding: 24px;
+      }
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</AdminLayout>

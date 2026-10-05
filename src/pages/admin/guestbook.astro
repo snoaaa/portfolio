@@ -1,0 +1,309 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+---
+
+<AdminLayout title="Guestbook Administration">
+  <div class="admin-header">
+    <div class="admin-header-left">
+      <h1 class="admin-title">Guestbook</h1>
+      <p class="admin-subtitle">Manage messages from your visitors.</p>
+    </div>
+  </div>
+
+  <div class="admin-content">
+    <div id="messages-list" class="messages-list">
+      <p style="opacity: 0.5;">Loading messages...</p>
+    </div>
+  </div>
+
+  <!-- Custom Delete Modal -->
+  <div id="delete-modal" class="admin-modal-overlay">
+    <div class="admin-modal">
+      <h3 class="admin-modal-title">Delete Message</h3>
+      <p class="admin-modal-desc">Are you sure you want to permanently delete this message? This action cannot be undone.</p>
+      <div class="admin-modal-actions">
+        <button id="modal-cancel-btn" class="admin-modal-cancel">Cancel</button>
+        <button id="modal-confirm-btn" class="admin-modal-confirm">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    import { supabase } from '../../lib/supabase';
+
+    document.addEventListener('astro:page-load', () => {
+      const messagesList = document.getElementById('messages-list');
+      
+      // Custom Modal Logic
+      const deleteModal = document.getElementById('delete-modal');
+      const modalCancelBtn = document.getElementById('modal-cancel-btn');
+      const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+      let messageIdToDelete: string | null = null;
+
+      if (!messagesList) return;
+
+      const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+      };
+
+      const fetchMessages = async () => {
+        const { data, error } = await supabase
+          .from('guestbook')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error(error);
+          messagesList.innerHTML = '<p style="color: #e74c3c;">Failed to load messages.</p>';
+          if ((window as any).showToast) (window as any).showToast("Failed to fetch messages", "error");
+          return;
+        }
+
+        if (data.length === 0) {
+          messagesList.innerHTML = '<p style="opacity: 0.5;">No messages found.</p>';
+          return;
+        }
+
+        messagesList.innerHTML = data.map(msg => `
+          <div class="message-item">
+            <div class="message-info">
+              <span class="message-meta">
+                <strong>${msg.name.replace(/</g, "&lt;")}</strong> • ${formatDate(msg.created_at)}
+              </span>
+              <p class="message-body">${msg.message.replace(/</g, "&lt;")}</p>
+            </div>
+            <div class="message-actions">
+              <button class="btn-icon danger btn-delete" data-id="${msg.id}">Delete</button>
+            </div>
+          </div>
+        `).join('');
+
+        // Attach delete listeners
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            messageIdToDelete = (e.target as HTMLButtonElement).getAttribute('data-id');
+            deleteModal?.classList.add('active');
+          });
+        });
+      };
+
+      const closeDeleteModal = () => {
+        deleteModal?.classList.remove('active');
+        messageIdToDelete = null;
+      };
+
+      modalCancelBtn?.addEventListener('click', closeDeleteModal);
+
+      modalConfirmBtn?.addEventListener('click', async () => {
+        if(messageIdToDelete) {
+          modalConfirmBtn.innerText = 'Deleting...';
+          modalConfirmBtn.style.opacity = '0.5';
+          
+          const { error } = await supabase.from('guestbook').delete().eq('id', messageIdToDelete);
+          
+          modalConfirmBtn.innerText = 'Delete';
+          modalConfirmBtn.style.opacity = '1';
+          closeDeleteModal();
+          
+          if (error) {
+            console.error(error);
+            if ((window as any).showToast) (window as any).showToast("Failed to delete message", "error");
+          } else {
+            if ((window as any).showToast) (window as any).showToast("Message deleted successfully");
+            fetchMessages();
+          }
+        }
+      });
+
+      // Initial fetch
+      fetchMessages();
+    });
+  </script>
+
+  <style is:global>
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 48px;
+    }
+    .admin-title {
+      font-family: 'RufinaALT02-Regular', serif;
+      font-size: 2.5rem;
+      margin: 0 0 8px 0;
+      color: #111;
+    }
+    .admin-subtitle {
+      font-size: 0.95rem;
+      color: #111;
+      opacity: 0.6;
+      margin: 0;
+    }
+
+    .admin-content {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+
+    .messages-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .message-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 24px;
+      background: #fafafa;
+      border: 1px solid rgba(0,0,0,0.05);
+      border-radius: 12px;
+      transition: all 0.2s ease;
+      gap: 24px;
+    }
+    .message-item:hover {
+      background: #fff;
+      border-color: rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+    .message-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+    .message-meta {
+      font-size: 0.85rem;
+      color: #666;
+    }
+    .message-meta strong {
+      color: #111;
+      font-size: 1rem;
+    }
+    .message-body {
+      font-size: 1rem;
+      color: #333;
+      margin: 0;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .message-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-icon {
+      background: transparent;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: #444;
+      transition: all 0.2s ease;
+    }
+    .btn-icon:hover {
+      background: #f0f0f0;
+      color: #111;
+    }
+    .btn-icon.danger {
+      color: #d32f2f;
+      border-color: rgba(211,47,47,0.2);
+    }
+    .btn-icon.danger:hover {
+      background: #ffebee;
+      border-color: #d32f2f;
+    }
+
+    /* Modal styling directly inherited from admin/index.astro pattern */
+    .admin-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(4px);
+      z-index: 10000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .admin-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .admin-modal {
+      background: #fff;
+      padding: 32px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.1);
+      transform: translateY(20px) scale(0.95);
+      transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    .admin-modal-overlay.active .admin-modal {
+      transform: translateY(0) scale(1);
+    }
+    .admin-modal-title {
+      margin: 0 0 12px 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #111;
+    }
+    .admin-modal-desc {
+      margin: 0 0 24px 0;
+      font-size: 0.95rem;
+      color: #555;
+      line-height: 1.5;
+    }
+    .admin-modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+    .admin-modal-cancel, .admin-modal-confirm {
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .admin-modal-cancel {
+      background: transparent;
+      color: #555;
+    }
+    .admin-modal-cancel:hover {
+      background: #f0f0f0;
+      color: #111;
+    }
+    .admin-modal-confirm {
+      background: #d32f2f;
+      color: #fff;
+    }
+    .admin-modal-confirm:hover {
+      background: #b71c1c;
+      box-shadow: 0 4px 12px rgba(211,47,47,0.2);
+    }
+    
+    @media (max-width: 768px) {
+      .message-item {
+        flex-direction: column;
+        padding: 16px;
+      }
+      .message-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+  </style>
+</AdminLayout>
