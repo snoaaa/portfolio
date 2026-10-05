@@ -153,7 +153,7 @@ const hasMore = totalCount > 10;
       return date.toLocaleDateString(isFr ? 'fr-FR' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     };
 
-    const createCard = (id: string, name: string, message: string, date: string) => {
+    const createCard = (id: string, name: string, message: string, date: string, animate: boolean = true) => {
       const card = document.createElement('div');
       card.className = 'gb-message-card';
       card.setAttribute('data-id', id);
@@ -177,23 +177,49 @@ const hasMore = totalCount > 10;
         </div>
       `;
       
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(10px)';
-      card.style.transition = 'all 0.5s ease';
-      card.style.backgroundColor = 'rgba(17, 17, 17, 0.05)';
-      
-      setTimeout(() => {
+      if (animate) {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(10px)';
+        card.style.transition = 'all 0.5s ease';
+        card.style.backgroundColor = 'rgba(17, 17, 17, 0.05)';
+        
+        setTimeout(() => {
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, 50);
+
+        setTimeout(() => {
+          card.style.backgroundColor = 'transparent';
+          card.style.transition = 'background-color 2s ease';
+        }, 2000);
+      } else {
         card.style.opacity = '1';
         card.style.transform = 'translateY(0)';
-      }, 50);
-
-      setTimeout(() => {
         card.style.backgroundColor = 'transparent';
-        card.style.transition = 'background-color 2s ease';
-      }, 2000);
+      }
 
       return card;
     };
+
+    const refreshMessages = async () => {
+      if (!messagesContainer) return;
+      const { data, error } = await supabase
+        .from('guestbook')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      if (!error && data && data.length > 0) {
+        messagesContainer.innerHTML = '';
+        if (emptyState) emptyState.style.display = 'none';
+        data.forEach(entry => {
+          const card = createCard(entry.id, entry.name, entry.message, formatDate(entry.created_at), false);
+          messagesContainer.appendChild(card);
+        });
+      }
+    };
+    
+    refreshMessages();
 
     supabase
       .channel('guestbook-live')
