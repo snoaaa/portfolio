@@ -292,10 +292,10 @@ const { title = "Admin Dashboard" } = Astro.props;
         <slot />
       </div>
     </div>
-
-    <!-- Global Toast Container -->
-    <div id="toast-container" class="toast-container"></div>
   </main>
+
+  <!-- Global Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
 
   <script>
     import { supabase } from '../lib/supabase';
