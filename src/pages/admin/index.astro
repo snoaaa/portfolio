@@ -1,0 +1,772 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+---
+
+<AdminLayout title="Reading List">
+  <style is:global>
+    /* Main Header */
+    .admin-page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    .admin-page-title {
+      font-family: 'RufinaALT02-Regular', serif;
+      font-size: 2rem;
+      margin: 0;
+      color: #111;
+    }
+    .btn-primary {
+      background: #111;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 28px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .btn-primary:hover {
+      background: #333;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    /* Books Data List */
+    .books-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .book-item {
+      display: flex;
+      flex-direction: column;
+      padding: 20px 24px;
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+      transition: all 0.2s ease;
+    }
+    @media (min-width: 768px) {
+      .book-item {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+    .book-item:hover {
+      border-color: rgba(0,0,0,0.12);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+      transform: translateY(-2px);
+    }
+    .book-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    @media (min-width: 768px) {
+      .book-info {
+        margin-bottom: 0;
+      }
+    }
+    .book-title {
+      font-family: 'RufinaALT02-Regular', serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #111;
+    }
+    .book-meta {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0.5;
+    }
+    .book-meta-badge {
+      padding: 6px 12px;
+      background: #f0f0f0;
+      border-radius: 9999px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: #444;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    
+    /* Action Buttons */
+    .book-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-icon {
+      background: #fafafa;
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 6px;
+      color: #333;
+      padding: 8px 16px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-icon:hover {
+      background: #eaeaea;
+      color: #111;
+    }
+    .btn-icon.danger {
+      color: #d32f2f;
+      background: #ffebee;
+      border-color: rgba(211,47,47,0.1);
+    }
+    .btn-icon.danger:hover {
+      background: #ffcdd2;
+    }
+
+    /* Slide-over Drawer for Form */
+    .admin-drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.2);
+      backdrop-filter: blur(2px);
+      z-index: 9998;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .admin-drawer-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .admin-drawer {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 100%;
+      max-width: 700px;
+      height: 100vh;
+      background: #fffdf1;
+      z-index: 9999;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      transition: right 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      box-shadow: -20px 0 60px rgba(0,0,0,0.1);
+      border-radius: 24px 0 0 24px;
+    }
+    .admin-drawer.active {
+      right: 0;
+    }
+    .drawer-header {
+      padding: 32px 40px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      border-radius: 24px 0 0 0;
+    }
+    .drawer-title {
+      font-family: 'RufinaALT02-Regular', serif;
+      font-size: 1.75rem;
+      margin: 0;
+    }
+    .drawer-close {
+      background: #f5f5f5;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      cursor: pointer;
+      color: #333;
+      transition: all 0.2s ease;
+    }
+    .drawer-close:hover {
+      background: #e0e0e0;
+      transform: rotate(90deg);
+    }
+    .drawer-body {
+      padding: 40px;
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+    
+    /* Form Styles inside Drawer */
+    .admin-form {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 640px) {
+      .form-row {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .form-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0.6;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      background-color: #fafafa;
+      padding: 14px 16px;
+      font-size: 0.95rem;
+      color: #111;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: #bbb;
+      background-color: #fff;
+      box-shadow: 0 0 0 4px rgba(17,17,17,0.05);
+    }
+    .form-textarea {
+      resize: none; /* Prevent manual resize since it auto-resizes */
+      min-height: 120px;
+      line-height: 1.5;
+      overflow: hidden; /* Hide scrollbar since it grows automatically */
+    }
+    .lang-section {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      padding-top: 24px;
+      border-top: 1px dashed rgba(0,0,0,0.1);
+    }
+    @media (min-width: 640px) {
+      .lang-section {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .lang-column {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .lang-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+      color: #111;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .lang-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      background-color: #111;
+    }
+    .drawer-footer {
+      padding: 24px 40px;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      background: #fff;
+      display: flex;
+      justify-content: flex-end;
+      gap: 16px;
+      align-items: center;
+    }
+
+    /* Modal Styles */
+    .admin-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 253, 241, 0.9);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .admin-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .admin-modal {
+      background: #fff;
+      border: none;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 450px;
+      width: 90%;
+      transform: translateY(20px);
+      transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.12);
+    }
+    .admin-modal-overlay.active .admin-modal {
+      transform: translateY(0);
+    }
+    .admin-modal-title {
+      font-family: 'RufinaALT02-Regular', serif;
+      font-size: 1.75rem;
+      margin: 0 0 12px 0;
+      color: #111;
+    }
+    .admin-modal-desc {
+      font-size: 0.95rem;
+      color: #555;
+      margin: 0 0 32px 0;
+      line-height: 1.5;
+    }
+    .admin-modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+    .admin-modal-cancel {
+      background: #f0f0f0;
+      border: none;
+      border-radius: 8px;
+      color: #333;
+      padding: 12px 24px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .admin-modal-cancel:hover {
+      background: #e0e0e0;
+    }
+    .admin-modal-confirm {
+      background: #d32f2f;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      padding: 12px 24px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(211,47,47,0.2);
+    }
+    .admin-modal-confirm:hover {
+      background: #b71c1c;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(211,47,47,0.3);
+    }
+  </style>
+
+  <!-- Page Header -->
+  <div class="admin-page-header ink-anim">
+    <h1 class="admin-page-title">Reading List</h1>
+    <button id="open-drawer-btn" class="btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      Add Book
+    </button>
+  </div>
+
+  <!-- Data Grid / List -->
+  <div id="books-list" class="books-list ink-anim" style="animation-delay: 0.1s;">
+    <p style="opacity: 0.5; font-size: 0.9rem; font-family: 'NeueHaasUnica', sans-serif;">Loading books...</p>
+  </div>
+
+  <!-- Slide-over Drawer -->
+  <div id="form-drawer-overlay" class="admin-drawer-overlay"></div>
+  <aside id="form-drawer" class="admin-drawer">
+    <div class="drawer-header">
+      <h2 id="form-title" class="drawer-title">Add New Book</h2>
+      <button id="close-drawer-btn" class="drawer-close">&times;</button>
+    </div>
+    
+    <div class="drawer-body" data-lenis-prevent>
+      <form id="add-book-form" class="admin-form">
+        <input type="hidden" name="id" id="book-id" />
+        
+        <!-- Shared Metadata -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="status">Reading Status *</label>
+            <select name="status" id="status" class="form-select" required>
+              <option value="completed">Past Read (Completed)</option>
+              <option value="reading">Currently Reading</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="author">Author *</label>
+            <input type="text" name="author" id="author" class="form-input" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="publisher">Publisher</label>
+            <input type="text" name="publisher" id="publisher" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="published_year">Year</label>
+            <select name="published_year" id="published_year" class="form-select">
+              <option value="">Unknown Year</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Bilingual Content -->
+        <div class="lang-section">
+          <!-- English Column -->
+          <div class="lang-column">
+            <h3 class="lang-title">English Version</h3>
+            <div class="form-group">
+              <label class="form-label">Title (EN) *</label>
+              <input type="text" name="title_en" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Genre (EN)</label>
+              <input type="text" name="genre_en" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Edition (EN)</label>
+              <input type="text" name="edition_en" class="form-input" />
+            </div>
+            <div class="form-group" id="desc-en-group" style="display: none;">
+              <label class="form-label">Description (EN) - For Currently Reading</label>
+              <textarea name="description_en" class="form-textarea"></textarea>
+            </div>
+            <div class="form-group" id="quote-en-group">
+              <label class="form-label">Quote (EN) - For Past Reads</label>
+              <textarea name="quote_en" class="form-textarea"></textarea>
+            </div>
+          </div>
+
+          <!-- French Column -->
+          <div class="lang-column">
+            <h3 class="lang-title">French Version</h3>
+            <div class="form-group">
+              <label class="form-label">Title (FR) *</label>
+              <input type="text" name="title_fr" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Genre (FR)</label>
+              <input type="text" name="genre_fr" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Edition (FR)</label>
+              <input type="text" name="edition_fr" class="form-input" />
+            </div>
+            <div class="form-group" id="desc-fr-group" style="display: none;">
+              <label class="form-label">Description (FR) - For Currently Reading</label>
+              <textarea name="description_fr" class="form-textarea"></textarea>
+            </div>
+            <div class="form-group" id="quote-fr-group">
+              <label class="form-label">Quote (FR) - For Past Reads</label>
+              <textarea name="quote_fr" class="form-textarea"></textarea>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="drawer-footer">
+      <span id="form-msg" style="font-size: 0.85rem; font-weight: 500; display: none; margin-right: auto;"></span>
+      <button type="button" id="drawer-cancel-btn" class="btn-icon">Cancel</button>
+      <button type="button" id="submit-book-btn" class="btn-primary">Save Book</button>
+    </div>
+  </aside>
+
+  <!-- Custom Delete Modal -->
+  <div id="delete-modal" class="admin-modal-overlay">
+    <div class="admin-modal">
+      <h3 class="admin-modal-title">Delete Book</h3>
+      <p class="admin-modal-desc">Are you sure you want to permanently delete this book? This action cannot be undone.</p>
+      <div class="admin-modal-actions">
+        <button id="modal-cancel-btn" class="admin-modal-cancel">Cancel</button>
+        <button id="modal-confirm-btn" class="admin-modal-confirm">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    import { supabase } from '../../lib/supabase';
+
+    document.addEventListener('astro:page-load', () => {
+      const form = document.getElementById('add-book-form') as HTMLFormElement;
+      const statusSelect = document.getElementById('status') as HTMLSelectElement;
+      const booksList = document.getElementById('books-list');
+      const yearSelect = document.getElementById('published_year') as HTMLSelectElement;
+      
+      // Populate Year Picker
+      if (yearSelect) {
+        const currentYear = new Date().getFullYear();
+        for (let y = currentYear; y >= 1900; y--) {
+          const option = document.createElement('option');
+          option.value = y.toString();
+          option.text = y.toString();
+          yearSelect.appendChild(option);
+        }
+      }
+      
+      // Drawer elements
+      const drawer = document.getElementById('form-drawer');
+      const drawerOverlay = document.getElementById('form-drawer-overlay');
+      const openDrawerBtn = document.getElementById('open-drawer-btn');
+      const closeDrawerBtn = document.getElementById('close-drawer-btn');
+      const drawerCancelBtn = document.getElementById('drawer-cancel-btn');
+      const submitBtn = document.getElementById('submit-book-btn') as HTMLButtonElement;
+      const msg = document.getElementById('form-msg');
+      const formTitle = document.getElementById('form-title');
+
+      if (!form || !booksList) return;
+
+      // Toggle Quote/Description fields based on Status
+      statusSelect.addEventListener('change', () => {
+        const isReading = statusSelect.value === 'reading';
+        document.getElementById('quote-en-group')!.style.display = isReading ? 'none' : 'flex';
+        document.getElementById('quote-fr-group')!.style.display = isReading ? 'none' : 'flex';
+        document.getElementById('desc-en-group')!.style.display = isReading ? 'flex' : 'none';
+        document.getElementById('desc-fr-group')!.style.display = isReading ? 'flex' : 'none';
+      });
+
+      const fetchBooks = async () => {
+        const { data, error } = await supabase
+          .from('reading_list')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error(error);
+          booksList.innerHTML = '<p style="color: #e74c3c;">Failed to load books.</p>';
+          if ((window as any).showToast) (window as any).showToast("Failed to fetch books", "error");
+          return;
+        }
+
+        if (data.length === 0) {
+          booksList.innerHTML = '<p style="opacity: 0.5;">No books added yet.</p>';
+          return;
+        }
+
+        booksList.innerHTML = data.map(book => `
+          <div class="book-item">
+            <div class="book-info">
+              <span class="book-meta-badge">${book.status === 'reading' ? 'Reading' : 'Completed'}</span>
+              <span class="book-title">${book.title_en}</span>
+              <span class="book-meta">
+                <span>By ${book.author}</span>
+                ${book.published_year ? `<span>• ${book.published_year}</span>` : ''}
+              </span>
+            </div>
+            <div class="book-actions">
+              <button class="btn-icon btn-edit" data-id="${book.id}">Edit</button>
+              <button class="btn-icon danger btn-delete" data-id="${book.id}">Delete</button>
+            </div>
+          </div>
+        `).join('');
+
+        // Store data to easily populate the form later
+        (window as any).booksData = data;
+
+        // Custom Modal Logic
+        const deleteModal = document.getElementById('delete-modal');
+        const modalCancelBtn = document.getElementById('modal-cancel-btn');
+        const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+        let bookIdToDelete: string | null = null;
+
+        const closeDeleteModal = () => {
+          deleteModal?.classList.remove('active');
+          bookIdToDelete = null;
+        };
+
+        modalCancelBtn?.addEventListener('click', closeDeleteModal);
+
+        modalConfirmBtn?.addEventListener('click', async () => {
+          if(bookIdToDelete) {
+            modalConfirmBtn.innerText = 'Deleting...';
+            modalConfirmBtn.style.opacity = '0.5';
+            const { error } = await supabase.from('reading_list').delete().eq('id', bookIdToDelete);
+            modalConfirmBtn.innerText = 'Delete';
+            modalConfirmBtn.style.opacity = '1';
+            closeDeleteModal();
+            
+            if (error) {
+              console.error(error);
+              if ((window as any).showToast) (window as any).showToast("Failed to delete book", "error");
+            } else {
+              if ((window as any).showToast) (window as any).showToast("Book deleted successfully");
+              fetchBooks();
+            }
+          }
+        });
+
+        // Attach delete listeners
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            bookIdToDelete = (e.target as HTMLButtonElement).getAttribute('data-id');
+            deleteModal?.classList.add('active');
+          });
+        });
+
+        // Attach edit listeners
+        document.querySelectorAll('.btn-edit').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const id = (e.target as HTMLButtonElement).getAttribute('data-id');
+            const books = (window as any).booksData || [];
+            const book = books.find((b: any) => b.id === id);
+            
+            if(book) {
+              // Populate form
+              (document.getElementById('book-id') as HTMLInputElement).value = book.id;
+              (document.getElementById('status') as HTMLSelectElement).value = book.status;
+              
+              // Trigger change event to show/hide correct fields
+              document.getElementById('status')?.dispatchEvent(new Event('change'));
+
+              // Fill standard inputs
+              ['author', 'publisher', 'published_year', 'title_en', 'title_fr', 'genre_en', 'genre_fr', 'edition_en', 'edition_fr', 'description_en', 'description_fr', 'quote_en', 'quote_fr'].forEach(key => {
+                const el = document.querySelector(`[name="${key}"]`) as HTMLInputElement | HTMLTextAreaElement;
+                if(el) {
+                  el.value = book[key] || '';
+                  // Trigger auto-resize if it's a textarea
+                  if(el.classList.contains('form-textarea')) {
+                    autoResizeTextarea(el as HTMLTextAreaElement);
+                  }
+                }
+              });
+
+              // UI updates
+              formTitle!.innerText = 'Edit Book';
+              submitBtn.innerText = 'Update Book';
+              openDrawer();
+            }
+          });
+        });
+      };
+
+      // Drawer Logic
+      const openDrawer = () => {
+        drawer?.classList.add('active');
+        drawerOverlay?.classList.add('active');
+        // Lock body scroll
+        document.body.style.overflow = 'hidden';
+      };
+      
+      const closeDrawer = () => {
+        drawer?.classList.remove('active');
+        drawerOverlay?.classList.remove('active');
+        // Restore body scroll
+        document.body.style.overflow = '';
+        resetForm();
+      };
+
+      openDrawerBtn?.addEventListener('click', openDrawer);
+      closeDrawerBtn?.addEventListener('click', closeDrawer);
+      drawerCancelBtn?.addEventListener('click', closeDrawer);
+      drawerOverlay?.addEventListener('click', closeDrawer);
+
+      // Cancel / Reset logic
+      const resetForm = () => {
+        form.reset();
+        (document.getElementById('book-id') as HTMLInputElement).value = '';
+        formTitle!.innerText = 'Add New Book';
+        submitBtn.innerText = 'Save Book';
+        document.getElementById('status')?.dispatchEvent(new Event('change'));
+        
+        // Reset textarea heights
+        document.querySelectorAll('.form-textarea').forEach(textarea => {
+          (textarea as HTMLTextAreaElement).style.height = '120px';
+        });
+      };
+
+      // Auto-resize Textareas
+      const autoResizeTextarea = (el: HTMLTextAreaElement) => {
+        el.style.height = '120px';
+        el.style.height = (el.scrollHeight) + 'px';
+      };
+
+      document.querySelectorAll('.form-textarea').forEach(textarea => {
+        textarea.addEventListener('input', (e) => {
+          autoResizeTextarea(e.target as HTMLTextAreaElement);
+        });
+      });
+
+      // Initial fetch
+      fetchBooks();
+
+      // Form submission
+      submitBtn?.addEventListener('click', async (e) => {
+        e.preventDefault();
+        
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        const formData = new FormData(form);
+        const newBook: any = Object.fromEntries(formData);
+        
+        // Convert year to number if provided
+        if (newBook.published_year) {
+          newBook.published_year = parseInt(newBook.published_year as string);
+        }
+
+        submitBtn.innerText = newBook.id ? 'Updating...' : 'Saving...';
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.5';
+
+        const idToUpdate = newBook.id;
+        delete newBook.id; // Don't try to insert/update the ID field explicitly if empty
+
+        let dbError;
+        if (idToUpdate) {
+          const { error } = await supabase.from('reading_list').update(newBook).eq('id', idToUpdate);
+          dbError = error;
+        } else {
+          const { error } = await supabase.from('reading_list').insert([newBook]);
+          dbError = error;
+        }
+
+        submitBtn.innerText = idToUpdate ? 'Update Book' : 'Save Book';
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+
+        if (dbError) {
+          console.error(dbError);
+          if ((window as any).showToast) {
+            (window as any).showToast("Error saving book. Make sure you have permission.", "error");
+          }
+        } else {
+          if ((window as any).showToast) {
+            (window as any).showToast(idToUpdate ? "Book updated successfully!" : "Book saved successfully!");
+          }
+          fetchBooks();
+          closeDrawer();
+        }
+      });
+    });
+  </script>
+</AdminLayout>
