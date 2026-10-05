@@ -1,82 +1,19 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-// Books Data Structure
-const currentlyReading = {
-  title: "The Body Keeps the Score: Brain, Mind, and Body in the Healing of Trauma",
-  author: "Bessel van der Kolk",
-  publisher: "Viking",
-  year: 2014,
-  edition: "1ère Édition",
-  genre: "Psychologie / Santé",
-  description: "Un regard inspirant et exhaustif sur les effets des traumatismes et sur les nouveaux traitements qui peuvent aider les individus à reprendre le contrôle de leur vie. Ce livre change fondamentalement notre façon de comprendre la réponse humaine au stress."
-};
+import { supabase } from "../../lib/supabase";
 
-const pastReads = [
-  {
-    title: "Things Fall Apart",
-    author: "Chinua Achebe",
-    publisher: "William Heinemann Ltd",
-    year: 1958,
-    edition: "1ère Édition",
-    genre: "Fiction Africaine",
-    quote: "Quand la souffrance frappe à ta porte et que tu lui dis qu'il n'y a pas de siège pour elle, elle te dit de ne pas t'inquiéter car elle a apporté son propre tabouret."
-  },
-  {
-    title: "The Psychology of Money",
-    author: "Morgan Housel",
-    publisher: "Harriman House",
-    year: 2020,
-    edition: "1ère Édition",
-    genre: "Finance",
-    quote: "Réussir avec l'argent a peu à voir avec votre intelligence et beaucoup à voir avec votre comportement."
-  },
-  {
-    title: "Thinking, Fast and Slow",
-    author: "Daniel Kahneman",
-    publisher: "Farrar, Straus and Giroux",
-    year: 2011,
-    edition: "1ère Édition",
-    genre: "Psychologie",
-    quote: "Rien dans la vie n'est aussi important que vous le pensez, pendant que vous y pensez."
-  },
-  {
-    title: "Shoe Dog",
-    author: "Phil Knight",
-    publisher: "Simon & Schuster",
-    year: 2016,
-    edition: "1ère Édition",
-    genre: "Biographie / Affaires",
-    quote: "Ne dites pas aux gens comment faire les choses, dites-leur quoi faire et laissez-les vous surprendre par leurs résultats."
-  },
-  {
-    title: "Sapiens: A Brief History of Humankind",
-    author: "Yuval Noah Harari",
-    publisher: "Harvill Secker",
-    year: 2011,
-    edition: "1ère Édition",
-    genre: "Histoire / Anthropologie",
-    quote: "L'histoire est quelque chose que très peu de gens ont fait pendant que tout le monde labourait les champs et portait des seaux d'eau."
-  },
-  {
-    title: "Americanah",
-    author: "Chimamanda Ngozi Adichie",
-    publisher: "Knopf",
-    year: 2013,
-    edition: "1ère Édition",
-    genre: "Fiction Contemporaine",
-    quote: "Si vous ne comprenez pas, posez des questions. Si vous êtes mal à l'aise de poser des questions, dites que vous êtes mal à l'aise de poser des questions, puis posez-les quand même."
-  },
-  {
-    title: "The Black Swan",
-    author: "Nassim Nicholas Taleb",
-    publisher: "Random House",
-    year: 2007,
-    edition: "2ème Édition",
-    genre: "Philosophie",
-    quote: "Rater un train n'est douloureux que si vous courez après !"
-  }
-];
+const { data: readingBooks } = await supabase
+  .from('reading_list')
+  .select('*')
+  .eq('status', 'reading')
+  .order('created_at', { ascending: false });
+
+const { data: pastReads } = await supabase
+  .from('reading_list')
+  .select('*')
+  .eq('status', 'completed')
+  .order('created_at', { ascending: false });
 ---
 
 <BaseLayout
@@ -238,67 +175,69 @@ const pastReads = [
     <div class="p-books l-wrapper" style="padding-top: 64px;">
       <section class="p-books__section">
         <h2 class="p-books__section-title ink-anim">Lecture en cours</h2>
-        <div class="p-books__current">
-          <div class="p-books__current-meta ink-anim">
-            <h2 class="p-books__current-title">{currentlyReading.title}</h2>
-            <p class="p-books__current-author">{currentlyReading.author}</p>
-            <div class="p-books__metadata">
-              <div class="p-books__metadata-item">
-                <span class="p-books__metadata-label">Genre</span>
-                <span>{currentlyReading.genre}</span>
-              </div>
-              <div class="p-books__metadata-item">
-                <span class="p-books__metadata-label">Éditeur</span>
-                <span>{currentlyReading.publisher}</span>
-              </div>
-              <div class="p-books__metadata-item">
-                <span class="p-books__metadata-label">Année</span>
-                <span>{currentlyReading.year}</span>
-              </div>
-              <div class="p-books__metadata-item">
-                <span class="p-books__metadata-label">Édition</span>
-                <span>{currentlyReading.edition}</span>
+        {readingBooks && readingBooks.length > 0 ? readingBooks.map((book) => (
+          <div class="p-books__current" style="margin-bottom: 48px;">
+            <div class="p-books__current-meta ink-anim">
+              <h2 class="p-books__current-title">{book.title_fr}</h2>
+              <p class="p-books__current-author">{book.author}</p>
+              <div class="p-books__metadata">
+                <div class="p-books__metadata-item">
+                  <span class="p-books__metadata-label">Genre</span>
+                  <span>{book.genre_fr || '-'}</span>
+                </div>
+                <div class="p-books__metadata-item">
+                  <span class="p-books__metadata-label">Éditeur</span>
+                  <span>{book.publisher || '-'}</span>
+                </div>
+                <div class="p-books__metadata-item">
+                  <span class="p-books__metadata-label">Année</span>
+                  <span>{book.published_year || '-'}</span>
+                </div>
+                <div class="p-books__metadata-item">
+                  <span class="p-books__metadata-label">Édition</span>
+                  <span>{book.edition_fr || '-'}</span>
+                </div>
               </div>
             </div>
+            <div class="p-books__current-desc ink-anim">
+              <p>{book.description_fr}</p>
+            </div>
           </div>
-          <div class="p-books__current-desc ink-anim">
-            <p>{currentlyReading.description}</p>
-          </div>
-        </div>
+        )) : <p style="opacity: 0.5;">Aucune lecture en cours.</p>}
       </section>
 
       <section class="p-books__section">
         <h2 class="p-books__section-title ink-anim">Lectures passées</h2>
         <div class="p-books__past-list">
-          {pastReads.map((book) => (
+          {pastReads && pastReads.length > 0 ? pastReads.map((book) => (
             <div class="p-books__past-item">
               <div class="p-books__past-meta ink-anim">
-                <h3 class="p-books__past-title">{book.title}</h3>
+                <h3 class="p-books__past-title">{book.title_fr}</h3>
                 <p class="text-base" style="font-weight: 500;">{book.author}</p>
                 <div class="p-books__metadata" style="margin-top: 8px; margin-bottom: 0;">
                   <div class="p-books__metadata-item">
-                     <span class="p-books__metadata-label">Genre</span>
-                    <span>{book.genre}</span>
+                    <span class="p-books__metadata-label">Genre</span>
+                    <span>{book.genre_fr || '-'}</span>
                   </div>
                   <div class="p-books__metadata-item">
                     <span class="p-books__metadata-label">Éditeur</span>
-                    <span>{book.publisher}</span>
+                    <span>{book.publisher || '-'}</span>
                   </div>
                   <div class="p-books__metadata-item">
                     <span class="p-books__metadata-label">Année</span>
-                    <span>{book.year}</span>
+                    <span>{book.published_year || '-'}</span>
                   </div>
                   <div class="p-books__metadata-item">
                     <span class="p-books__metadata-label">Édition</span>
-                    <span>{book.edition}</span>
+                    <span>{book.edition_fr || '-'}</span>
                   </div>
                 </div>
               </div>
               <div class="ink-anim" style="display: flex; align-items: center;">
-                <p class="p-books__past-quote">{book.quote}</p>
+                <p class="p-books__past-quote">{book.quote_fr}</p>
               </div>
             </div>
-          ))}
+          )) : <p style="opacity: 0.5;">Aucune lecture passée ajoutée pour le moment.</p>}
         </div>
       </section>
     </div>
