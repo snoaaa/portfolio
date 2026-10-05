@@ -18,8 +18,7 @@ const getNavLink = (path) => {
 
 <header class="header">
   <div class="header__logo">
-    <p class="header__logo-text ink-anim">ABRAHAM NOUMSI</p>
-    <span class="header__logo-label ink-anim">{isFr ? "INGÉNIERIE LOGICIELLE / SYSTÈMES D'INFORMATION" : "SOFTWARE ENGINEERING / INFORMATION SYSTEMS"}</span>
+    <p class="header__logo-text ink-anim" style="margin: 0; font-weight: bold;">ABRAHAM NOUMSI</p>
   </div>
   <button class="header__hamburger" aria-label="Menu" aria-expanded="false">
     <span></span>
@@ -61,6 +60,11 @@ const getNavLink = (path) => {
       <li class="header__list-item">
         <a class="text-base header__list-link" href={getNavLink('/contact')}>
           <span class="ink-anim">Contact</span>
+        </a>
+      </li>
+      <li class="header__list-item" style="margin-left: auto; padding-right: 16px;">
+        <a class="text-base header__list-link" style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: #111; border: 1px solid #111; padding: 4px 16px; border-radius: 99px; transition: all 0.2s; background: transparent;" href={getNavLink('/chess')} onmouseover="this.style.background='#111'; this.style.color='#fff';" onmouseout="this.style.background='transparent'; this.style.color='#111';">
+          <span class="ink-anim" style="color: inherit;">♞ {isFr ? 'Jouer aux Échecs' : 'Play Chess'}</span>
         </a>
       </li>
       <li class="header__list-item" style="margin-left: 24px; display: flex; align-items: center; gap: 8px;">

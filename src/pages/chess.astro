@@ -1,0 +1,770 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Play Chess | Abraham Noumsi"
+  pathname="/chess/"
+  showHeaderFooter={true}
+>
+  <style is:global>
+    @import 'chessground/assets/chessground.base.css';
+    @import 'chessground/assets/chessground.brown.css';
+    @import 'chessground/assets/chessground.cburnett.css';
+
+    /* Premium Page Layout */
+    .chess-page {
+      padding: 16px 0;
+      min-height: calc(100vh - 120px);
+      background: #fafafa;
+    }
+    
+    .chess-container {
+      display: grid;
+      gap: 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      grid-template-columns: 1fr;
+      grid-template-areas: 
+        "profile"
+        "board"
+        "sidebar";
+    }
+
+    .chess-board-wrapper {
+      grid-area: board;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .opponent-profile {
+      grid-area: profile;
+    }
+
+    .chess-sidebar {
+      grid-area: sidebar;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    @media(max-width: 1023px) {
+      .chess-page {
+        padding: 16px 0 40px 0;
+      }
+    }
+
+    @media(min-width: 1024px) {
+      .chess-container {
+        grid-template-columns: 1.5fr 1fr;
+        grid-template-areas: 
+          "board profile"
+          "board sidebar";
+        gap: 32px;
+        align-items: center;
+      }
+      .chess-board-wrapper {
+        margin: 0;
+        max-width: 100%;
+      }
+    }
+
+    /* Left Side: The Board */
+    .chess-board-wrapper {
+      flex: 1;
+      max-width: 550px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Overriding Chessground Defaults for our Custom Brand Theme */
+    .cg-wrap {
+      width: 100%;
+      min-height: 400px;
+      aspect-ratio: 1 / 1;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.1);
+      background: #fafafa; /* Light squares */
+    }
+    
+    /* Board Theme: Classic Premium Green/White for perfect piece contrast */
+    .cg-wrap cg-board {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="%23ebecd0"/><rect width="100" height="100" x="100" y="0" fill="%23779556"/><rect width="100" height="100" x="0" y="100" fill="%23779556"/></svg>') !important;
+      background-size: 25% 25% !important;
+      background-color: #ebecd0 !important;
+    }
+
+    .cg-wrap square.move-dest {
+      background: radial-gradient(rgba(20, 85, 30, 0.5) 22%, transparent 0) !important;
+    }
+    .cg-wrap square.premove-dest {
+      background: radial-gradient(rgba(20, 30, 85, 0.5) 22%, transparent 0) !important;
+    }
+    .cg-wrap square.oc.move-dest {
+      background: radial-gradient(transparent 0%, transparent 80%, rgba(20, 85, 30, 0.3) 80%) !important;
+    }
+    .cg-wrap square.last-move {
+      background-color: rgba(200, 200, 200, 0.3) !important;
+    }
+
+    /* Fixing the Pieces (Injecting Lichess Alpha Set from CDN) */
+    .cg-wrap piece.pawn.white { background-image: url('https://raw.githubusercontent.com/lichess-org/lila/master/public/piece/alpha/wP.svg'); }
+    .cg-wrap piece.knight.white { background-image: url('https://raw.githubusercontent.com/lichess-org/lila/master/public/piece/alpha/wN.svg'); }
+    .cg-wrap piece.bishop.white { background-image: url('https://raw.githubusercontent.com/lichess-org/lila/master/public/piece/alpha/wB.svg'); }
+    .cg-wrap piece.rook.white { background-image: url('https://raw.githubusercontent.com/lichess-org/lila/master/public/piece/alpha/wR.svg'); }
+    .cg-wrap piece.queen.white { background-image: url('https://raw.githubusercontent.com/lichess-org/lila/master/public/piece/alpha/wQ.svg'); }
+    .cg-wrap piece.king.white { background-image: url('https://raw.githubusercontent.com/lichess-org/lila/master/public/piece/alpha/wK.svg'); }
+    
+    .cg-wrap piece.pawn.black { background-image: url('https://raw.githubusercontent.com/lichess-org/lila/master/public/piece/alpha/bP.svg'); }
+    .cg-wrap piece.knight.black { background-image: url('https://raw.githubusercontent.com/lichess-org/lila/master/public/piece/alpha/bN.svg'); }
+    .cg-wrap piece.bishop.black { background-image: url('https://raw.githubusercontent.com/lichess-org/lila/master/public/piece/alpha/bB.svg'); }
+    .cg-wrap piece.rook.black { background-image: url('https://raw.githubusercontent.com/lichess-org/lila/master/public/piece/alpha/bR.svg'); }
+    .cg-wrap piece.queen.black { background-image: url('https://raw.githubusercontent.com/lichess-org/lila/master/public/piece/alpha/bQ.svg'); }
+    .cg-wrap piece.king.black { background-image: url('https://raw.githubusercontent.com/lichess-org/lila/master/public/piece/alpha/bK.svg'); }
+
+    /* Right Side: The AI Profile & Controls */
+    .opponent-profile {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .opponent-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid #111;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .opponent-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .ai-thinking-ring {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 2px dashed #111;
+      animation: spin 4s linear infinite;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    .opponent-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .opponent-name {
+      font-family: 'RufinaALT02-Regular', serif;
+      font-size: 1.5rem;
+      color: #111;
+      margin: 0;
+    }
+    
+    .opponent-status {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      color: #666;
+    }
+
+    /* Custom Chat Bubble */
+    .chat-bubble {
+      background: #111;
+      color: #fff;
+      padding: 16px 24px;
+      border-radius: 16px;
+      border-top-left-radius: 4px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      position: relative;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      width: fit-content;
+    }
+
+    .chat-bubble::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -10px;
+      width: 0;
+      height: 0;
+      border-top: 15px solid #111;
+      border-left: 15px solid transparent;
+    }
+
+    /* Move History */
+    .move-history {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .move-list {
+      display: none; /* Hidden by default, toggled via JS */
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding: 12px;
+      height: 120px;
+      overflow-y: auto;
+      font-size: 0.85rem;
+      font-family: monospace;
+      color: #333;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      gap: 8px;
+    }
+
+    .btn-toggle-history {
+      background: transparent;
+      border: none;
+      color: #666;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-align: left;
+      padding: 4px 0;
+      text-decoration: underline;
+    }
+    .btn-toggle-history:hover {
+      color: #111;
+    }
+
+    /* Controls UI */
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .control-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      color: #111;
+      opacity: 0.5;
+    }
+
+    .difficulty-selector {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .diff-btn {
+      background: transparent;
+      border: 1px solid rgba(0,0,0,0.1);
+      padding: 16px;
+      border-radius: 8px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #111;
+      transition: all 0.2s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .diff-btn:hover {
+      border-color: rgba(0,0,0,0.3);
+    }
+    
+    .diff-btn.active {
+      background: #111;
+      color: #fff;
+      border-color: #111;
+    }
+
+    .diff-desc {
+      font-size: 0.75rem;
+      font-weight: 400;
+      opacity: 0.7;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .color-btn {
+      flex: 1;
+      background: transparent;
+      border: 1px solid rgba(0,0,0,0.1);
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #111;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .color-btn:hover { border-color: rgba(0,0,0,0.3); }
+    .color-btn.active {
+      background: #111;
+      color: #fff !important;
+      border-color: #111;
+    }
+
+    .btn-start {
+      width: 100%;
+      background: #111;
+      color: #fff !important;
+      border: none;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: transform 0.2s;
+      margin-top: 16px;
+    }
+
+    .btn-start:hover {
+      transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+      width: 100%;
+      background: transparent;
+      color: #111 !important;
+      border: 1px solid #111;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 16px;
+    }
+    .btn-secondary:hover {
+      background: rgba(0,0,0,0.05);
+    }
+  </style>
+
+  <main class="chess-page">
+    <div class="page-header__wrapper l-wrapper" style="margin-bottom: 16px;">
+      <h1 class="text-6xl page-header__title ink-anim">Challenge Me</h1>
+      <p class="page-header__label text-lg ink-anim">
+        <span style="opacity: 0.5; margin-right: 8px;">></span>
+        <span class="js-typewriter" data-strings='["Beat my AI", "Good luck.", "Show me your moves."]'>Beat my AI</span><span class="typewriter-cursor"></span>
+      </p>
+    </div>
+
+    <div class="chess-container ink-anim">
+      
+      <!-- AI Profile (Always on top for mobile) -->
+      <div class="opponent-profile">
+        <div class="opponent-avatar">
+          <div id="ai-ring" class="ai-thinking-ring"></div>
+          <!-- Professional Male Avatar -->
+          <img src="https://api.dicebear.com/7.x/notionists/svg?seed=John&backgroundColor=e2e8f0" alt="Abraham AI" />
+        </div>
+        <div class="opponent-info">
+          <h3 class="opponent-name">Abraham AI</h3>
+          <span id="ai-status" class="opponent-status">Waiting for game...</span>
+          <div id="ai-chat" class="chat-bubble">
+            "Let's see what you've got."
+          </div>
+        </div>
+      </div>
+
+      <!-- The Board -->
+      <div class="chess-board-wrapper">
+        <div id="cg-board" class="cg-wrap"></div>
+      </div>
+
+      <!-- Chess Sidebar (Controls) -->
+      <div class="chess-sidebar">
+        
+        <!-- Controls -->
+        <div class="control-group" style="margin-top: 16px;">
+          <span class="control-label">Play As</span>
+          <div class="action-row">
+            <button class="color-btn active" data-color="white">
+              <div style="width: 12px; height: 12px; background: #fafafa; border: 1px solid #111; border-radius: 2px;"></div> White
+            </button>
+            <button class="color-btn" data-color="black">
+              <div style="width: 12px; height: 12px; background: #111; border: 1px solid #111; border-radius: 2px;"></div> Black
+            </button>
+          </div>
+          <div id="pre-game-actions">
+            <button id="btn-start" class="btn-start">Start Game</button>
+          </div>
+          <div id="in-game-actions" style="display: none;">
+            <button id="btn-resign" class="btn-secondary">Resign Match</button>
+          </div>
+          <div id="post-game-actions" style="display: none;">
+            <button id="btn-rematch" class="btn-start">Play Again</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script>
+    import { Chessground } from 'chessground';
+    import { Chess } from 'chess.js';
+    
+    const initChess = () => {
+      console.log('INIT CHESS CALLED');
+      const boardContainer = document.getElementById('cg-board');
+      console.log('boardContainer found:', !!boardContainer);
+      if (!boardContainer) return;
+
+      let game = new Chess();
+      console.log('Chess instance created');
+      let board = null;
+      let playerColor = 'white';
+      let isPlaying = false; // Wait for manual start
+      let typeWriterTimeout = null;
+
+      // DOM Elements
+      const aiRing = document.getElementById('ai-ring');
+      const aiStatus = document.getElementById('ai-status');
+      const aiChat = document.getElementById('ai-chat');
+      const btnStart = document.getElementById('btn-start');
+      const btnResign = document.getElementById('btn-resign');
+      const btnRematch = document.getElementById('btn-rematch');
+      
+      const preGameActions = document.getElementById('pre-game-actions');
+      const inGameActions = document.getElementById('in-game-actions');
+      const postGameActions = document.getElementById('post-game-actions');
+      
+      const colorBtns = document.querySelectorAll('.color-btn');
+
+      const chatMessages = {
+        start: ["Let's see what you've got.", "Good luck. You'll need it.", "I hope you've been practicing."],
+        thinking: ["Calculating 14 million futures...", "Analyzing...", "Interesting move..."],
+        check: ["Watch out.", "Check.", "You sure about that?"],
+        win: ["Checkmate. I win.", "Game over. I told you I was good.", "Better luck next time!"],
+        lose: ["Impossible.", "You actually won... impressive.", "Okay, you're hired."],
+        draw: ["A draw? I'll take it.", "Stalemate. Well played.", "Nobody wins this time."],
+        resign: ["Giving up already?", "Resignation accepted.", "Too tough for you?"]
+      };
+
+      const setChat = (type) => {
+        if (!aiChat) return;
+        const msgs = chatMessages[type];
+        const newMsg = `"${msgs[Math.floor(Math.random() * msgs.length)]}"`;
+        
+        clearTimeout(typeWriterTimeout);
+        
+        let currentText = aiChat.innerText;
+        let isDeleting = true;
+        let i = currentText.length;
+        let j = 0;
+
+        const animateChat = () => {
+          if (isDeleting) {
+            if (i > 0) {
+              aiChat.innerText = currentText.substring(0, i - 1) + '█';
+              i--;
+              typeWriterTimeout = setTimeout(animateChat, 15);
+            } else {
+              isDeleting = false;
+              aiChat.innerText = '█';
+              typeWriterTimeout = setTimeout(animateChat, 200); // pause before typing
+            }
+          } else {
+            if (j < newMsg.length) {
+              aiChat.innerText = newMsg.substring(0, j + 1) + '█';
+              j++;
+              typeWriterTimeout = setTimeout(animateChat, 30);
+            } else {
+              aiChat.innerText = newMsg; // remove cursor at the end
+            }
+          }
+        };
+        
+        animateChat();
+      };
+
+      const playSound = (type) => {
+        // High quality Lichess sounds via CDN
+        const audio = new Audio(`https://raw.githubusercontent.com/lichess-org/lila/master/public/sound/standard/${type}.mp3`);
+        audio.play().catch(e => console.log('Audio blocked by browser policy until interaction:', e));
+      };
+
+      const executeMove = (orig, dest) => {
+        let moveResult = null;
+        try {
+          moveResult = game.move({ from: orig, to: dest, promotion: 'q' });
+        } catch (e) {
+          return false;
+        }
+
+        if (moveResult) {
+          if (game.isCheckmate() || game.isCheck()) playSound('Check');
+          else if (moveResult.flags.includes('c') || moveResult.flags.includes('e')) playSound('Capture');
+          else playSound('Move');
+          
+          return true;
+        }
+        return false;
+      };
+
+      const onMove = (orig, dest) => {
+        const validMove = executeMove(orig, dest);
+        if (validMove) {
+          board.set({ fen: game.fen() });
+          checkGameState();
+          if (isPlaying && game.turn() !== playerColor[0]) {
+            setTimeout(makeAiMove, 500); // 0.5s pause for human-like pacing without freezing
+          }
+        } else {
+          // Invalid move, revert board
+          board.set({ fen: game.fen() });
+        }
+      };
+
+      console.log('Initializing Chessground...');
+      try {
+        // Critical Fix: Initializing with viewOnly: false ensures DOM drag listeners are attached.
+        // We lock the board state by providing an empty 'dests' map when isPlaying is false.
+        board = Chessground(boardContainer, {
+          viewOnly: false,
+          coordinates: false,
+          fen: game.fen(),
+          animation: { enabled: true, duration: 250 },
+          movable: {
+            color: 'white',
+            free: false,
+            showDests: true, // PRO FEATURE: Shows dots where piece can move
+            dests: new Map(),
+            events: { after: onMove }
+          }
+        });
+        console.log('Chessground initialized successfully');
+      } catch (err) {
+        console.error('Error initializing Chessground:', err);
+      }
+
+      const updateMovable = () => {
+        const turnColor = game.turn() === 'w' ? 'white' : 'black';
+        const dests = new Map();
+        
+        if (isPlaying && turnColor === playerColor) {
+          game.moves({ verbose: true }).forEach(m => {
+            if (!dests.has(m.from)) dests.set(m.from, []);
+            dests.get(m.from).push(m.to);
+          });
+        }
+
+        board.set({
+          turnColor: turnColor,
+          movable: {
+            color: turnColor,
+            free: false,
+            showDests: true,
+            dests: dests,
+            events: { after: onMove }
+          }
+        });
+      };
+
+      // Set initial move highlights
+      updateMovable();
+
+      const setGameOver = (reason) => {
+        isPlaying = false;
+        if(preGameActions) preGameActions.style.display = 'none';
+        inGameActions.style.display = 'none';
+        postGameActions.style.display = 'block';
+        board.set({ viewOnly: true });
+        
+        if (reason === 'resign') {
+          setChat('resign');
+          if(aiStatus) aiStatus.innerText = "Game Over - You Resigned";
+        }
+        else if (reason === 'win') {
+          setChat('lose');
+          if(aiStatus) aiStatus.innerText = "Game Over - You Won!";
+        }
+        else if (reason === 'lose') {
+          setChat('win');
+          if(aiStatus) aiStatus.innerText = "Game Over - Checkmate";
+        }
+        else if (reason === 'draw') {
+          setChat('draw');
+          if(aiStatus) aiStatus.innerText = "Game Over - Draw";
+        }
+      };
+
+      const checkGameState = () => {
+        if (game.isCheckmate()) {
+          if (game.turn() === playerColor[0]) setGameOver('lose');
+          else setGameOver('win');
+        } else if (game.isDraw() || game.isStalemate()) {
+          setGameOver('draw');
+        } else if (game.isCheck()) {
+          setChat('check');
+          updateMovable();
+        } else {
+          updateMovable();
+        }
+      };
+
+      // Very Simple Custom AI Engine (Minimax with Alpha Beta)
+      const pieceValues = { p: 10, n: 30, b: 30, r: 50, q: 90, k: 900 };
+      
+      const evaluateBoard = (g) => {
+        let totalEvaluation = 0;
+        const boardState = g.board();
+        for (let i = 0; i < 8; i++) {
+          for (let j = 0; j < 8; j++) {
+            const piece = boardState[i][j];
+            if (piece) {
+              const val = pieceValues[piece.type] || 0;
+              totalEvaluation += piece.color === 'w' ? val : -val;
+            }
+          }
+        }
+        return totalEvaluation;
+      };
+
+      const minimax = (g, depth, alpha, beta, isMaximizing) => {
+        if (depth === 0) return evaluateBoard(g);
+
+        const moves = g.moves({ verbose: true });
+        if (isMaximizing) {
+          let bestVal = -9999;
+          for (let i = 0; i < moves.length; i++) {
+            g.move(moves[i]);
+            bestVal = Math.max(bestVal, minimax(g, depth - 1, alpha, beta, !isMaximizing));
+            g.undo();
+            alpha = Math.max(alpha, bestVal);
+            if (beta <= alpha) break;
+          }
+          return bestVal;
+        } else {
+          let bestVal = 9999;
+          for (let i = 0; i < moves.length; i++) {
+            g.move(moves[i]);
+            bestVal = Math.min(bestVal, minimax(g, depth - 1, alpha, beta, !isMaximizing));
+            g.undo();
+            beta = Math.min(beta, bestVal);
+            if (beta <= alpha) break;
+          }
+          return bestVal;
+        }
+      };
+
+      const makeAiMove = () => {
+        if (!isPlaying || game.isGameOver()) return;
+        
+        if (aiRing) aiRing.style.opacity = '1';
+        if (aiStatus) aiStatus.innerText = "Calculating...";
+        
+        // Let UI update
+        setTimeout(() => {
+          const moves = game.moves({ verbose: true });
+          let bestMove = moves[Math.floor(Math.random() * moves.length)];
+
+          // Highest optimal model (Depth 3 Alpha-Beta Minimax)
+          let searchDepth = 3;
+
+          if (searchDepth > 0) {
+            let bestVal = game.turn() === 'w' ? -9999 : 9999;
+            for (let i = 0; i < moves.length; i++) {
+              game.move(moves[i]);
+              const boardVal = minimax(game, searchDepth - 1, -10000, 10000, game.turn() === 'w');
+              game.undo();
+              
+              if (game.turn() === 'w') {
+                if (boardVal > bestVal) { bestVal = boardVal; bestMove = moves[i]; }
+              } else {
+                if (boardVal < bestVal) { bestVal = boardVal; bestMove = moves[i]; }
+              }
+            }
+          }
+
+          executeMove(bestMove.from, bestMove.to);
+          board.set({ fen: game.fen() });
+          
+          if (aiRing) aiRing.style.opacity = '0';
+          if (aiStatus) aiStatus.innerText = "Waiting for you...";
+          
+          checkGameState();
+        }, 100);
+      };
+
+      // Color selector triggers a new game instantly
+      colorBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          colorBtns.forEach(b => b.classList.remove('active'));
+          const target = e.currentTarget;
+          target.classList.add('active');
+          playerColor = target.getAttribute('data-color');
+          restartGame();
+        });
+      });
+
+      // Restart Game Flow
+      const restartGame = () => {
+        game = new Chess();
+        isPlaying = true;
+        
+        if(preGameActions) preGameActions.style.display = 'none';
+        postGameActions.style.display = 'none';
+        inGameActions.style.display = 'block';
+
+        board.set({
+          fen: game.fen(),
+          orientation: playerColor,
+          viewOnly: false
+        });
+
+        if (aiStatus) aiStatus.innerText = "Waiting for you...";
+        setChat('start');
+
+        updateMovable();
+
+        if (playerColor === 'black') {
+          setTimeout(makeAiMove, 500);
+        }
+      };
+
+      btnStart?.addEventListener('click', restartGame);
+      btnRematch?.addEventListener('click', restartGame);
+      
+      btnResign?.addEventListener('click', () => {
+        if (isPlaying) setGameOver('resign');
+      });
+
+      // Move History Toggle Logic
+    };
+
+    document.addEventListener('astro:page-load', () => {
+      // Small timeout to ensure DOM is fully swapped
+      setTimeout(initChess, 50);
+    });
+  </script>
+</BaseLayout>
