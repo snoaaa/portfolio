@@ -82,7 +82,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     /* Overriding Chessground Defaults for our Custom Brand Theme */
     .cg-wrap {
       width: 100%;
-      min-height: 400px;
       aspect-ratio: 1 / 1;
       border-radius: 8px;
       overflow: hidden;
@@ -507,12 +506,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         animateChat();
       };
 
-      const playSound = (type) => {
-        // High quality Lichess sounds via CDN
-        const audio = new Audio(`https://raw.githubusercontent.com/lichess-org/lila/master/public/sound/standard/${type}.mp3`);
-        audio.play().catch(e => console.log('Audio blocked by browser policy until interaction:', e));
-      };
-
       const executeMove = (orig, dest) => {
         let moveResult = null;
         try {
@@ -522,10 +515,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         }
 
         if (moveResult) {
-          if (game.isCheckmate() || game.isCheck()) playSound('Check');
-          else if (moveResult.flags.includes('c') || moveResult.flags.includes('e')) playSound('Capture');
-          else playSound('Move');
-          
           return true;
         }
         return false;
