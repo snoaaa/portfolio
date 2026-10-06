@@ -24,5 +24,6 @@ export default defineConfig({
   },
 
   integrations: [sitemap()],
+  output: 'server',
   adapter: vercel()
 });

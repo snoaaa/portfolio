@@ -239,7 +239,7 @@ async function Ae(e, t) {
   try {
     const n = new Headers(t?.headers);
     for (const [c, l] of Object.entries($)) n.set(c, l);
-    const o = await fetch(e, { ...t, headers: n }),
+    const o = await fetch(e, { ...t, headers: n, cache: "no-store" }),
       i = (o.headers.get("content-type") ?? "").split(";", 1)[0].trim();
     return i !== "text/html" && i !== "application/xhtml+xml"
       ? null
