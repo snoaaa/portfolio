@@ -675,7 +675,10 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
             btnEl.innerText = 'Updating...';
             btnEl.style.opacity = '0.5';
             
-            const { error } = await supabase.from('reading_list').update({ status: 'completed' }).eq('id', id);
+            const { error } = await supabase.from('reading_list').update({ 
+              status: 'completed',
+              created_at: new Date().toISOString()
+            }).eq('id', id);
             if (error) {
               console.error(error);
               if ((window as any).showToast) (window as any).showToast("Failed to update status", "error");
@@ -765,13 +768,20 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
 
         // Auto-complete previous reading book
         if (newBook.status === 'reading') {
-          let query = supabase.from('reading_list').update({ status: 'completed' }).eq('status', 'reading');
+          let query = supabase.from('reading_list').update({ 
+            status: 'completed',
+            created_at: new Date().toISOString()
+          }).eq('status', 'reading');
           if (idToUpdate) query = query.neq('id', idToUpdate);
           await query;
         }
 
         let dbError;
         if (idToUpdate) {
+          const existingBook = ((window as any).booksData || []).find((b: any) => b.id === idToUpdate);
+          if (existingBook && existingBook.status === 'reading' && newBook.status === 'completed') {
+            newBook.created_at = new Date().toISOString();
+          }
           const { error } = await supabase.from('reading_list').update(newBook).eq('id', idToUpdate);
           dbError = error;
         } else {
