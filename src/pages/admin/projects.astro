@@ -113,7 +113,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
   <script>
     import { supabase } from '../../lib/supabase';
 
-    document.addEventListener('astro:page-load', () => {
+    const initAdmin = () => {
       const form = document.getElementById('project-form') as HTMLFormElement;
       const projectsList = document.getElementById('projects-list');
       
@@ -413,7 +413,9 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
           closeDrawer();
         }
       });
-    });
+    };
+    initAdmin();
+    document.addEventListener('astro:page-load', initAdmin);
   </script>
 
   <style is:global>
