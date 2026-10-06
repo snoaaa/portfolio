@@ -515,7 +515,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
   <script>
     import { supabase } from '../../lib/supabase';
 
-    const initAdmin = () => {
+    document.addEventListener('astro:page-load', () => {
       const form = document.getElementById('add-book-form') as HTMLFormElement;
       const statusSelect = document.getElementById('status') as HTMLSelectElement;
       const booksList = document.getElementById('books-list');
@@ -583,6 +583,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
             </div>
             <div class="book-actions">
               <button class="btn-icon btn-edit" data-id="${book.id}">Edit</button>
+              ${book.status === 'reading' ? `<button class="btn-icon btn-mark-read" data-id="${book.id}" style="color: #2e7d32; border-color: rgba(46, 125, 50, 0.2); background: #e8f5e9;">Mark as Read</button>` : ''}
               <button class="btn-icon danger btn-delete" data-id="${book.id}">Delete</button>
             </div>
           </div>
@@ -665,6 +666,27 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
             }
           });
         });
+
+        // Attach mark as read listeners
+        document.querySelectorAll('.btn-mark-read').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            const btnEl = e.target as HTMLButtonElement;
+            const id = btnEl.getAttribute('data-id');
+            btnEl.innerText = 'Updating...';
+            btnEl.style.opacity = '0.5';
+            
+            const { error } = await supabase.from('reading_list').update({ status: 'completed' }).eq('id', id);
+            if (error) {
+              console.error(error);
+              if ((window as any).showToast) (window as any).showToast("Failed to update status", "error");
+              btnEl.innerText = 'Mark as Read';
+              btnEl.style.opacity = '1';
+            } else {
+              if ((window as any).showToast) (window as any).showToast("Marked as read successfully!");
+              fetchBooks();
+            }
+          });
+        });
       };
 
       // Drawer Logic
@@ -741,6 +763,13 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
         const idToUpdate = newBook.id;
         delete newBook.id; // Don't try to insert/update the ID field explicitly if empty
 
+        // Auto-complete previous reading book
+        if (newBook.status === 'reading') {
+          let query = supabase.from('reading_list').update({ status: 'completed' }).eq('status', 'reading');
+          if (idToUpdate) query = query.neq('id', idToUpdate);
+          await query;
+        }
+
         let dbError;
         if (idToUpdate) {
           const { error } = await supabase.from('reading_list').update(newBook).eq('id', idToUpdate);
@@ -767,8 +796,6 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
           closeDrawer();
         }
       });
-    };
-    initAdmin();
-    document.addEventListener('astro:page-load', initAdmin);
+    });
   </script>
 </AdminLayout>

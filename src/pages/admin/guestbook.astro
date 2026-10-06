@@ -31,7 +31,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
   <script>
     import { supabase } from '../../lib/supabase';
 
-    const initAdmin = () => {
+    document.addEventListener('astro:page-load', () => {
       const messagesList = document.getElementById('messages-list');
       
       // Custom Modal Logic
@@ -118,9 +118,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
 
       // Initial fetch
       fetchMessages();
-    };
-    initAdmin();
-    document.addEventListener('astro:page-load', initAdmin);
+    });
   </script>
 
   <style is:global>
