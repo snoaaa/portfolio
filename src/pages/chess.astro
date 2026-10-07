@@ -138,12 +138,24 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       border: 2px solid #111;
       overflow: hidden;
       position: relative;
+      transition: all 0.3s ease;
     }
     
     .opponent-avatar img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: filter 0.3s ease;
+    }
+
+    .opponent-avatar.overdrive {
+      border-color: #dc2626;
+      box-shadow: 0 0 25px rgba(220, 38, 38, 0.4);
+      transform: scale(1.05);
+    }
+
+    .opponent-avatar.overdrive img {
+      filter: sepia(0.8) hue-rotate(-15deg) saturate(2) contrast(1.2);
     }
 
     .ai-thinking-ring {
@@ -153,7 +165,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       border: 2px dashed #111;
       animation: spin 4s linear infinite;
       opacity: 0;
-      transition: opacity 0.3s;
+      transition: opacity 0.3s, border-color 0.3s;
+    }
+    
+    .ai-thinking-ring.overdrive {
+      border-color: #dc2626;
+      border-width: 3px;
+      animation: spin 1s linear infinite;
     }
 
     @keyframes spin {
@@ -444,9 +462,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       let playerColor = 'white';
       let isPlaying = false; // Wait for manual start
       let typeWriterTimeout = null;
+      let currentBlinkInterval = null;
+      let calculationInterval = null;
 
       // DOM Elements
       const aiRing = document.getElementById('ai-ring');
+      const aiAvatar = document.querySelector('.opponent-avatar');
       const aiStatus = document.getElementById('ai-status');
       const aiChat = document.getElementById('ai-chat');
       const btnStart = document.getElementById('btn-start');
@@ -475,6 +496,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         const newMsg = `"${msgs[Math.floor(Math.random() * msgs.length)]}"`;
         
         clearTimeout(typeWriterTimeout);
+        if (currentBlinkInterval) clearInterval(currentBlinkInterval);
         
         let currentText = aiChat.innerText;
         let isDeleting = true;
@@ -498,7 +520,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
               j++;
               typeWriterTimeout = setTimeout(animateChat, 30);
             } else {
-              aiChat.innerText = newMsg; // remove cursor at the end
+              if (engineIsThinking) {
+                let cursorVisible = true;
+                currentBlinkInterval = setInterval(() => {
+                  aiChat.innerText = cursorVisible ? newMsg + '█' : newMsg;
+                  cursorVisible = !cursorVisible;
+                }, 400);
+              } else {
+                aiChat.innerText = newMsg; // remove cursor at the end
+              }
             }
           }
         };
@@ -647,11 +677,21 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             executeMove(from, to);
             board.set({ fen: game.fen() });
             
-            if (aiRing) aiRing.style.opacity = '0';
+            engineIsThinking = false;
+            if (currentBlinkInterval) {
+              clearInterval(currentBlinkInterval);
+              aiChat.innerText = aiChat.innerText.replace('█', ''); // Cleanup blinking cursor
+            }
+            if (calculationInterval) clearInterval(calculationInterval);
+            
+            if (aiRing) {
+              aiRing.style.opacity = '0';
+              aiRing.classList.remove('overdrive');
+            }
+            if (aiAvatar) aiAvatar.classList.remove('overdrive');
             if (aiStatus) aiStatus.innerText = "Waiting for you...";
             
             checkGameState();
-            engineIsThinking = false;
           }
         }
       };
@@ -660,8 +700,23 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         if (!isPlaying || game.isGameOver() || engineIsThinking) return;
         
         engineIsThinking = true;
-        if (aiRing) aiRing.style.opacity = '1';
-        if (aiStatus) aiStatus.innerText = "Calculating...";
+        if (aiRing) {
+          aiRing.style.opacity = '1';
+          aiRing.classList.add('overdrive');
+        }
+        if (aiAvatar) aiAvatar.classList.add('overdrive');
+        
+        if (calculationInterval) clearInterval(calculationInterval);
+        let dots = 0;
+        if (aiStatus) {
+           aiStatus.innerText = "CALCULATING";
+           calculationInterval = setInterval(() => {
+             dots = (dots + 1) % 4;
+             aiStatus.innerText = "CALCULATING" + ".".repeat(dots);
+           }, 300);
+        }
+        
+        setChat('thinking');
         
         // Let the UI update the text and ring, then ask Stockfish to compute
         setTimeout(() => {
