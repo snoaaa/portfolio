@@ -23,6 +23,11 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'viewport',
+  },
+
   integrations: [sitemap()],
   output: 'server',
   adapter: vercel()

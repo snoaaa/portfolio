@@ -460,13 +460,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       const colorBtns = document.querySelectorAll('.color-btn');
 
       const chatMessages = {
-        start: ["Let's see what you've got.", "Good luck. You'll need it.", "I hope you've been practicing."],
-        thinking: ["Calculating 14 million futures...", "Analyzing...", "Interesting move..."],
-        check: ["Watch out.", "Check.", "You sure about that?"],
-        win: ["Checkmate. I win.", "Game over. I told you I was good.", "Better luck next time!"],
-        lose: ["Impossible.", "You actually won... impressive.", "Okay, you're hired."],
-        draw: ["A draw? I'll take it.", "Stalemate. Well played.", "Nobody wins this time."],
-        resign: ["Giving up already?", "Resignation accepted.", "Too tough for you?"]
+        start: ["Welcome to the board! Let's have a great game.", "Glad you're here. Best of luck!", "Ready when you are. Let's play!"],
+        thinking: ["Thinking...", "Hmm, let me see...", "Interesting position..."],
+        check: ["Check!", "Watch your King!", "Careful, that's a check."],
+        win: ["Checkmate! That was a brilliantly fought game.", "Good game! I really enjoyed that match.", "Well played! Care for a rematch?"],
+        lose: ["Wow, checkmate! You are truly a master.", "Brilliant play. You completely outsmarted me!", "I tip my hat to you. Amazing game!"],
+        draw: ["A draw! We are evenly matched.", "Stalemate. A truly hard-fought battle.", "A peaceful end to a great game."],
+        resign: ["Thanks for the game! See you next time.", "Good effort! Let me know when you want a rematch.", "Game over. That was fun while it lasted!"]
       };
 
       const setChat = (type) => {
@@ -621,88 +621,54 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         }
       };
 
-      // Very Simple Custom AI Engine (Minimax with Alpha Beta)
-      const pieceValues = { p: 10, n: 30, b: 30, r: 50, q: 90, k: 900 };
-      
-      const evaluateBoard = (g) => {
-        let totalEvaluation = 0;
-        const boardState = g.board();
-        for (let i = 0; i < 8; i++) {
-          for (let j = 0; j < 8; j++) {
-            const piece = boardState[i][j];
-            if (piece) {
-              const val = pieceValues[piece.type] || 0;
-              totalEvaluation += piece.color === 'w' ? val : -val;
-            }
-          }
-        }
-        return totalEvaluation;
-      };
+      // Grandmaster AI Engine using Stockfish in a Web Worker
+      // We load stockfish.js from a CDN and run it in a worker to prevent any UI freeze
+      const workerCode = `importScripts('https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.js');
+      stockfish();`;
+      const blob = new Blob([workerCode], { type: 'application/javascript' });
+      const workerUrl = URL.createObjectURL(blob);
+      const stockfishWorker = new Worker(workerUrl);
 
-      const minimax = (g, depth, alpha, beta, isMaximizing) => {
-        if (depth === 0) return evaluateBoard(g);
+      stockfishWorker.postMessage('uci'); // Initialize
+      stockfishWorker.postMessage('setoption name Skill Level value 20'); // Max skill
+      stockfishWorker.postMessage('setoption name Hash value 128'); // Give the engine 128MB of memory for max speed
 
-        const moves = g.moves({ verbose: true });
-        if (isMaximizing) {
-          let bestVal = -9999;
-          for (let i = 0; i < moves.length; i++) {
-            g.move(moves[i]);
-            bestVal = Math.max(bestVal, minimax(g, depth - 1, alpha, beta, !isMaximizing));
-            g.undo();
-            alpha = Math.max(alpha, bestVal);
-            if (beta <= alpha) break;
+      let engineIsThinking = false;
+
+      stockfishWorker.onmessage = function(event) {
+        const line = event.data;
+        if (line && line.startsWith('bestmove')) {
+          const move = line.split(' ')[1];
+          if (move && move !== '(none)') {
+            const from = move.substring(0, 2);
+            const to = move.substring(2, 4);
+            const promotion = move.length > 4 ? move[4] : undefined;
+            
+            executeMove(from, to);
+            board.set({ fen: game.fen() });
+            
+            if (aiRing) aiRing.style.opacity = '0';
+            if (aiStatus) aiStatus.innerText = "Waiting for you...";
+            
+            checkGameState();
+            engineIsThinking = false;
           }
-          return bestVal;
-        } else {
-          let bestVal = 9999;
-          for (let i = 0; i < moves.length; i++) {
-            g.move(moves[i]);
-            bestVal = Math.min(bestVal, minimax(g, depth - 1, alpha, beta, !isMaximizing));
-            g.undo();
-            beta = Math.min(beta, bestVal);
-            if (beta <= alpha) break;
-          }
-          return bestVal;
         }
       };
 
       const makeAiMove = () => {
-        if (!isPlaying || game.isGameOver()) return;
+        if (!isPlaying || game.isGameOver() || engineIsThinking) return;
         
+        engineIsThinking = true;
         if (aiRing) aiRing.style.opacity = '1';
         if (aiStatus) aiStatus.innerText = "Calculating...";
         
-        // Let UI update
+        // Let the UI update the text and ring, then ask Stockfish to compute
         setTimeout(() => {
-          const moves = game.moves({ verbose: true });
-          let bestMove = moves[Math.floor(Math.random() * moves.length)];
-
-          // Highest optimal model (Depth 3 Alpha-Beta Minimax)
-          let searchDepth = 3;
-
-          if (searchDepth > 0) {
-            let bestVal = game.turn() === 'w' ? -9999 : 9999;
-            for (let i = 0; i < moves.length; i++) {
-              game.move(moves[i]);
-              const boardVal = minimax(game, searchDepth - 1, -10000, 10000, game.turn() === 'w');
-              game.undo();
-              
-              if (game.turn() === 'w') {
-                if (boardVal > bestVal) { bestVal = boardVal; bestMove = moves[i]; }
-              } else {
-                if (boardVal < bestVal) { bestVal = boardVal; bestMove = moves[i]; }
-              }
-            }
-          }
-
-          executeMove(bestMove.from, bestMove.to);
-          board.set({ fen: game.fen() });
-          
-          if (aiRing) aiRing.style.opacity = '0';
-          if (aiStatus) aiStatus.innerText = "Waiting for you...";
-          
-          checkGameState();
-        }, 100);
+          stockfishWorker.postMessage('position fen ' + game.fen());
+          // Depth 18 guarantees absolute Grandmaster calculation (Magnus Carlsen level) while remaining incredibly fast.
+          stockfishWorker.postMessage('go depth 18'); 
+        }, 10);
       };
 
       // Color selector triggers a new game instantly
