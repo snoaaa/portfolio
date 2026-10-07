@@ -460,13 +460,13 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       const colorBtns = document.querySelectorAll('.color-btn');
 
       const chatMessages = {
-        start: ["Bienvenue sur l'échiquier ! Faisons une belle partie.", "Ravi de vous voir. Bonne chance !", "Prêt quand vous l'êtes. Jouons !"],
-        thinking: ["Je réfléchis...", "Hmm, voyons voir...", "Position intéressante..."],
-        check: ["Échec !", "Protégez votre Roi !", "Attention, échec."],
-        win: ["Échec et mat ! C'était une partie brillamment menée.", "Bien joué ! J'ai beaucoup apprécié ce match.", "Belle partie ! On en refait une ?"],
-        lose: ["Wow, échec et mat ! Vous êtes un véritable maître.", "Brillant. Vous m'avez complètement déjoué !", "Chapeau bas. Une partie incroyable !"],
-        draw: ["Match nul ! Nous sommes de force égale.", "Pat. Une bataille vraiment acharnée.", "Une fin pacifique pour une belle partie."],
-        resign: ["Merci pour la partie ! À la prochaine.", "Bel effort ! Dites-moi quand vous voudrez votre revanche.", "Partie terminée. C'était amusant !"]
+        start: ["Voyons si vous tenez plus de 20 coups.", "J'espère que vous êtes en forme. Je joue à 10% de mes capacités et je vais quand même gagner.", "Ah, un adversaire humain. Ça va être rapide."],
+        thinking: ["Calcul de votre défaite inévitable...", "Je cherche un univers parallèle où vous gagnez... non, rien trouvé.", "Vous m'obligez vraiment à calculer ça ?"],
+        check: ["Échec. Votre Roi a l'air un peu nerveux.", "Échec ! N'essayez pas de paniquer.", "Je commencerais à me défendre si j'étais vous. Échec."],
+        win: ["Échec et mat. La prochaine fois, essayez de réfléchir !", "Je vous l'avais dit que ce serait rapide. Échec et mat.", "Ne vous sentez pas mal, je calcule des millions de coups à la seconde. Vous n'aviez aucune chance."],
+        lose: ["Quoi ?! Vous avez vraiment gagné ? Vous avez débranché mon serveur ?", "D'accord, je vous ai clairement sous-estimé. Revanche !", "Impossible. Mes calculs étaient parfaits... bien joué."],
+        draw: ["Match nul ? J'ai dû y aller trop doucement avec vous.", "Pat. Vous êtes légèrement meilleur que ce que je pensais.", "Vous avez survécu ! Ce sera un match nul."],
+        resign: ["Vous abandonnez si vite ? Je commençais à peine à m'échauffer.", "Choix intelligent. Ça n'allait qu'empirer pour vous.", "Démission acceptée. Allez vous reposer maintenant."]
       };
 
       const setChat = (type) => {

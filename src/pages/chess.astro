@@ -460,13 +460,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       const colorBtns = document.querySelectorAll('.color-btn');
 
       const chatMessages = {
-        start: ["Welcome to the board! Let's have a great game.", "Glad you're here. Best of luck!", "Ready when you are. Let's play!"],
-        thinking: ["Thinking...", "Hmm, let me see...", "Interesting position..."],
-        check: ["Check!", "Watch your King!", "Careful, that's a check."],
-        win: ["Checkmate! That was a brilliantly fought game.", "Good game! I really enjoyed that match.", "Well played! Care for a rematch?"],
-        lose: ["Wow, checkmate! You are truly a master.", "Brilliant play. You completely outsmarted me!", "I tip my hat to you. Amazing game!"],
-        draw: ["A draw! We are evenly matched.", "Stalemate. A truly hard-fought battle.", "A peaceful end to a great game."],
-        resign: ["Thanks for the game! See you next time.", "Good effort! Let me know when you want a rematch.", "Game over. That was fun while it lasted!"]
+        start: ["Let's see if you can last more than 20 moves.", "I hope you brought your A-game. I only need my C-game to win.", "Ah, a human challenger. This should be quick."],
+        thinking: ["Calculating your inevitable defeat...", "Looking for a timeline where you win... nope, couldn't find one.", "Are you really making me calculate that?"],
+        check: ["Check. Your King is looking a bit nervous.", "Check! Try not to panic.", "I'd start defending if I were you. Check."],
+        win: ["Checkmate. Better luck next time, human!", "I told you this would be quick. Checkmate.", "Don't feel bad, I process millions of moves a second. You never stood a chance."],
+        lose: ["What?! You actually won? Did you unplug my server?", "Okay, I clearly underestimated you. Rematch!", "Impossible. My calculations were flawless... well played."],
+        draw: ["A draw? I must have gone easy on you.", "Stalemate. I guess you're slightly better than I thought.", "You survived! A draw it is."],
+        resign: ["Giving up so soon? I was just getting warmed up.", "Smart choice. It was only going to get worse for you.", "Resignation accepted. Run along now."]
       };
 
       const setChat = (type) => {
