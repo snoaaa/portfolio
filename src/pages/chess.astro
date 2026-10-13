@@ -12,7 +12,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     @import 'chessground/assets/chessground.brown.css';
     @import 'chessground/assets/chessground.cburnett.css';
 
-    /* Premium Page Layout */
+    /* Page Layout */
     .chess-page {
       padding: 16px 0;
       min-height: calc(100vh - 120px);
@@ -71,7 +71,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       }
     }
 
-    /* Left Side: The Board */
+    
     .chess-board-wrapper {
       flex: 1;
       max-width: 550px;
@@ -79,7 +79,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       margin: 0 auto;
     }
 
-    /* Overriding Chessground Defaults for our Custom Brand Theme */
+    
     .cg-wrap {
       width: 100%;
       aspect-ratio: 1 / 1;
@@ -89,7 +89,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       background: #fafafa; /* Light squares */
     }
     
-    /* Board Theme: Classic Premium Green/White for perfect piece contrast */
     .cg-wrap cg-board {
       background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="%23ebecd0"/><rect width="100" height="100" x="100" y="0" fill="%23779556"/><rect width="100" height="100" x="0" y="100" fill="%23779556"/></svg>') !important;
       background-size: 25% 25% !important;
@@ -109,7 +108,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       background-color: rgba(200, 200, 200, 0.3) !important;
     }
 
-    /* Fixing the Pieces (Injecting Lichess Alpha Set from CDN) */
+    /* Injecting Lichess Alpha Set from CDN */
     .cg-wrap piece.pawn.white { background-image: url('https://raw.githubusercontent.com/lichess-org/lila/master/public/piece/alpha/wP.svg'); }
     .cg-wrap piece.knight.white { background-image: url('https://raw.githubusercontent.com/lichess-org/lila/master/public/piece/alpha/wN.svg'); }
     .cg-wrap piece.bishop.white { background-image: url('https://raw.githubusercontent.com/lichess-org/lila/master/public/piece/alpha/wB.svg'); }
@@ -200,7 +199,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       color: #666;
     }
 
-    /* Custom Chat Bubble */
+    /* Chat Bubble */
     .chat-bubble {
       background: #111;
       color: #fff;
@@ -225,7 +224,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       border-left: 15px solid transparent;
     }
 
-    /* Move History */
+   
     .move-history {
       display: flex;
       flex-direction: column;
@@ -233,7 +232,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     }
 
     .move-list {
-      display: none; /* Hidden by default, toggled via JS */
+      display: none; 
       background: #fff;
       border: 1px solid rgba(0,0,0,0.1);
       border-radius: 8px;
@@ -396,7 +395,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
     <div class="chess-container ink-anim">
       
-      <!-- AI Profile (Always on top for mobile) -->
+      <!-- AI Profile -->
       <div class="opponent-profile">
         <div class="opponent-avatar">
           <div id="ai-ring" class="ai-thinking-ring"></div>
@@ -651,8 +650,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         }
       };
 
-      // Grandmaster AI Engine using Stockfish in a Web Worker
-      // We load stockfish.js from a CDN and run it in a worker to prevent any UI freeze
+      // AI Engine using Stockfish in a Web Worker
+      // load stockfish.js from a CDN and run it in a worker to prevent any UI freeze
       const workerCode = `importScripts('https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.js');
       stockfish();`;
       const blob = new Blob([workerCode], { type: 'application/javascript' });
@@ -718,15 +717,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         
         setChat('thinking');
         
-        // Let the UI update the text and ring, then ask Stockfish to compute
+        
         setTimeout(() => {
           stockfishWorker.postMessage('position fen ' + game.fen());
-          // Depth 18 guarantees absolute Grandmaster calculation (Magnus Carlsen level) while remaining incredibly fast.
+          
           stockfishWorker.postMessage('go depth 18'); 
         }, 10);
       };
 
-      // Color selector triggers a new game instantly
       colorBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
           colorBtns.forEach(b => b.classList.remove('active'));
@@ -769,7 +767,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         if (isPlaying) setGameOver('resign');
       });
 
-      // Move History Toggle Logic
+     
     };
 
     document.addEventListener('astro:page-load', () => {
