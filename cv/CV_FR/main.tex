@@ -1,14 +1,14 @@
 %-------------------------
-% Resume in Latex
-% Author : Jake Gutierrez
+% Resume in Latex - Version Française
+% Author : Abraham Noumsi
 % Based off of: https://github.com/sb2nov/resume
 % License : MIT
 %------------------------
 
-\documentclass[letterpaper,11pt]{article}
+\documentclass[letterpaper,10pt]{article}
 
 \usepackage{latexsym}
-\usepackage[empty]{fullpage}
+\usepackage[letterpaper,left=0.5in,right=0.5in,top=0.42in,bottom=0.42in]{geometry}
 \usepackage{titlesec}
 \usepackage{marvosym}
 \usepackage[usenames,dvipsnames]{color}
@@ -16,36 +16,20 @@
 \usepackage{enumitem}
 \usepackage[hidelinks]{hyperref}
 \usepackage{fancyhdr}
-\usepackage[english]{babel}
+\usepackage[french]{babel}
+\frenchsetup{StandardLists=true}
 \usepackage{tabularx}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
 \input{glyphtounicode}
-
-
-%----------FONT OPTIONS----------
-% sans-serif
-% \usepackage[sfdefault]{FiraSans}
-% \usepackage[sfdefault]{roboto}
-% \usepackage[sfdefault]{noto-sans}
-% \usepackage[default]{sourcesanspro}
-
-% serif
-% \usepackage{CormorantGaramond}
-% \usepackage{charter}
-
 
 \pagestyle{fancy}
 \fancyhf{} % clear all header and footer fields
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
-\fancyfoot[R]{\scriptsize\textcolor[gray]{0.45}{Mis à jour : Octobre 2026}}
-\setlength{\footskip}{11pt}
-
-% Adjust margins
-\addtolength{\oddsidemargin}{-0.5in}
-\addtolength{\evensidemargin}{-0.5in}
-\addtolength{\textwidth}{1in}
-\addtolength{\topmargin}{-.5in}
-\addtolength{\textheight}{1.0in}
+\fancyfoot[R]{\scriptsize\textcolor[gray]{0.45}{Mis à jour : Novembre 2026}}
+\setlength{\footskip}{12pt}
 
 \urlstyle{same}
 
@@ -55,150 +39,209 @@
 
 % Sections formatting
 \titleformat{\section}{
-  \vspace{-4pt}\scshape\raggedright\large
-}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+  \vspace{-3pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-3pt}]
 
-% Ensure that generate pdf is machine readable/ATS parsable
+% Ensure that generated pdf is machine readable/ATS parsable
 \pdfgentounicode=1
+
+% Bullet styling
+\renewcommand{\labelitemi}{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\renewcommand{\labelitemii}{$\vcenter{\hbox{\tiny$\bullet$}}$}
 
 %-------------------------
 % Custom commands
 \newcommand{\resumeItem}[1]{
   \item\small{
-    {#1 \vspace{-2pt}}
+    {#1 \vspace{-1.5pt}}
   }
 }
 
 \newcommand{\resumeSubheading}[4]{
-  \vspace{-2pt}\item
-    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
       \textbf{#1} & #2 \\
       \textit{\small#3} & \textit{\small #4} \\
-    \end{tabular*}\vspace{-7pt}
+    \end{tabular*}\vspace{-5pt}
 }
 
 \newcommand{\resumeSubSubheading}[2]{
     \item
-    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \begin{tabular*}{0.98\textwidth}{l@{\extracolsep{\fill}}r}
       \textit{\small#1} & \textit{\small #2} \\
-    \end{tabular*}\vspace{-7pt}
+    \end{tabular*}\vspace{-5pt}
 }
 
 \newcommand{\resumeProjectHeading}[2]{
     \item
-    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \begin{tabular*}{0.98\textwidth}{l@{\extracolsep{\fill}}r}
       \small#1 & #2 \\
-    \end{tabular*}\vspace{-7pt}
+    \end{tabular*}\vspace{-5pt}
 }
 
-\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
-
-\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-3pt}}
 
 \newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
 \newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
-\newcommand{\resumeItemListStart}{\begin{itemize}}
-\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.2in, label={$\vcenter{\hbox{\tiny$\bullet$}}$}, itemsep=1.2pt, parsep=0pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-3pt}}
 
 %-------------------------------------------
 %%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 \begin{document}
 
 %----------HEADING----------
-% \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
-%   \textbf{\href{http://sourabhbajaj.com/}{\Large Sourabh Bajaj}} & Email : \href{mailto:sourabh@sourabhbajaj.com}{sourabh@sourabhbajaj.com}\\
-%   \href{http://sourabhbajaj.com/}{http://www.sourabhbajaj.com} & Mobile : +1-123-456-7890 \\
-% \end{tabular*}
-
-\begin{center}
-    \textbf{\Huge \scshape Abraham Noumsi} \\ \vspace{1pt}
+{\centering
+    \textbf{\Huge Abraham Noumsi} \\ \vspace{2pt}
     \small Yaoundé, Cameroun $|$ +237 658 117 002 $|$ \href{mailto:ab.noumsi@gmail.com}{\underline{ab.noumsi@gmail.com}} $|$ 
     \href{https://www.linkedin.com/in/abrahamnoumsi}{\underline{LinkedIn}} $|$
     \href{https://github.com/snoaaa}{\underline{GitHub}} $|$
-    \href{https://www.abrahamnoumsi.com}{\underline{Portfolio}}
-\end{center}
+    \href{https://www.abrahamnoumsi.com}{\underline{Portfolio}}\par}
+\vspace{2pt}
 
-
-%-----------EDUCATION-----------
+%-----------FORMATION-----------
 \section{Formation}
   \resumeSubHeadingListStart
     \resumeSubheading
-      {Saint Jean Ingénieur}{Eyang, Cameroun}
-      {Diplôme d'ingénieur en Informatique et Systèmes d'Information}{Septembre 2023 --- Octobre 2028 (Prévu)}
- 
+      {Institut Universitaire Saint Jean du Cameroun}{Eyang, Cameroun}
+      {Diplôme d'ingénieur en Informatique et Systèmes d'Information}{Septembre 2023 -- Octobre 2028 (Prévu)}
   \resumeSubHeadingListEnd
 
-
-%-----------EXPERIENCE-----------
+%-----------EXPÉRIENCE PROFESSIONNELLE-----------
 \section{Expérience Professionnelle}
   \resumeSubHeadingListStart
 
     \resumeSubheading
-       {Stagiaire Développeur Python/Odoo}{Juin 2025 --- Septembre 2025}
+      {Stagiaire Développeur Python/Odoo}{Juin 2025 -- Septembre 2025}
       {N2T SOLUTIONS SARL}{Yaoundé, Cameroun}
-         \resumeItemListStart
-        \resumeItem{Pilotage de la migration de l'ERP du Port Autonome de Kribi (Odoo 8 vers 17), garantissant \textbf{0 interruption d'activité} pour plus de \textbf{500 utilisateurs quotidiens} grâce à une transition technique maîtrisée.}
-        \resumeItem{Accélération de \textbf{30\%} du traitement des flux métiers critiques en concevant des modules Odoo sur-mesure en Python (ORM Odoo, PostgreSQL).}
-        \resumeItem{Migration de plus de \textbf{100 000 enregistrements} avec \textbf{100\%} d'intégrité des données tout en éliminant les bugs historiques via des pipelines de données et des tests de régression.}
+      \resumeItemListStart
+        \resumeItem{Migration technique de l'ERP du Port Autonome de Kribi d'Odoo 8 vers 17, assurant \textbf{zéro interruption de service} pour \textbf{500+ opérateurs portuaires quotidiens}.}
+        \resumeItem{Développement de modules backend en \textbf{Python} et \textbf{PostgreSQL}, refactorisant la logique métier pour augmenter le débit transactionnel de \textbf{30\%}.}
+        \resumeItem{Création de pipelines ETL et de validation automatisés migrant \textbf{100 000+ enregistrements historiques} avec \textbf{100\% d'intégrité du schéma}, validés par tests de régression.}
       \resumeItemListEnd
-      
-% -----------Multiple Positions Heading-----------
-%    \resumeSubSubheading
-%     {Software Engineer I}{Oct 2014 - Sep 2016}
-%     \resumeItemListStart
-%        \resumeItem{Apache Beam}
-%          {Apache Beam is a unified model for defining both batch and streaming data-parallel processing pipelines}
-%     \resumeItemListEnd
-%    \resumeSubHeadingListEnd
-%-------------------------------------------
 
-      \resumeSubheading
-      {Stagiaire en Informatique}{Juin 2024 --- Août 2024}
+    \resumeSubheading
+      {Stagiaire Systèmes d'Information}{Juin 2024 -- Août 2024}
       {SEJOCE SARL}{Douala, Cameroun}
       \resumeItemListStart
-        \resumeItem{Maintien d'un taux de disponibilité de \textbf{99,9\%} sur les applications de distribution en diagnostiquant proactivement les pannes serveur et en optimisant l'infrastructure informatique.}
-        \resumeItem{Atteinte d'une précision de \textbf{100\%} sur les registres administratifs et logistiques en numérisant le suivi des stocks et en renforçant les contrôles de cohérence des données.}
-        \resumeItem{Accélération de la résolution des incidents informatiques pour plus de \textbf{50 collaborateurs} en standardisant les procédures d'intervention et de support interne.}
+        \resumeItem{Maintien d'une \textbf{disponibilité de 99,9\%} des serveurs critiques de distribution et d'entrepôt en diagnostiquant les goulots réseau et en planifiant la maintenance préventive.}
+        \resumeItem{Numérisation des registres de suivi des stocks et de la distribution, appliquant des contraintes en base de données pour éliminer les écarts d'audit.}
+        \resumeItem{Résolution des incidents techniques matériels et réseau pour \textbf{50+ postes de travail}, établissant des procédures standardisées pour réduire les délais de support.}
       \resumeItemListEnd
 
   \resumeSubHeadingListEnd
 
-%-----------PROJECTS-----------
+%-----------PROJETS PERSONNELS-----------
 \section{Projets Personnels}
-    \resumeSubHeadingListStart
-      \resumeProjectHeading
-          {\textbf{AKIBA} $|$ \emph{Next.js, Express.js, Node.js, TypeScript, PostgreSQL, React Native}}{}
-          \resumeItemListStart
-            \resumeItem{Création d'une marketplace full-stack centralisée, mettant en relation fluide les clients avec un réseau de plus de \textbf{200 prestataires qualifiés} sur tout le territoire.}
-            \resumeItem{Conception d'un moteur de recherche et de mise en relation ultra-performant, simplifiant le parcours utilisateur et boostant le taux de conversion de \textbf{40\%}.}
-            \resumeItem{Déploiement simultané de la plateforme sur le web et le mobile, offrant une expérience utilisateur fluide, réactive et unifiée sur tous les appareils.}
-          \resumeItemListEnd
-      \resumeProjectHeading
-          {\textbf{We Choose!} $|$ \emph{TypeScript, Go, PostgreSQL}}{}
-          \resumeItemListStart
-            \resumeItem{Déploiement d'une plateforme de vote en ligne hautement sécurisée, ayant géré de manière fiable les élections universitaires pour plus de \textbf{3 000 étudiants}.}
-            \resumeItem{Mise en place d'un processus de vote intuitif et anti-fraude garantissant aux étudiants un vote transparent, fluide et entièrement sécurisé.}
-            \resumeItem{Automatisation de l'ensemble du cycle électoral (de la gestion des candidats au dépouillement), réduisant de \textbf{60\%} la charge administrative globale.}
-          \resumeItemListEnd
-    \resumeSubHeadingListEnd
+  \resumeSubHeadingListStart
 
+    \resumeProjectHeading
+        {\textbf{Umzugsflink} $|$ \emph{Next.js, TypeScript, Medusa.js, PostgreSQL, Stripe, Redis}}{}
+        \resumeItemListStart
+          \resumeItem{Architecture d'une marketplace de déménagement multi-vendeurs (\textbf{monorepo Turborepo}) reliant clients et étudiants déménageurs, avec un storefront haute concurrence \textbf{Next.js 15 App Router} et un backend headless \textbf{Medusa.js v2}.}
+          \resumeItem{Implémentation de paiements avec compte de séquestre via \textbf{Stripe Connect}, bloquant les fonds des clients et automatisant les versements avec \textbf{0\% d'écart de transaction}.}
+          \resumeItem{Intégration d'un système de négociation et d'assignation en temps réel sous \textbf{TalkJS}, avec ajustement dynamique des devis, planification des réservations et files de webhooks \textbf{Redis}.}
+        \resumeItemListEnd
 
-%-----------PROGRAMMING SKILLS-----------
+    \resumeProjectHeading
+        {\textbf{Bwaka} $|$ \emph{React Native, TypeScript, Supabase, PostgreSQL}}{}
+        \resumeItemListStart
+          \resumeItem{Développement d'une application mobile nationale d'objets perdus/trouvés sous \textbf{React Native}, avec authentification par préfixe opérateur (\textbf{MTN, Orange, Camtel}) et \textbf{SMS OTP automatisé} via Supabase Auth.}
+          \resumeItem{Conception d'un moteur de correspondance algorithmique par indexation trigramme \textbf{PostgreSQL (pg\_trgm)}, croisant signalements et découvertes sur les \textbf{10 régions} avec une \textbf{latence inférieure à 500 ms}.}
+          \resumeItem{Implémentation d'un module \textbf{OCR avec masquage automatique des données sensibles} sur pièces d'identité (CNI, passeports) et validation par questions-défis contre la fraude.}
+        \resumeItemListEnd
+
+    \resumeProjectHeading
+        {\textbf{Orvia} $|$ \emph{NestJS, TypeScript, Angular, React Native, Prisma, RAG}}{}
+        \resumeItemListStart
+          \resumeItem{Architecture d'un pipeline d'intelligence documentaire basé sur le \textbf{RAG (Retrieval-Augmented Generation)}, intégrant un \textbf{OCR à coordonnées spatiales} reliant chaque réponse à des \textbf{citations sources exactes à la page}.}
+          \resumeItem{Développement d'un portail d'administration d'entreprise sous \textbf{Angular} avec isolation multi-tenant, contrôle d'accès \textbf{RBAC} et piste d'audit immuable en \textbf{chaîne de hachage SHA-256}.}
+          \resumeItem{Déploiement d'un client mobile \textbf{React Native offline-first} avec \textbf{delta-synchronisation SQLite bidirectionnelle}, permettant d'interroger localement les corpus documentaires hors connexion.}
+        \resumeItemListEnd
+
+    \resumeProjectHeading
+        {\textbf{KCS Media Studio} $|$ \emph{Python, Whisper AI, FastAPI, React, PyTorch, FFmpeg}}{}
+        \resumeItemListStart
+          \resumeItem{Fine-tuning de modèles acoustiques \textbf{OpenAI Whisper} et création de pipelines NLP adaptés aux langues locales camerounaises (\textbf{Ngomala, Ewondo, Bassa}) avec \textbf{plus de 85\% de précision de transcription}.}
+          \resumeItem{Développement d'un éditeur multimédia interactif sur forme d'onde avec \textbf{synchronisation temporelle à la milliseconde}, diarisation des locuteurs et incrustation vidéo accélérée via \textbf{FFmpeg}.}
+          \resumeItem{Conception d'un backend asynchrone sous \textbf{FastAPI et WebSockets}, diffusant en continu les flux de transcription et le traitement audio par paquets en direct.}
+        \resumeItemListEnd
+
+    \pagebreak
+
+    \resumeProjectHeading
+        {\textbf{AKIBA} $|$ \emph{Next.js, Express.js, TypeScript, PostgreSQL, React Native}}{}
+        \resumeItemListStart
+          \resumeItem{Architecture d'une marketplace de services à domicile reliant les utilisateurs au Cameroun à plus de \textbf{200 artisans et techniciens qualifiés}.}
+          \resumeItem{Développement d'un moteur de recherche géo-localisé à faible latence par \textbf{indexation spatiale PostgreSQL}, réduisant le délai de découverte et augmentant les réservations de \textbf{40\%}.}
+          \resumeItem{Déploiement d'applications web et mobiles \textbf{React Native} unifiées partageant modèles de domaine et schémas de validation, assurant des flux de réservation fluides.}
+        \resumeItemListEnd
+
+    \resumeProjectHeading
+        {\textbf{We Choose\string!} $|$ \emph{Go, TypeScript, PostgreSQL, Docker}}{}
+        \resumeItemListStart
+          \resumeItem{Développement d'une plateforme universitaire de vote électronique infalsifiable sous \textbf{Docker}, administrant de façon sécurisée les élections étudiantes pour \textbf{3 000+ électeurs inscrits}.}
+          \resumeItem{Implémentation d'un \textbf{protocole cryptographique de hachage SHA-256} garantissant l'anonymat et l'auditabilité du scrutin tout en empêchant mathématiquement le vote double.}
+          \resumeItem{Automatisation de la vérification des candidats et du \textbf{dépouillement des votes en moins d'une seconde} sous pics de trafic concurrent, réduisant la charge administrative de \textbf{60\%}.}
+        \resumeItemListEnd
+
+    \resumeProjectHeading
+        {\textbf{Chaxiraxi (Gibbon Core)} $|$ \emph{PHP, MySQL, TypeScript, Tailwind CSS}}{}
+        \resumeItemListStart
+          \resumeItem{Direction de la modernisation frontend et du système de design modulaire (\textbf{"Chaxiraxi"}) pour \textbf{Gibbon Core}, solution open-source sous \textbf{PHP, MySQL et Tailwind CSS}.}
+          \resumeItem{Remplacement des gabarits monolithiques par des composants réutilisables et accessibles, optimisant l'usage mobile et réduisant la latence de chargement de \textbf{35\%}.}
+          \resumeItem{Conception d'un indexeur de recherche instantanée piloté au clavier (\textbf{fast-finder}) et standardisation des formulaires de gestion des dossiers et notes scolaires.}
+        \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------COMPÉTENCES TECHNIQUES-----------
 \section{Compétences Techniques}
 \begin{itemize}[leftmargin=0.15in, label={}]
     \small{\item{
-     \textbf{Langages}{:\ Python, Java, C, Go, JavaScript, TypeScript, SQL, HTML/CSS} \\
-     \textbf{Frameworks}{:\ Spring Boot, React, Next.js, Node.js, Express.js, Django, FastAPI, Angular} \\
-     \textbf{Mobile}{:\ React Native, Flutter} \\
-     \textbf{Bases de données \& Brokers}{:\ PostgreSQL, MySQL, MongoDB, Redis, Kafka, Bases de données Vectorielles} \\
-     \textbf{Cloud \& DevOps}{:\ Docker, Kubernetes, Terraform, Google Cloud Platform, Git, GitHub Actions, CI/CD, Linux} \\
-     \textbf{Tests \& Outils}{:\ JUnit, Mockito, Jest, Postman, Prometheus, Grafana, Maven, Gradle, VS Code, IntelliJ IDEA} \\
-     \textbf{Concepts Clés}{:\ Architecture Microservices, gRPC, APIs REST, Sécurité (OAuth2/JWT), Structures de Données, Agile/Scrum}
+     \textbf{Langages}{:\ Python, Go, Java, TypeScript, JavaScript, SQL, R, C, PHP, HTML/CSS} \\ \vspace{1.5pt}
+     \textbf{Backend \& Systèmes Distribués}{:\ NestJS, Node.js, FastAPI, Spring Boot, APIs RESTful, gRPC, WebSockets, ORM Odoo} \\ \vspace{1.5pt}
+     \textbf{Frontend, Mobile \& CMS}{:\ Next.js, React, React Native, Angular, Tailwind CSS, WordPress, Turborepo} \\ \vspace{1.5pt}
+     \textbf{Bases de Données \& Analyse}{:\ PostgreSQL (pgvector), Supabase, Redis, SQLite, Pandas, NumPy, Modélisation, Pipelines ETL} \\ \vspace{1.5pt}
+     \textbf{Ingénierie IA \& Multimédia}{:\ Retrieval-Augmented Generation (RAG), LangChain, Whisper STT, PyTorch, Hugging Face, OCR, FFmpeg} \\ \vspace{1.5pt}
+     \textbf{DevOps \& Monitoring}{:\ Docker, Linux, CI/CD (GitHub Actions), Monitoring (Grafana, Sentry), Git, Postman, Stripe Connect} \\ \vspace{1.5pt}
+     \textbf{Design \& Prototypage}{:\ Figma, Suite Adobe (Photoshop, Illustrator), Prototypage UI/UX}
     }}
 \end{itemize}
 
+%-----------DISTINCTIONS & PRIX-----------
+\section{Distinctions \& Prix}
+\begin{itemize}[leftmargin=0.15in, label={$\vcenter{\hbox{\tiny$\bullet$}}$}, itemsep=1pt]
+    \resumeItem{\textbf{Hult Prize OnCampus IUSJC 2025} $|$ \textbf{Équipe Championne du Campus}, sélectionnée parmi les \textbf{6 meilleures équipes finalistes nationales} au Cameroun pour l'entrepreneuriat social.}
+\end{itemize}
+
+%-----------LEADERSHIP & ENGAGEMENTS-----------
+\section{Leadership \& Engagements}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Ambassadeur Étudiant}{2024 -- Présent}
+      {Institut Universitaire Saint Jean du Cameroun}{Yaoundé, Cameroun}
+      \resumeItemListStart
+        \resumeItem{Promotion des filières d'ingénierie et encadrement technique d'étudiants sur des projets matériels et logiciels IoT.}
+      \resumeItemListEnd
+    \resumeSubheading
+      {Membre du Comité d'Organisation -- Hult Prize IUSJC}{2026 -- Présent}
+      {Fondation Hult Prize}{Yaoundé, Cameroun}
+      \resumeItemListStart
+        \resumeItem{Communication événementielle, mobilisation des équipes et formation des étudiants au pitch de startups.}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%-----------APTITUDES PROFESSIONNELLES, LANGUES & CENTRES D'INTÉRÊT-----------
+\section{Aptitudes Professionnelles, Langues \& Centres d'Intérêt}
+\begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Soft Skills}{:\ Travail en équipe pluridisciplinaire, Communication persuasive, Résolution analytique, Initiative, Autonomie} \\ \vspace{1.5pt}
+     \textbf{Langues}{:\ \textbf{Français} (Langue maternelle), \textbf{Anglais} (Niveau professionnel / B2 -- Documentation technique, communication professionnelle), \textbf{Espagnol} (Notions de base / Niveau élémentaire)} \\ \vspace{1.5pt}
+     \textbf{Centres d'intérêt}{:\ Échecs, Origami, Lecture}
+    }}
+\end{itemize}
 
 %-------------------------------------------
 \end{document}
